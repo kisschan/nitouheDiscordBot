@@ -6,11 +6,15 @@
   },
   "main": "index.js",
   "license": "MIT",
-  "scripts":{
+  "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
+    "@discordjs/opus": "^0.4.0",
+    "discord-ytdl-core": "^5.0.0",
     "discord.js": "^12.5.1",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "ffmpeg-static": "^4.2.7",
+    "ytdl-core": "^4.4.5"
   }
 }
