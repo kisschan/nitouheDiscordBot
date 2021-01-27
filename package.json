@@ -1,8 +1,14 @@
 {
   "name": "nitouheDiscordBot",
   "version": "1.0.0",
+  "engines": {
+    "yarn": "1.x"
+  },
   "main": "index.js",
   "license": "MIT",
+  "scripts":{
+    "start": "node index.js"
+  },
   "dependencies": {
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0"
