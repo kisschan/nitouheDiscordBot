@@ -10,8 +10,8 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
-  if (msg.author.username === '竜介軍二等兵') {
-    
+  if (msg.content === 'はさみ将棋') {
+    msg.reply(`https://sdin.jp/browser/board/hasami/`)
   }
   if (msg.content === 'メンバー') {
     var guild = msg.guild;
