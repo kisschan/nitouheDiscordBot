@@ -1,5 +1,5 @@
 {
-  "name": "nitouheDiscordBot",
+  "name": "nitouhe-discord-bot",
   "version": "1.0.0",
   "engines": {
     "yarn": "1.x"
@@ -16,6 +16,7 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
+    "random": "^2.2.0",
     "ytdl-core": "^4.4.5"
   }
 }
