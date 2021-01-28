@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node index.js"
   },
+  "type": "module",
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
     "discord-ytdl-core": "^5.0.0",

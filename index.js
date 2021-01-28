@@ -1,10 +1,12 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
+const BOT_TOKEN = process.env.BOT_TOKEN; // Discord Botのトークン環境変数
 
-const BOT_TOKEN = process.env.BOT_TOKEN;
+import ytdl from "discord-ytdl-core";
+import { Client } from 'discord.js';
+import MessageReplier from './messageReplier.js';
 
-const ytdl = require("discord-ytdl-core");
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const client = new Client();
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -49,11 +51,11 @@ const playMusic = function(msg, url) {
   });
 }
 
+const messageReplier = new MessageReplier();
+
 client.on('message', async msg => {
   if (msg.author.bot) return;
-  if (msg.content === 'はさみ将棋') {
-    msg.reply(`https://sdin.jp/browser/board/hasami/`)
-  }
+  messageReplier.onMessage(msg);
   if (msg.content === 'メンバー') {
     var guild = msg.guild;
     var members = await guild.members.fetch();
