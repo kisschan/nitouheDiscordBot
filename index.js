@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import includedInWhitelist from './whitelist.js';
 const BOT_TOKEN = process.env.BOT_TOKEN; // Discord Botのトークン環境変数
 
 import { Client } from 'discord.js';
@@ -18,7 +17,6 @@ client.on('ready', () => {
 
 client.on('message', async msg => {
   if (msg.author.bot) return;
-  if (!includedInWhitelist(msg)) return;
   messageReplier.onMessage(msg);
   jukeBox.onMessage(msg);
 });
