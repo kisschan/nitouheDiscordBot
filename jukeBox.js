@@ -3,7 +3,6 @@ import ytdl from "discord-ytdl-core";
 
 var onPlaying = false;
 var requestBox = {};
-var cancelVoted = null;
 
 const playMusic = function(msg, url) {
   if (!url) return;
@@ -21,7 +20,7 @@ const playMusic = function(msg, url) {
     })
     .on("finish", () => {
       if (requestBox.size !== 0) {
-        keys = Object.keys(requestBox)
+        var keys = Object.keys(requestBox)
         var index = random.int(0, keys.length - 1);
         var next = requestBox[keys[index]];
         requestBox = {};
@@ -37,6 +36,10 @@ const playMusic = function(msg, url) {
 }
 
 class JukeBox {
+
+  constructor() {
+    this.cancelVoted = null;
+  }
 
   async onMessage(msg) {
     if (msg.content.includes("youtu")) {
@@ -55,16 +58,31 @@ class JukeBox {
     }
   }
 
+  onCanceled(msg) {
+    const myVoiceChannel = msg.guild.me.voice.channel;
+    myVoiceChannel.leave(); 
+    onPlaying = false; // TODO: これがグローバル変数を参照してる
+  }
+
   cancel(msg) {
-    if (cancelVoted === null) {
-      cancelVoted = msg.member.id;
-      return msg.reply("キャンセル投票を受け付けました。もうひとりの投票でキャンセルになります。")
+    const myVoiceChannel = msg.guild.me.voice.channel;
+    if (myVoiceChannel === null) { // myVoiceがnullであればキャンセルする必要がないとみなす。
+      return; 
     }
-    if (cancelVoted !== msg.member.id) {
-      cancelVoted = null;
-      msg.guild.me.voice.channel.leave(); 
-      onPlaying = false;
-      return msg.reply("キャンセル投票が二人以上あったため、キャンセルします。")
+    if (msg.member.roles.cache.size === 1) { // ロールのを与えていない人の投票はキャンセル
+      msg.member.user.createDM().then(channel => {
+        channel.send("エラー。ロールのない人はキャンセル投票はできません。");
+      });
+      return;
+    }
+    if (this.cancelVoted === null) {
+      this.cancelVoted = msg.member.id;
+      msg.reply("キャンセル投票を受け付けました。\nもう一人の投票でキャンセルになります。");
+    }
+    if (this.cancelVoted !== msg.member.id) {
+      this.cancelVoted = null;
+      this.onCanceled(msg);
+      return msg.reply("キャンセル投票が二人以上あったため、キャンセルします。");
     }
   }
 }
