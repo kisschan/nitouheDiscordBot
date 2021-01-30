@@ -8,7 +8,7 @@ class MessageReplier {
     var random = Math.floor(Math.random() * blogs.length);
       msg.reply(blogs[random]);
     }
-    if(/wiki/i.test(msg.content) && msg.content.length === 4){
+    if(/^wiki$/i.test(msg.content)){
         msg.reply('https://w.atwiki.jp/ryusukegun2touhei/')
     }
     if (msg.content === 'メンバー') {
