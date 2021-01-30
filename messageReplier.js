@@ -3,7 +3,7 @@ class MessageReplier {
     if (msg.content === 'はさみ将棋') {
       msg.reply(`https://sdin.jp/browser/board/hasami/`);
     }
-    if (msg.content === 'ブログ') {
+    if (msg.content === 'ブログ') {//blogランダム表示
     var blogs = ['https://ryuusukegun.hatenablog.com/','https://ryusukeshibu.hatenablog.com/','https://nnsn.hatenablog.com/','https://rumerume.hatenablog.com/','https://glance.hatenablog.com/'];
     var random = Math.floor(Math.random() * blogs.length);
       msg.reply(blogs[random]);
