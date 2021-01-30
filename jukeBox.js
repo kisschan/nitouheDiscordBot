@@ -37,6 +37,7 @@ const playMusic = function(msg, url) {
 }
 
 class JukeBox {
+
   async onMessage(msg) {
     if (msg.content.includes("youtu")) {
       if (!msg.member.voice.channel) {
@@ -50,16 +51,20 @@ class JukeBox {
       playMusic(msg, msg.content)
     }
     if (msg.content === "cancel") {
-      if (cancelVoted === null) {
-        cancelVoted = msg.member.id;
-        return msg.reply("キャンセル投票を受け付けました。もうひとりの投票でキャンセルになります。")
-      }
-      if (cancelVoted !== msg.member.id) {
-        cancelVoted = null;
-        msg.guild.me.voice.channel.leave(); 
-        onPlaying = false;
-        return msg.reply("キャンセル投票が二人以上あったため、キャンセルします。")
-      }
+      this.cancel(msg);
+    }
+  }
+
+  cancel(msg) {
+    if (cancelVoted === null) {
+      cancelVoted = msg.member.id;
+      return msg.reply("キャンセル投票を受け付けました。もうひとりの投票でキャンセルになります。")
+    }
+    if (cancelVoted !== msg.member.id) {
+      cancelVoted = null;
+      msg.guild.me.voice.channel.leave(); 
+      onPlaying = false;
+      return msg.reply("キャンセル投票が二人以上あったため、キャンセルします。")
     }
   }
 }
