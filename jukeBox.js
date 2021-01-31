@@ -4,21 +4,26 @@ import ytdl from "discord-ytdl-core";
 var onPlaying = false;
 var requestBox = {};
 
-const playMusic = function(msg, url) {
-  if (!url) return;
-  let stream = ytdl(url, {
+const getDispatcher = function(connection, url) {
+  const stream = ytdl(url, {
     filter: "audioonly",
     opusEncoded: true,
     encoderArgs: ['-af', 'bass=g=10,dynaudnorm=f=200']
   });
+  const dispatcher = connection.play(stream, {
+    type: "opus"
+  });
+  return dispatcher;
+}
+
+const playMusic = function(msg, url) {
+  if (!url) return;
 
   msg.member.voice.channel.join()
   .then(connection => {
     onPlaying = true;
-    let dispatcher = connection.play(stream, {
-      type: "opus"
-    })
-    .on("finish", () => {
+    const dispatcher = getDispatcher(connection, url);
+    dispatcher.on("finish", () => {
       if (requestBox.size !== 0) {
         var keys = Object.keys(requestBox)
         var index = random.int(0, keys.length - 1);
@@ -31,7 +36,7 @@ const playMusic = function(msg, url) {
       if (requestBox.size === 0) { 
         msg.guild.me.voice.channel.leave(); 
       }
-    })
+    });
   });
 }
 
