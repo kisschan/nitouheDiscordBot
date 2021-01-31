@@ -12,7 +12,8 @@ class MessageReplier {
         msg.reply('https://w.atwiki.jp/ryusukegun2touhei/')
     }
     if(/[死氏市四４4しシｼ][ねネﾈ]/.test(msg.content)){
-        msg.delete()
+        //TODO: 二等兵に怒られない範囲でなにかしたい
+        //msg.delete()
     }
     if(msg.content === 'ほう' || msg.content === 'ほほう'　|| msg.content === 'うむ'|| msg.content === 'いえいえ'||msg.content === 'ほーう'|| msg.content === 'うーむ'|| msg.content === 'おう'){
       msg.react('🖕')
