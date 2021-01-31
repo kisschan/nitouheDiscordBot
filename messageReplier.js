@@ -11,6 +11,13 @@ class MessageReplier {
     if(/^wiki$/i.test(msg.content)){
         msg.reply('https://w.atwiki.jp/ryusukegun2touhei/')
     }
+    if(/[死氏市四４4しシｼ][ねネﾈ]/.test(msg.content)){
+        //TODO: 二等兵に怒られない範囲でなにかしたい
+        //msg.delete()
+    }
+    if(msg.content === 'ほう' || msg.content === 'ほほう'　|| msg.content === 'うむ'|| msg.content === 'いえいえ'||msg.content === 'ほーう'|| msg.content === 'うーむ'|| msg.content === 'おう'){
+      msg.react('🖕')
+    }
     if (msg.content === 'メンバー') {
     const members = await msg.guild.members.fetch();
     const ryusukeMembers = members.filter(member => {
