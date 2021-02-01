@@ -1,5 +1,6 @@
 class MessageReplier {
   async onMessage(msg) {
+    var Lasy =['ほう','ほほう','なんと','いえいえ','うむ','ほーう','うーむ','おう'];
     if (msg.content === 'はさみ将棋') {
       msg.reply(`https://sdin.jp/browser/board/hasami/`);
     }
@@ -15,8 +16,15 @@ class MessageReplier {
         //TODO: 二等兵に怒られない範囲でなにかしたい
         //msg.delete()
     }
-    if(msg.content === 'ほう' || msg.content === 'ほほう'　|| msg.content === 'うむ'|| msg.content === 'いえいえ'||msg.content === 'ほーう'|| msg.content === 'うーむ'|| msg.content === 'おう'){
+    if(Lasy.indexOf(msg.content) !== -1){
       msg.react('🖕')
+    }
+    if(msg.content === '竜介軍'){
+    const members = await msg.guild.members.fetch();
+    const rolemembers = members.filter(member => {
+      return member.roles.cache.has('803689557173207062') && member.presence.status !== 'offline'
+    })
+     msg.reply(`竜介軍は${rolemembers.size}人いますお`);
     }
     if (msg.content === 'メンバー') {
     const members = await msg.guild.members.fetch();
