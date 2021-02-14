@@ -7,22 +7,24 @@ var requestBox = {};
 const playMusic = function(msg, url) {
   if (!url) return;
 
+  onPlaying = true;
   msg.member.voice.channel.join()
   .then(connection => {
-    onPlaying = true;
     const dispatcher = getYtdlConnectionDispatcher(connection, url);
     dispatcher.on("finish", () => {
-      if (requestBox.size !== 0) {
-        var keys = Object.keys(requestBox)
-        var index = random.int(0, keys.length - 1);
-        var next = requestBox[keys[index]];
-        requestBox = {};
-        msg.channel.send(next)
+      var keys = Object.keys(requestBox);
+      if (keys.length) {
+        var memberId = keys[random.int(0, keys.length - 1)];
+        var nickname = requestBox[memberId].name;
+        var nextIndex = random.int(0, requestBox[memberId].list.length - 1);
+        var next = requestBox[memberId].list.splice(nextIndex, 1)[0];
+        if (!requestBox[memberId].list.length)
+          delete requestBox[memberId];
+        msg.channel.send(`${nickname}さんより\n${next}`);
         playMusic(msg, next);
-      }
-      onPlaying = false;
-      if (requestBox.size === 0) { 
-        msg.guild.me.voice.channel.leave(); 
+      } else {
+        msg.guild.me.voice.channel.leave();
+        onPlaying = false;
       }
     });
   });
@@ -35,19 +37,25 @@ class JukeBox {
   }
 
   async onMessage(msg) {
+    if (!msg.channel.name.includes('配信者用'))
+      return;
     if (msg.content.includes("youtu")) {
       if (!msg.member.voice.channel) {
         return msg.reply("配信ルームに入ってからリクエストしてください。");
       }
       if (onPlaying) {
         // 抽選箱に入れる
-        requestBox[msg.member.id] = msg.content;
-        return msg.reply(msg.member.id + " 抽選箱に入れました。")
+        if (!requestBox[msg.member.id])
+          requestBox[msg.member.id] = { name: msg.member.nickname, list: []};
+        const n = requestBox[msg.member.id].list.push(msg.content);
+        return msg.reply(`抽選箱に入れました。${n}曲抽選待ちです。`);
       }
-      playMusic(msg, msg.content)
-    }
-    if (msg.content === "cancel") {
+      playMusic(msg, msg.content);
+    } else if (msg.content === "cancel") {
       this.cancel(msg);
+    } else if (msg.content === "clear") {
+      delete requestBox[msg.member.id];
+      msg.reply("クリアしました。");
     }
   }
 
@@ -71,8 +79,7 @@ class JukeBox {
     if (this.cancelVoted === null) {
       this.cancelVoted = msg.member.id;
       msg.reply("キャンセル投票を受け付けました。\nもう一人の投票でキャンセルになります。");
-    }
-    if (this.cancelVoted !== msg.member.id) {
+    } else if (this.cancelVoted !== msg.member.id) {
       this.cancelVoted = null;
       this.onCanceled(msg);
       return msg.reply("キャンセル投票が二人以上あったため、キャンセルします。");
