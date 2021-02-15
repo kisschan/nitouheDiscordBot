@@ -2,60 +2,71 @@ import random from 'random';
 import { getYtdlConnectionDispatcher } from './Infra/youtubeConnection.js';
 
 var onPlaying = false;
-var requestBox = {};
+const JUKEBOXCH_PATTERN = /^動画bgm/i;
 
-const playMusic = function(msg, url) {
+const playMusic = function(msg, url, onFinish) {
   if (!url) return;
 
   onPlaying = true;
-  msg.member.voice.channel.join()
+  msg.guild.channels.cache.find(channel => channel.type === 'voice' && JUKEBOXCH_PATTERN.test(channel.name)).join()
   .then(connection => {
     const dispatcher = getYtdlConnectionDispatcher(connection, url);
-    dispatcher.on("finish", () => {
-      var keys = Object.keys(requestBox);
-      if (keys.length) {
-        var memberId = keys[random.int(0, keys.length - 1)];
-        var nickname = requestBox[memberId].name;
-        var nextIndex = random.int(0, requestBox[memberId].list.length - 1);
-        var next = requestBox[memberId].list.splice(nextIndex, 1)[0];
-        if (!requestBox[memberId].list.length)
-          delete requestBox[memberId];
-        msg.channel.send(`${nickname}さんより\n${next}`);
-        playMusic(msg, next);
-      } else {
-        msg.guild.me.voice.channel.leave();
-        onPlaying = false;
-      }
+    dispatcher.on("finish", onFinish);
+    dispatcher.on("error", e => {
+      console.log(e);
+      onFinish();
     });
+  })
+  .catch(e => {
+    console.log(e);
+    onFinish();
   });
-}
+};
 
 class JukeBox {
 
   constructor() {
     this.cancelVoted = null;
+    this.requestBox = {};
   }
 
   async onMessage(msg) {
-    if (!msg.channel.name.includes('配信者用'))
+    if (!JUKEBOXCH_PATTERN.test(msg.channel.name))
       return;
-    if (msg.content.includes("youtu")) {
-      if (!msg.member.voice.channel) {
+    if (/^https?:\/\/(?:www\.)?youtu/.test(msg.content)) {
+      if (!msg.member.voice.channel || !JUKEBOXCH_PATTERN.test(msg.member.voice.channel.name)) {
         return msg.reply("配信ルームに入ってからリクエストしてください。");
       }
       if (onPlaying) {
         // 抽選箱に入れる
-        if (!requestBox[msg.member.id])
-          requestBox[msg.member.id] = { name: msg.member.nickname, list: []};
-        const n = requestBox[msg.member.id].list.push(msg.content);
+        if (!this.requestBox[msg.member.id])
+          this.requestBox[msg.member.id] = { name: msg.member.nickname, list: []};
+        const n = this.requestBox[msg.member.id].list.push(msg.content);
         return msg.reply(`抽選箱に入れました。${n}曲抽選待ちです。`);
       }
-      playMusic(msg, msg.content);
+      playMusic(msg, msg.content, this.playNext.bind(this, msg));
     } else if (msg.content === "cancel") {
       this.cancel(msg);
     } else if (msg.content === "clear") {
-      delete requestBox[msg.member.id];
+      delete this.requestBox[msg.member.id];
       msg.reply("クリアしました。");
+    }
+  }
+
+  playNext(msg) {
+    var keys = Object.keys(this.requestBox);
+    if (keys.length) {
+      var memberId = keys[random.int(0, keys.length - 1)];
+      var nickname = this.requestBox[memberId].name;
+      var nextIndex = random.int(0, this.requestBox[memberId].list.length - 1);
+      var next = this.requestBox[memberId].list.splice(nextIndex, 1)[0];
+      if (!this.requestBox[memberId].list.length)
+        delete this.requestBox[memberId];
+      msg.channel.send(`${nickname}さんより\n${next}`);
+      playMusic(msg, next, this.playNext.bind(this, msg));
+    } else {
+      msg.guild.me.voice.channel.leave();
+      onPlaying = false;
     }
   }
 
