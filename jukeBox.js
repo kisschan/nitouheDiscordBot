@@ -1,8 +1,26 @@
 import random from 'random';
+import https from 'https';
 import { getYtdlConnectionDispatcher } from './Infra/youtubeConnection.js';
 
 var onPlaying = false;
 const JUKEBOXCH_PATTERN = /^動画bgm/i;
+
+const notifyError = function(msg, err) {
+  console.error(err);
+  msg.channel.send('エラーで再生できませんでした');
+  const req = https.request(process.env.ERROR_WEBHOOK, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'}
+  });
+  req.on('error', err => {
+    msg.channel.send('WEBHOOKのPOSTが失敗しました。envあってるかみてください');
+  });
+  req.write(JSON.stringify({
+    username: 'エラー',
+    content: err.stack
+  }));
+  req.end();
+};
 
 const playMusic = function(msg, url, onFinish) {
   if (!url) return;
@@ -12,13 +30,13 @@ const playMusic = function(msg, url, onFinish) {
   .then(connection => {
     const dispatcher = getYtdlConnectionDispatcher(connection, url);
     dispatcher.on("finish", onFinish);
-    dispatcher.on("error", e => {
-      console.log(e);
+    dispatcher.on("error", err => {
+      notifyError(msg, err);
       onFinish();
     });
   })
-  .catch(e => {
-    console.log(e);
+  .catch(err => {
+    notifyError(msg, err);
     onFinish();
   });
 };
