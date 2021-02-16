@@ -5,11 +5,15 @@ import { getYtdlConnectionDispatcher } from './Infra/youtubeConnection.js';
 var onPlaying = false;
 const JUKEBOXCH_PATTERN = /^動画bgm/i;
 
-const notifyError = function(err) {
+const notifyError = function(msg, err) {
   console.error(err);
+  msg.channel.send('エラーで再生できませんでした');
   const req = https.request(process.env.ERROR_WEBHOOK, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'}
+  });
+  req.on('error', err => {
+    msg.channel.send('WEBHOOKのPOSTが失敗しました。envあってるかみてください');
   });
   req.write(JSON.stringify({
     username: 'エラー',
@@ -27,14 +31,12 @@ const playMusic = function(msg, url, onFinish) {
     const dispatcher = getYtdlConnectionDispatcher(connection, url);
     dispatcher.on("finish", onFinish);
     dispatcher.on("error", err => {
-      msg.channel.send('エラーで再生できませんでした');
-      notifyError(err);
+      notifyError(msg, err);
       onFinish();
     });
   })
   .catch(err => {
-    msg.channel.send('エラーで再生できませんでした');
-    notifyError(err);
+    notifyError(msg, err);
     onFinish();
   });
 };
