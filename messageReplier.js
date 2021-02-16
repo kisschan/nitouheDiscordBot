@@ -32,6 +32,14 @@ class MessageReplier {
     
       msg.react('🖕');
       
+    } else if (/(?:[うウｳ][んンﾝ][こコｺ]|un+?ko|💩)/.test(msg.content)) {
+    
+      msg.react('💩');
+      
+    }  else if (/(?<![死氏市四４4しシｼ][んンﾝ][でデﾃﾞ]|sh?in+?de)(?:いいか?)[？❓?❔¿‽]?$/.test(msg.content)) {
+      msg.reply('INJANE')
+      msg.react('👍');
+      
     } else if (msg.content === '竜介軍') {
     
       const members = await msg.guild.members.fetch();
@@ -48,6 +56,9 @@ class MessageReplier {
       });
       msg.reply(`竜介軍は${ryusukeMembers.size}人いますお`);
       
+    } else if(msg.content === 'ping'){
+      const version = process.env.npm_package_version;
+      msg.reply(`バージョンは${version}です`);
     }
 
   }
