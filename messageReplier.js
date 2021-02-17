@@ -32,11 +32,11 @@ class MessageReplier {
     
       msg.react('🖕');
       
-    } else if (/(?:[うウｳ][んンﾝ][こコｺ]|un+?ko|💩)/.test(msg.content)) {
+    } else if (/(?:[うウｳ][んンﾝ][こコｺ]|unn?ko|💩)/.test(msg.content)) {
     
       msg.react('💩');
       
-    }  else if (/(?<![死氏市四４4しシｼ][んンﾝ][でデﾃﾞ]|sh?in+?de)(?:いいか?)[？❓?❔¿‽]?$/.test(msg.content)) {
+    }  else if (/(?<![死氏市四４4しシｼ][んンﾝ][でデﾃﾞ]|sh?inn?de)(?:いいか?)[？❓?❔¿‽]?$/i.test(msg.content)) {
       msg.reply('INJANE')
       msg.react('👍');
       
