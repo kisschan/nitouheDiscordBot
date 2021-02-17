@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const BOT_TOKEN = process.env.BOT_TOKEN; // Discord Botのトークン環境変数
 
-import { Client, MessageReaction, ReactionCollector } from 'discord.js';
+import { Client } from 'discord.js';
 import MessageReplier from './messageReplier.js';
 import JukeBox from './jukeBox.js';
 
@@ -21,7 +21,7 @@ client.on('message', async msg => {
   jukeBox.onMessage(msg);
 });
 
-client.on('messageReactionAdd', (msgReaction, user) => {
+client.on('messageReactionAdd', async (msgReaction, user) => {
   messageReplier.onReactionAdded(msgReaction, user);
 });
 
