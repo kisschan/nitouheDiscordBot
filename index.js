@@ -22,6 +22,7 @@ client.on('message', async msg => {
 });
 
 client.on('messageReactionAdd', async (msgReaction, user) => {
+  if(user.bot) return;
   messageReplier.onReactionAdded(msgReaction, user);
 });
 

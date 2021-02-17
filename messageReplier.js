@@ -1,3 +1,5 @@
+import { ReactionCollector } from "discord.js";
+
 class MessageReplier {
 
   async onMessage(msg) {
@@ -37,7 +39,6 @@ class MessageReplier {
       msg.react('💩');
       
     }  else if (/(?<![死氏市四４4しシｼ][んンﾝ][でデﾃﾞ]|sh?inn?de)(?:いいか?)[？❓?❔¿‽]?$/i.test(msg.content)) {
-      msg.reply('INJANE')
       msg.react('👍');
       
     } else if (msg.content === '竜介軍') {
@@ -62,6 +63,13 @@ class MessageReplier {
     }
 
   }
+
+   async onReactionAdded(msgReaction, user){
+     const reaction = await msgReaction.emoji.name;
+     msgReaction.message.react(reaction);
+     }
+
+  }  
 
 }
 export default MessageReplier;
