@@ -1,13 +1,15 @@
 {
   "name": "nitouhe-discord-bot",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "engines": {
     "yarn": "1.x"
   },
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "type": "module",
   "dependencies": {
@@ -18,5 +20,8 @@
     "ffmpeg-static": "^4.2.7",
     "random": "^2.2.0",
     "ytdl-core": "^4.4.5"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
   }
 }
