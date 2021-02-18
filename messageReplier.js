@@ -1,5 +1,3 @@
-import { ReactionCollector } from "discord.js";
-
 class MessageReplier {
 
   async onMessage(msg) {
