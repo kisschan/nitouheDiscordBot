@@ -67,9 +67,9 @@ class MessageReplier {
    async onReactionAdded(msgReaction, user){
      const reaction = msgReaction.emoji;
      msgReaction.message.react(reaction);
-     }
+   }
 
-  }  
+}  
 
 
 export default MessageReplier;
