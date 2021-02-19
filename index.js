@@ -3,6 +3,9 @@ dotenv.config();
 const BOT_TOKEN = process.env.BOT_TOKEN; // Discord Botのトークン環境変数
 
 import { Client } from 'discord.js';
+import { setupMongoWithMongoose } from './Infra/setupMongoWithMongoose.js';
+setupMongoWithMongoose(process.env.MONGO_CONNECTION_STRING);
+
 import MessageReplier from './messageReplier.js';
 import JukeBox from './jukeBox.js';
 import { Natsukashiimono } from './natsukashiimono.js';
