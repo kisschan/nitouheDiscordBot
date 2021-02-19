@@ -1,4 +1,6 @@
 # nitouheDiscordBot
+[![codecov](https://codecov.io/gh/nooneMona/nitouheDiscordBot/branch/develop/graph/badge.svg?token=JRRU3ZBNR5)](https://codecov.io/gh/nooneMona/nitouheDiscordBot)
+
 うーむｗ
 
 # getting started

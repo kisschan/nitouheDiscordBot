@@ -27,4 +27,9 @@ client.on('message', async msg => {
   natsukashiimono.onMessage(msg);
 });
 
+client.on('messageReactionAdd', async (msgReaction, user) => {
+  if(user.bot) return;
+  messageReplier.onReactionAdded(msgReaction, user);
+});
+
 client.login(BOT_TOKEN);
