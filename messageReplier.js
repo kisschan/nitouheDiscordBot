@@ -59,9 +59,18 @@ class MessageReplier {
       const version = process.env.npm_package_version;
       msg.reply(`バージョンは${version}です`);
     } else if(msg.content === 'rollback'){
-      const messages = await message.channel.messages.fetch({ limit: 100 })
-      const filtered = messages.filter(message => !message.member.role)
-      message.channel.bulkDelete(filtered);
+      
+      const messages = await msg.channel.messages.fetch({ limit: 100 });
+      const filtered = messages.filter(msg => !msg.member.roles.cache.has('799846634069950525') && //フラゲ民
+      !msg.member.roles.cache.has('799846624351354921') && //もなちゃと民
+      !msg.member.roles.cache.has('803689557173207062') && //竜介軍
+      !msg.member.roles.cache.has('803690206770757652') && //GO連合
+      !msg.member.roles.cache.has('805848960974979103') && //害悪四天王
+      !msg.member.roles.cache.has('805847370025009155') && //ダイスター軍
+      !msg.member.roles.cache.has('804644055128604692') && //デベロッパー
+      !msg.member.roles.cache.has('805965824384565260') && //オブザーバー
+      !msg.author.bot);
+      msg.channel.bulkDelete(filtered);
     }
 
   }
