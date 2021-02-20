@@ -58,6 +58,10 @@ class MessageReplier {
     } else if(msg.content === 'ping'){
       const version = process.env.npm_package_version;
       msg.reply(`バージョンは${version}です`);
+    } else if(msg.content === 'rollback'){
+      const messages = await message.channel.messages.fetch({ limit: 100 })
+      const filtered = messages.filter(message => !message.member.role)
+      message.channel.bulkDelete(filtered);
     }
 
   }
