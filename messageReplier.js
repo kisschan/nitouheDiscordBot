@@ -36,7 +36,7 @@ class MessageReplier {
     
       msg.react('💩');
       
-    }  else if (/(?<![死氏市四４4しシｼ][んンﾝ][でデﾃﾞ]|sh?inn?de)(?:いいか?)[？❓?❔¿‽]?$/i.test(msg.content)) {
+    }  else if (/(?<![死氏市四４4しシｼ][んンﾝ][でデﾃﾞ]|sh?inn?de)(?:いいか)[？❓?❔¿‽]?$/i.test(msg.content)) {
       msg.react('👍');
       
     } else if (msg.content === '竜介軍') {
@@ -58,17 +58,10 @@ class MessageReplier {
     } else if(msg.content === 'ping'){
       const version = process.env.npm_package_version;
       msg.reply(`バージョンは${version}です`);
-    } else if(msg.content === 'rollback'){
+    } else if(/^(?:[ろロﾛ][おオｵーうウｳ][るルﾙ][ばバﾊﾞ][っッｯ][くクｸ]|rollback)$/i.test(msg.content)){
       
       const messages = await msg.channel.messages.fetch({ limit: 100 });
-      const filtered = messages.filter(msg => !msg.member.roles.cache.has('799846634069950525') && //フラゲ民
-      !msg.member.roles.cache.has('799846624351354921') && //もなちゃと民
-      !msg.member.roles.cache.has('803689557173207062') && //竜介軍
-      !msg.member.roles.cache.has('803690206770757652') && //GO連合
-      !msg.member.roles.cache.has('805848960974979103') && //害悪四天王
-      !msg.member.roles.cache.has('805847370025009155') && //ダイスター軍
-      !msg.member.roles.cache.has('804644055128604692') && //デベロッパー
-      !msg.member.roles.cache.has('805965824384565260') && //オブザーバー
+      const filtered = messages.filter(msg => msg.member.roles.cache.size === 1 &&
       !msg.author.bot);
       msg.channel.bulkDelete(filtered);
     }
