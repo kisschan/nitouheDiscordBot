@@ -11,11 +11,13 @@ setupMongoose.setup(process.env.MONGO_CONNECTION_STRING, 'app', process.env.NODE
 
 import MessageReplier from './messageReplier.js';
 import JukeBox from './jukeBox.js';
+import Arashine from './arashine.js';
 import { Natsukashiimono } from './Service/natsukashiimono.js';
 import { MongoUserRecordRepository } from './Repository/MongoUserRecordRepository.js';
 
 const messageReplier = new MessageReplier();
 const jukeBox = new JukeBox();
+const arashine = new Arashine();
 const natsukashiimono = new Natsukashiimono(new MongoUserRecordRepository());
 
 const client = new Client();
@@ -25,10 +27,11 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
-  if (msg.member.roles.cache.size === 1) {
+  if (msg.author.bot)
     return;
-  }
-  if (msg.author.bot) return;
+  arashine.onMessage(msg);
+  if (msg.member.roles.cache.size < 2)
+    return;
   messageReplier.onMessage(msg);
   jukeBox.onMessage(msg);
   if (setupMongoose.isValid()) {
