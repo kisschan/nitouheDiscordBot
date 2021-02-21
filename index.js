@@ -29,14 +29,18 @@ client.on('ready', () => {
 client.on('message', async msg => {
   if (msg.author.bot)
     return;
-  arashine.onMessage(msg);
   if (msg.member.roles.cache.size < 2)
-    return;
+    return arashine.onMessage(msg);
   messageReplier.onMessage(msg);
   jukeBox.onMessage(msg);
   if (setupMongoose.isValid()) {
     natsukashiimono.onMessage(msg);
   }
+});
+
+client.on('messageUpdate', async (oldMessage, newMessage) => {
+  if (!msg.author.bot && msg.member.roles.cache.size < 2)
+    arashine.onMessage(newMessage);
 });
 
 client.on('messageReactionAdd', async (msgReaction, user) => {
