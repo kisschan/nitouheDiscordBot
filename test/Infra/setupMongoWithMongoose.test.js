@@ -29,6 +29,14 @@ test('mongoose.connectが呼ばれることのテスト', done => {
     }
   });
   setupMongoose.setup(testBaseURL, testDBName, 'production');
+  expect(setupMongoose.valid).toBe(true);
+  expect(setupMongoose.isValid()).toBe(true);
+})
+
+test('baseURLがnullのときのテスト', () => {
+  const setupMongoose = new SetupMongoose();
+  setupMongoose.setup(null, testDBName, 'production');
+  expect(setupMongoose.isValid()).toBe(false);
 })
 
 // 異常系
