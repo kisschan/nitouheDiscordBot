@@ -28,7 +28,9 @@ client.on('message', async msg => {
   if (msg.author.bot) return;
   messageReplier.onMessage(msg);
   jukeBox.onMessage(msg);
-  natsukashiimono.onMessage(msg);
+  if (setupMongoose.isValid()) {
+    natsukashiimono.onMessage(msg);
+  }
 });
 
 client.on('messageReactionAdd', async (msgReaction, user) => {
