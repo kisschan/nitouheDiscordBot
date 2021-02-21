@@ -1,6 +1,6 @@
 import ytdl from "discord-ytdl-core";
 
-const _getYtdlConnectionDispatcher = function(connection, url) {
+export const getYtdlConnectionDispatcher = function(connection, url) {
   const stream = ytdl(url, {
     filter: "audioonly",
     opusEncoded: true,
@@ -11,4 +11,3 @@ const _getYtdlConnectionDispatcher = function(connection, url) {
   });
   return dispatcher;
 };
-export { _getYtdlConnectionDispatcher as getYtdlConnectionDispatcher };

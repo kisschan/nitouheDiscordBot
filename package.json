@@ -18,6 +18,7 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "ffmpeg-static": "^4.2.7",
+    "mongoose": "^5.11.15",
     "random": "^2.2.0",
     "ytdl-core": "^4.4.5"
   },
@@ -31,6 +32,7 @@
     "verbose": true,
     "testMatch": [
       "**/test/**/*.test.js"
-    ]
+    ],
+    "testEnvironment": "node"
   }
 }
