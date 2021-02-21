@@ -7,7 +7,7 @@ const JUKEBOXCH_PATTERN = /^動画bgm/i;
 
 const notifyError = function(msg, err) {
   console.error(err);
-  msg.channel.send('エラーで再生できませんでした');
+  msg.channel.send((err + '').includes('Status code: 429') ? 'Googleからの妨害を受けている為しばらく使えません' : 'エラーで再生できませんでした');
   const req = https.request(process.env.ERROR_WEBHOOK, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'}
