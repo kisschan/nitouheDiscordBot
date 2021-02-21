@@ -25,6 +25,9 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
+  if (msg.member.roles.cache.size === 1) {
+    return;
+  }
   if (msg.author.bot) return;
   messageReplier.onMessage(msg);
   jukeBox.onMessage(msg);
