@@ -1,20 +1,21 @@
 
-import {NitoheScore} from '../Entity/NitoheScore.js'
+import { NitoheScore } from '../Entity/nitoheScore.js'
 
-export const addNitouheScore = (discordId, score, callback) => {
-  const obj = new NitoheScore({
-    discordId: discordId,
-    score: score,
-    data: Date()
-  })
-  obj.save(err => {
-    if (callback) {
-      callback(err)
-    }
-  })
+export class MongoUserRecordRepository {
+  addNitouheScore(discordId, score, callback) {
+    const obj = new NitoheScore({
+      discordId: discordId,
+      score: score,
+      data: Date()
+    })
+    obj.save(err => {
+      if (callback) {
+        callback(err)
+      }
+    })
+  }
+
+  findScoresByDiscordId(discordId, callback) {
+    NitoheScore.find({discordId: discordId}, callback)
+  }
 }
-
-export const findScoresByDiscordId = (discordId, callback) => {
-  NitoheScore.find({discordId: discordId}, callback)
-}
-

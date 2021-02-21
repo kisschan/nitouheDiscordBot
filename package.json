@@ -32,6 +32,7 @@
     "verbose": true,
     "testMatch": [
       "**/test/**/*.test.js"
-    ]
+    ],
+    "testEnvironment": "node"
   }
 }
