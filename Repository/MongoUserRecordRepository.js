@@ -1,5 +1,5 @@
 
-import { NitoheScore } from '../Entity/nitoheScore.js'
+import { NitoheScore } from '../Entity/NitoheScore.js'
 
 export class MongoUserRecordRepository {
   addNitouheScore(discordId, score, callback) {
