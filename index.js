@@ -29,17 +29,21 @@ client.on('ready', () => {
 client.on('message', async msg => {
   if (msg.author.bot)
     return;
-  if (msg.member.roles.cache.size < 2)
-    return arashine.onMessage(msg);
+  if (msg.member.roles.cache.size < 2) {
+    messageReplier.censorMessage(msg);
+    arashine.onMessage(msg);
+    return;
+  }
   messageReplier.onMessage(msg);
   jukeBox.onMessage(msg);
   if (setupMongoose.isValid()) {
     natsukashiimono.onMessage(msg);
   }
+  messageReplier.censorMessage(msg);
 });
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {
-  if (!msg.author.bot && msg.member.roles.cache.size < 2)
+  if (!newMessage.author.bot && newMessage.member.roles.cache.size < 2)
     arashine.onMessage(newMessage);
 });
 
