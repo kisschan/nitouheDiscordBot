@@ -70,9 +70,8 @@ class MessageReplier {
       msg.guild.members.unban(msg.content.split(/\s/)[1]).then(() => msg.react('✅')).catch(err => {
         console.error(err);
         msg.react('⚠');
-      })
-     
-    };
+      });
+    }
 
   }
 
