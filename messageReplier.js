@@ -1,4 +1,4 @@
-const DELETE_COUNT = 2;
+const DELETE_COUNT = 3;
 const DELETE_EMOJI = '🗑️';
 
 class MessageReplier {
