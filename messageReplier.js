@@ -77,7 +77,13 @@ class MessageReplier {
   }
 
    async onReactionAdded(msgReaction, user) {
-     if (msgReaction.emoji.name === DELETE_EMOJI && msgReaction.count >= DELETE_COUNT) {
+     if (
+       msgReaction.emoji.name === DELETE_EMOJI &&
+       msgReaction.users.cache.filter(user => {
+         const member = msgReaction.message.guild.member(user.id);
+         return member && member.roles.cache.size > 1
+       }).size >= DELETE_COUNT
+     ) {
        msgReaction.message.delete();
        return;
      }
