@@ -1,9 +1,9 @@
+const DELETE_COUNT = 2;
+const DELETE_EMOJI = '🗑️';
+
 class MessageReplier {
 
   async onMessage(msg) {
-    
-    msg.reactions.cache.find(reaction => reaction.emoji.name === '🖕').count>3
-    .then(() =>{msg.delete()});
     
     if (msg.content === 'はさみ将棋') {
     
@@ -76,10 +76,12 @@ class MessageReplier {
 
   }
 
-   async onReactionAdded(msgReaction, message){
-     
-     const reaction = msgReaction.emoji;
-     msgReaction.message.react(reaction);
+   async onReactionAdded(msgReaction, user) {
+     if (msgReaction.emoji.name === DELETE_EMOJI && msgReaction.count >= DELETE_COUNT) {
+       msgReaction.message.delete();
+       return;
+     }
+     msgReaction.message.react(msgReaction.emoji);
    }
 
 }  
