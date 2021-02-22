@@ -63,6 +63,11 @@ class MessageReplier {
       const filtered = messages.filter(msg => msg.member.roles.cache.size < 2 || msg.author.bot);
       msg.channel.bulkDelete(filtered);
       msg.delete();
+    } else if (msg.content.indexOf('解除') === 0) {
+      msg.guild.members.unban(msg.content.split(/\s/)[1]).then(() => msg.react('✅')).catch(err => {
+        console.error(err);
+        msg.react('⚠');
+      });
     }
 
   }
