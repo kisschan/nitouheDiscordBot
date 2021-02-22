@@ -58,12 +58,11 @@ class MessageReplier {
     } else if(msg.content === 'ping'){
       const version = process.env.npm_package_version;
       msg.reply(`バージョンは${version}です`);
-    } else if(/^(?:[ろロﾛ][おオｵーうウｳ][るルﾙ][ばバﾊﾞ][っッｯ][くクｸ]|rollback)$/i.test(msg.content)){
-      
+    } else if(/^(?:[ろロﾛ][おオｵーうウｳ][るルﾙ][ばバﾊﾞ][っッｯ][くクｸ]|rollback)/i.test(msg.content)) {
       const messages = await msg.channel.messages.fetch({ limit: 100 });
-      const filtered = messages.filter(msg => msg.member.roles.cache.size === 1 &&
-      !msg.author.bot);
+      const filtered = messages.filter(msg => msg.member.roles.cache.size < 2 || msg.author.bot);
       msg.channel.bulkDelete(filtered);
+      msg.delete();
     }
 
   }
