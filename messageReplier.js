@@ -80,6 +80,8 @@ class MessageReplier {
      if (
        msgReaction.emoji.name === DELETE_EMOJI &&
        msgReaction.users.cache.filter(user => {
+         if (user.bot)
+           return false;
          const member = msgReaction.message.guild.member(user.id);
          return member && member.roles.cache.size > 1
        }).size >= DELETE_COUNT
