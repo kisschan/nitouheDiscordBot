@@ -2,6 +2,9 @@ class MessageReplier {
 
   async onMessage(msg) {
     
+    msg.reactions.cache.find(reaction => reaction.emoji.name === '🖕').count>3
+    .then(() =>{msg.delete()});
+    
     if (msg.content === 'はさみ将棋') {
     
       msg.reply(`https://sdin.jp/browser/board/hasami/`);
@@ -67,12 +70,14 @@ class MessageReplier {
       msg.guild.members.unban(msg.content.split(/\s/)[1]).then(() => msg.react('✅')).catch(err => {
         console.error(err);
         msg.react('⚠');
-      });
-    }
+      })
+     
+    };
 
   }
 
-   async onReactionAdded(msgReaction, user){
+   async onReactionAdded(msgReaction, message){
+     
      const reaction = msgReaction.emoji;
      msgReaction.message.react(reaction);
    }
