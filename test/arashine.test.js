@@ -6,7 +6,7 @@ const generateBanMock = shouldBeCalled => {
     done();
   }
   const shouldNotBeCalledFunc = option => {
-    throw new Error('theis ban method should not be called');
+    expect(true).toBe(false);
   }
   return shouldBeCalled ? shouldBeCalledFunc : shouldNotBeCalledFunc;
 }
@@ -16,7 +16,7 @@ const generateDeleteMock = shouldBeCalled => {
     done();
   }
   const shouldNotBeCalledFunc = () => {
-    throw new Error('theis ban method should not be called');
+    expect(true).toBe(false);
   }
   return shouldBeCalled ? shouldBeCalledFunc : shouldNotBeCalledFunc;
 }
