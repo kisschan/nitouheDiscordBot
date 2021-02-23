@@ -1,4 +1,6 @@
 const REPEAT_LIMIT = 2;
+const SAMPLING_LENGTH = 3;
+const SPEED_LIMIT = 3000;
 
 class Arashine {
 
@@ -8,7 +10,7 @@ class Arashine {
 
   async onMessage(msg) {
   
-    let guestInfo = this.guestInfo[msg.member.id] || (this.guestInfo[msg.member.id] = {});
+    let guestInfo = this.guestInfo[msg.member.id] || (this.guestInfo[msg.member.id] = {sample: []});
     
     if (guestInfo.lastMessage === msg.content) {
       if (++guestInfo.repeatCount > REPEAT_LIMIT)
@@ -18,7 +20,11 @@ class Arashine {
       guestInfo.lastMessage = msg.content;
     }
     
-    if (msg.mentions.everyone || msg.mentions.roles.size)
+    let time = (new Date()).getTime();
+    guestInfo.sample.push(time);
+    if (guestInfo.sample.length > SAMPLING_LENGTH && time - guestInfo.sample.shift() < SPEED_LIMIT)
+      msg.member.ban({days: 7});
+    else if (msg.mentions.everyone || msg.mentions.roles.size)
       msg.delete();
 
   }
