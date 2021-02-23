@@ -14,11 +14,13 @@ import JukeBox from './jukeBox.js';
 import Arashine from './arashine.js';
 import { Natsukashiimono } from './Service/natsukashiimono.js';
 import { MongoUserRecordRepository } from './Repository/MongoUserRecordRepository.js';
+import { Yamanote } from './Service/yamanote.js';
 
 const messageReplier = new MessageReplier();
 const jukeBox = new JukeBox();
 const arashine = new Arashine();
 const natsukashiimono = new Natsukashiimono(new MongoUserRecordRepository());
+const yamanote = new Yamanote();
 
 const client = new Client();
 
@@ -36,6 +38,7 @@ client.on('message', async msg => {
   }
   messageReplier.onMessage(msg);
   jukeBox.onMessage(msg);
+  yamanote.onMessage(msg);
   if (setupMongoose.isValid()) {
     natsukashiimono.onMessage(msg);
   }
