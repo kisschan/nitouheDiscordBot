@@ -21,7 +21,7 @@ class NitouheReplier {
     return this.HP;
   }
   deleteHP(msg) {
-    if(msg.guild.members.nickname === 'Amateur"キスケ"' || msg.member.roles.cache.size < 2){
+    if(msg.member.displayName === 'Amateur"キスケ"' || msg.member.roles.cache.size < 2){
     this.HP = this.HP-2;
     }
     this.HP--;
@@ -42,13 +42,13 @@ class NitouheReplier {
           }
           if(/(?!\?)(?:はい|入)る[わよか]?$/?.test(msg.content)){
             msg.reply('おうはいれ')
-            this.deleteHP();
+            this.deleteHP(msg);
           }else if(/(?!\?)(?:[すスｽ]る)[わよか]?$/.test(msg.content)){
             msg.reply('おうしろ')
-            this.deleteHP();
+            this.deleteHP(msg);
           }else if(/(?:たまちゃん|tama)/.test(msg.content)){
             msg.reply('なにがたまちゃんじゃい！')
-            this.deleteHP();
+            this.deleteHP(msg);
           }else if(/(?:乞食|[こコｺ][じジｼﾞ][きキｷ]|[死氏市４4しシｼ]ね|[う失]せろ|[消きキｷ][えエｴ][ろロﾛ]|([くクｸ][さサｻ]|臭)い)/.test(msg.content)){
             const randomreply = ['いえいえ','むっ','そういう言葉は控えましょう','さて'];
             msg.reply(randomreply[Math.floor(Math.random() * randomreply.length)])
