@@ -9,12 +9,14 @@ import { SetupMongoose } from './Infra/setupMongoose.js';
 const setupMongoose = new SetupMongoose(mongoose);
 setupMongoose.setup(process.env.MONGO_CONNECTION_STRING, 'app', process.env.NODE_ENV);
 
+import NitouheReplier from './nitouheReplier.js';
 import MessageReplier from './messageReplier.js';
 import JukeBox from './jukeBox.js';
 import Arashine from './arashine.js';
 import { Natsukashiimono } from './Service/natsukashiimono.js';
 import { MongoUserRecordRepository } from './Repository/MongoUserRecordRepository.js';
 
+const nitouheReplier = new NitouheReplier();
 const messageReplier = new MessageReplier();
 const jukeBox = new JukeBox();
 const arashine = new Arashine();
@@ -29,6 +31,7 @@ client.on('ready', () => {
 client.on('message', async msg => {
   if (msg.author.bot)
     return;
+  nitouheReplier.onMessage(msg);
   if (msg.member.roles.cache.size < 2) {
     arashine.onMessage(msg);
     messageReplier.censorMessage(msg);
