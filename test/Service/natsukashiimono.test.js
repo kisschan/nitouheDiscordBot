@@ -45,3 +45,60 @@ test('点数の付与', done => {
   natsukashiimono = new Natsukashiimono(repositoryErrorMock);
   natsukashiimono.onMessage(errMsgMock);
 });
+
+test('点数の集計', done => {
+    const baseRepositoryMock = {
+    findScoresByDiscordId: (id, callback) => { //err, result
+      expect(id).toBe("12345");
+      done();
+    }
+  }
+  const repositorySuccessMock = { ...baseRepositoryMock };
+  repositorySuccessMock.findScoresByDiscordId = (id, callback) => {
+    baseRepositoryMock.findScoresByDiscordId(id, callback);
+    callback(null, [{
+      discordId: "12345",
+      score: 100
+    },
+    {
+      discordId: "12345",
+      score: 20
+    },
+    {
+      discordId: "12345",
+      score: 3
+    }]);
+  };
+  const repositorySuccessButEmptyMock = { ...baseRepositoryMock };
+  repositorySuccessButEmptyMock.findScoresByDiscordId = (id, callback) => {
+    baseRepositoryMock.findScoresByDiscordId(id, callback);
+    callback(null, []);
+  };
+  const repositoryErrorMock = { ...baseRepositoryMock };
+  repositoryErrorMock.findScoresByDiscordId = (id, callback) => {
+    baseRepositoryMock.findScoresByDiscordId(id, callback);
+    callback({test: "Error"});
+  };
+  const msgMock = {
+    content: "スコア",
+    member: { id: "12345" },
+    reply: content => {
+      expect(content).toBe('スコアは123です。')
+      done();
+    },
+    react: content => {
+      expect(content).toBe('⚠')
+      done();
+    }
+  };
+  const errMsgMock = {
+    content: "スコア",
+    member: { id: "12345" },
+  };
+  let natsukashiimono = new Natsukashiimono(repositorySuccessMock);
+  natsukashiimono.onMessage(msgMock);
+  natsukashiimono = new Natsukashiimono(repositorySuccessButEmptyMock);
+  natsukashiimono.onMessage(msgMock);
+  natsukashiimono = new Natsukashiimono(repositoryErrorMock);
+  natsukashiimono.onMessage(errMsgMock);
+})
