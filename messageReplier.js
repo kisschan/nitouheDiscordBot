@@ -109,7 +109,7 @@ class MessageReplier {
    }
 
    censorMessage(msg) {
-     if (getContents(msg).some(content => this.deletedContents[content]))
+     if (!msg.deleted && getContents(msg).some(content => this.deletedContents[content]))
        msg.delete();
    }
 

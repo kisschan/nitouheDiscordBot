@@ -30,8 +30,8 @@ client.on('message', async msg => {
   if (msg.author.bot)
     return;
   if (msg.member.roles.cache.size < 2) {
-    messageReplier.censorMessage(msg);
     arashine.onMessage(msg);
+    messageReplier.censorMessage(msg);
     return;
   }
   messageReplier.onMessage(msg);
