@@ -1,7 +1,25 @@
+const DELETE_COUNT = 3;
+const DELETE_EMOJI = '🗑️';
+
+
+const getContents = function (msg) {
+  let contents = [];
+  if (msg.content)
+    contents.push(/^https?:\/\/.+/.test(msg.content) ? msg.content.match(/([^\/]+)\/*$/)[1] : msg.content);
+  if (msg.attachments.size)
+    msg.attachments.each(media => contents.push(media.url.match(/([^\/]+)\/*$/)[1]));
+  return contents;
+};
+
+
 class MessageReplier {
 
+  constructor() {
+    this.deletedContents = {};
+  }
+  
   async onMessage(msg) {
-    
+  
     if (msg.content === 'はさみ将棋') {
     
       msg.reply(`https://sdin.jp/browser/board/hasami/`);
@@ -72,12 +90,30 @@ class MessageReplier {
 
   }
 
-   async onReactionAdded(msgReaction, user){
-     const reaction = msgReaction.emoji;
-     msgReaction.message.react(reaction);
+   async onReactionAdded(msgReaction, user) {
+     if (
+       msgReaction.emoji.name === DELETE_EMOJI &&
+       msgReaction.users.cache.filter(user => {
+         if (user.bot)
+           return false;
+         const member = msgReaction.message.guild.member(user.id);
+         return member && member.roles.cache.size > 1
+       }).size >= DELETE_COUNT
+     ) {
+       const msg = msgReaction.message;
+       msg.delete();
+       getContents(msg).forEach(content => this.deletedContents[content] = true);
+       return;
+     }
+     msgReaction.message.react(msgReaction.emoji);
    }
 
-}  
+   censorMessage(msg) {
+     if (!msg.deleted && getContents(msg).some(content => this.deletedContents[content]))
+       msg.delete();
+   }
+
+}
 
 
 export default MessageReplier;
