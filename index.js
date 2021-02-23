@@ -27,7 +27,7 @@ client.on('ready', () => {
 });
 
 client.on('message', async msg => {
-  if (msg.author.bot)
+  if (msg.author.bot || !msg.member)
     return;
   if (msg.member.roles.cache.size < 2) {
     arashine.onMessage(msg);
@@ -43,12 +43,13 @@ client.on('message', async msg => {
 });
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {
-  if (!newMessage.author.bot && newMessage.member.roles.cache.size < 2)
+  if (!newMessage.author.bot && newMessage.member && newMessage.member.roles.cache.size < 2)
     arashine.onMessage(newMessage);
 });
 
 client.on('messageReactionAdd', async (msgReaction, user) => {
-  if(user.bot) return;
+  if (user.bot || !msgReaction.message.guild)
+    return;
   messageReplier.onReactionAdded(msgReaction, user);
 });
 
