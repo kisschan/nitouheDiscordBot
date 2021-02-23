@@ -14,6 +14,7 @@
   "type": "module",
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
+    "country-flag-emoji": "^1.0.3",
     "discord-ytdl-core": "^5.0.0",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
