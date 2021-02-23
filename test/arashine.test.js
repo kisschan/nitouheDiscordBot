@@ -107,7 +107,6 @@ test("2回の発言ではBANされず、3回目に繰り返す発言を変更し
   changeMsgMock.content = "kaetayo-akkya-";
   await arashine.onMessage(changeMsgMock);
   await arashine.onMessage(changeMsgMock);
-  await arashine.onMessage(changeMsgMock);
   var willBanMsgMock = { ... changeMsgMock }
   willBanMsgMock.member.ban = generateBanMock(done, true);
   await arashine.onMessage(willBanMsgMock);
