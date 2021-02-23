@@ -20,7 +20,10 @@ class NitouheReplier {
   isHP(){
     return this.HP;
   }
-  deleteHP() {
+  deleteHP(msg) {
+    if(msg.guild.members.nickname === 'Amateur"キスケ"' || msg.member.roles.cache.size < 2){
+    this.HP = this.HP-2;
+    }
     this.HP--;
   }
    async onMessage(msg) {
@@ -49,7 +52,7 @@ class NitouheReplier {
           }else if(/(?:乞食|[こコｺ][じジｼﾞ][きキｷ]|[死氏市４4しシｼ]ね|[う失]せろ|[消きキｷ][えエｴ][ろロﾛ]|([くクｸ][さサｻ]|臭)い)/.test(msg.content)){
             const randomreply = ['いえいえ','むっ','そういう言葉は控えましょう','さて'];
             msg.reply(randomreply[Math.floor(Math.random() * randomreply.length)])
-            this.deleteHP();
+            this.deleteHP(msg);
           }
       
         }
