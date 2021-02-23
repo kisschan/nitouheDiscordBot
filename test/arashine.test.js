@@ -1,5 +1,7 @@
 import Arashine from '../arashine.js';
 
+jest.useFakeTimers();
+
 const generateBanMock = (done, shouldBeCalled) => {
   const shouldBeCalledFunc = option => {
     expect(option.days).toBe(7);
@@ -21,6 +23,7 @@ const generateDeleteMock = (done, shouldBeCalled) => {
   return shouldBeCalled ? shouldBeCalledFunc : shouldNotBeCalledFunc;
 }
 
+// 時間でBANする機能を回避
 test("３回同じ発言をした人はBANされる", async done => {
   const msgMock = {
     member: { 
@@ -40,8 +43,10 @@ test("３回同じ発言をした人はBANされる", async done => {
   arashine.onMessage(msgMock);
   arashine.onMessage(msgMock);
   var lastMsgMock = { ... msgMock }
-  lastMsgMock.member.ban = generateBanMock(done, true);
-  arashine.onMessage(lastMsgMock);
+  setTimeout(async () => {
+    lastMsgMock.member.ban = generateBanMock(done, true);
+    arashine.onMessage(lastMsgMock);
+  });
   done()
 });
 
@@ -85,6 +90,7 @@ test("rolesにメンションしてる人は消される", async done => {
   done()
 });
 
+// 時間でBANする機能を回避
 test("2回の発言ではBANされず、3回目に繰り返す発言を変更したら、5回目じゃないとBANされない", async done => {
   const msgMock = {
     member: { 
@@ -105,10 +111,14 @@ test("2回の発言ではBANされず、3回目に繰り返す発言を変更し
   await arashine.onMessage(msgMock);
   var changeMsgMock = { ... msgMock }
   changeMsgMock.content = "kaetayo-akkya-";
-  await arashine.onMessage(changeMsgMock);
-  await arashine.onMessage(changeMsgMock);
-  var willBanMsgMock = { ... changeMsgMock }
-  willBanMsgMock.member.ban = generateBanMock(done, true);
-  await arashine.onMessage(willBanMsgMock);
-  done()
+  setTimeout(async () => {
+    await arashine.onMessage(changeMsgMock);
+    await arashine.onMessage(changeMsgMock);
+    var willBanMsgMock = { ... changeMsgMock }
+    setTimeout(async () => {
+      willBanMsgMock.member.ban = generateBanMock(done, true);
+      await arashine.onMessage(willBanMsgMock);
+    }, 5000);
+  }, 5000);
+  done();
 })
