@@ -22,7 +22,7 @@ class Arashine {
     
     let time = (new Date()).getTime();
     guestInfo.sample.push(time);
-    if (guestInfo.sample.length > SAMPLING_LENGTH && time - guestInfo.sample.shift() < SPEED_LIMIT)
+    if (guestInfo.sample.length === SAMPLING_LENGTH && time - guestInfo.sample.shift() < SPEED_LIMIT)
       msg.member.ban({days: 7});
     else if (msg.mentions.everyone || msg.mentions.roles.size)
       msg.delete();
