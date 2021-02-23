@@ -61,7 +61,7 @@ test("everyoneにメンションしてる人は消される", async done => {
     }
   }
   var arashine = new Arashine();
-  arashine.onMessage(msgMock);
+  await arashine.onMessage(msgMock);
   done()
 });
 
@@ -81,7 +81,7 @@ test("rolesにメンションしてる人は消される", async done => {
     }
   }
   var arashine = new Arashine();
-  arashine.onMessage(msgMock);
+  await arashine.onMessage(msgMock);
   done()
 });
 
@@ -101,15 +101,15 @@ test("2回の発言ではBANされず、3回目に繰り返す発言を変更し
     }
   }
   var arashine = new Arashine();
-  arashine.onMessage(msgMock);
-  arashine.onMessage(msgMock);
+  await arashine.onMessage(msgMock);
+  await arashine.onMessage(msgMock);
   var changeMsgMock = { ... msgMock }
   changeMsgMock.content = "kaetayo-akkya-";
-  arashine.onMessage(changeMsgMock);
-  arashine.onMessage(changeMsgMock);
-  arashine.onMessage(changeMsgMock);
+  await arashine.onMessage(changeMsgMock);
+  await arashine.onMessage(changeMsgMock);
+  await arashine.onMessage(changeMsgMock);
   var willBanMsgMock = { ... changeMsgMock }
   willBanMsgMock.member.ban = generateBanMock(done, true);
-  arashine.onMessage(willBanMsgMock);
+  await arashine.onMessage(willBanMsgMock);
   done()
 })
