@@ -2,12 +2,12 @@ import random from 'random';
 import https from 'https';
 import { getYtdlConnectionDispatcher } from './Infra/youtubeConnection.js';
 
-var onPlaying = false;
 const JUKEBOXCH_PATTERN = /^動画bgm/i;
+const REPLACE_IDLIST = {'804051889909006427': '768556789636792372'};
 
 const notifyError = function(msg, err) {
   console.error(err);
-  msg.channel.send((err + '').includes('Status code: 429') ? 'Googleからの妨害を受けている為しばらく使えません' : 'エラーで再生できませんでした');
+  msg.channel.send((err + '').includes('Status code: 429') ? 'Googleからの妨害を受けている為しばらく使えないかも' : 'エラーで再生できませんでした');
   const req = https.request(process.env.ERROR_WEBHOOK, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'}
@@ -22,29 +22,30 @@ const notifyError = function(msg, err) {
   req.end();
 };
 
-const playMusic = function(msg, url, onFinish) {
-  if (!url) return;
+const playMusic = function(msg, jukebox) {
 
-  onPlaying = true;
+  jukebox.lastMsg = msg;
+  jukebox.cancelVoted = null;
   msg.guild.channels.cache.find(channel => channel.type === 'voice' && JUKEBOXCH_PATTERN.test(channel.name)).join()
   .then(connection => {
-    const dispatcher = getYtdlConnectionDispatcher(connection, url);
-    dispatcher.on("finish", onFinish);
+    const dispatcher = getYtdlConnectionDispatcher(connection, msg.content);
+    dispatcher.on("finish", jukebox.playNext.bind(jukebox));
     dispatcher.on("error", err => {
       notifyError(msg, err);
-      onFinish();
+      jukebox.playNext();
     });
   })
   .catch(err => {
     notifyError(msg, err);
-    onFinish();
+    jukebox.playNext();
   });
+  
 };
 
 class JukeBox {
 
   constructor() {
-    this.cancelVoted = null;
+    this.lastMsg = this.cancelVoted = null;
     this.requestBox = {};
   }
 
@@ -53,45 +54,56 @@ class JukeBox {
       return;
     if (/^https?:\/\/(?:www\.)?youtu/.test(msg.content)) {
       if (!msg.member.voice.channel || !JUKEBOXCH_PATTERN.test(msg.member.voice.channel.name)) {
-        return msg.reply("配信ルームに入ってからリクエストしてください。");
+        msg.reply("配信ルームに入ってからリクエストしてください。");
+        return;
       }
-      if (onPlaying) {
+      if (this.lastMsg) {
         // 抽選箱に入れる
-        if (!this.requestBox[msg.member.id])
-          this.requestBox[msg.member.id] = { name: msg.member.nickname, list: []};
-        const n = this.requestBox[msg.member.id].list.push(msg.content);
-        return msg.reply(`抽選箱に入れました。${n}曲抽選待ちです。`);
+        if ((this.requestBox[msg.member.id] || []).some(requested => requested.content === msg.content)) {
+          msg.reply('その曲は既に抽選待ちです。');
+        } else if (this.lastMsg.content === msg.content) {
+          msg.reply('その曲は今再生してます。');
+        } else {
+          if (!this.requestBox[msg.member.id])
+            this.requestBox[msg.member.id] = [];
+          const n = this.requestBox[msg.member.id].push(msg);
+          msg.reply(`抽選箱に入れました。${n}曲抽選待ちです。`);
+        }
+        return;
       }
-      playMusic(msg, msg.content, this.playNext.bind(this, msg));
+      playMusic(msg, this);
     } else if (msg.content === "cancel") {
-      this.cancel(msg);
+      this[this.lastMsg && msg.member.id === this.lastMsg.member.id ? 'playNext' : 'cancel'](msg);
     } else if (msg.content === "clear") {
       delete this.requestBox[msg.member.id];
       msg.reply("クリアしました。");
     }
   }
 
-  playNext(msg) {
+  playNext() {
     var keys = Object.keys(this.requestBox);
-    if (keys.length) {
+    if (this.lastMsg.guild.me.voice.channel && this.lastMsg.guild.me.voice.channel.members.size > 1 && keys.length) {
       var memberId = keys[random.int(0, keys.length - 1)];
-      var nickname = this.requestBox[memberId].name;
-      var nextIndex = random.int(0, this.requestBox[memberId].list.length - 1);
-      var next = this.requestBox[memberId].list.splice(nextIndex, 1)[0];
-      if (!this.requestBox[memberId].list.length)
+      var nextIndex = random.int(0, this.requestBox[memberId].length - 1);
+      var nextMsg = this.requestBox[memberId].splice(nextIndex, 1)[0];
+      if (!this.requestBox[memberId].length)
         delete this.requestBox[memberId];
-      msg.channel.send(`${nickname}さんより\n${next}`);
-      playMusic(msg, next, this.playNext.bind(this, msg));
+      if (nextMsg.deleted) {
+        this.playNext();
+        return;
+      }
+      nextMsg.channel.send(`${nextMsg.member.displayName}さんより\n${nextMsg.content}`);
+      playMusic(nextMsg, this);
     } else {
-      msg.guild.me.voice.channel.leave();
-      onPlaying = false;
+      this.onCanceled(this.lastMsg);
     }
   }
 
   onCanceled(msg) {
     const myVoiceChannel = msg.guild.me.voice.channel;
-    myVoiceChannel.leave(); 
-    onPlaying = false; // TODO: これがグローバル変数を参照してる
+    if (myVoiceChannel)
+      myVoiceChannel.leave();
+    this.lastMsg = null;
   }
 
   cancel(msg) {
@@ -99,19 +111,14 @@ class JukeBox {
     if (myVoiceChannel === null) { // myVoiceがnullであればキャンセルする必要がないとみなす。
       return; 
     }
-    if (msg.member.roles.cache.size === 1) { // ロールのを与えていない人の投票はキャンセル
-      msg.member.user.createDM().then(channel => {
-        channel.send("エラー。ロールのない人はキャンセル投票はできません。");
-      });
-      return;
-    }
     if (this.cancelVoted === null) {
-      this.cancelVoted = msg.member.id;
+      this.cancelVoted = REPLACE_IDLIST[msg.member.id] || msg.member.id;
       msg.reply("キャンセル投票を受け付けました。\nもう一人の投票でキャンセルになります。");
-    } else if (this.cancelVoted !== msg.member.id) {
+    } else if (this.cancelVoted !== (REPLACE_IDLIST[msg.member.id] || msg.member.id)) {
       this.cancelVoted = null;
       this.onCanceled(msg);
-      return msg.reply("キャンセル投票が二人以上あったため、キャンセルします。");
+      msg.reply("キャンセル投票が二人以上あったため、キャンセルします。");
+      return;
     }
   }
 }
