@@ -1,6 +1,6 @@
 import Arashine from '../arashine.js';
 
-const generateBanMock = shouldBeCalled => {
+const generateBanMock = (done, shouldBeCalled) => {
   const shouldBeCalledFunc = option => {
     expect(option.days).toBe(7);
     done();
@@ -11,7 +11,7 @@ const generateBanMock = shouldBeCalled => {
   return shouldBeCalled ? shouldBeCalledFunc : shouldNotBeCalledFunc;
 }
 
-const generateDeleteMock = shouldBeCalled => {
+const generateDeleteMock = (done, shouldBeCalled) => {
   const shouldBeCalledFunc = () => {
     done();
   }
@@ -21,13 +21,13 @@ const generateDeleteMock = shouldBeCalled => {
   return shouldBeCalled ? shouldBeCalledFunc : shouldNotBeCalledFunc;
 }
 
-test("３回同じ発言をした人はBANされる", done => {
+test("３回同じ発言をした人はBANされる", async done => {
   const msgMock = {
     member: { 
       id: "14142",
-      ban: generateBanMock(false),
-      delete: generateDeleteMock(false)
+      ban: generateBanMock(done, false),
     },
+    delete: generateDeleteMock(done, false),
     content: "arashidesuo",
     mentions: {
       everyone: false,
@@ -40,18 +40,18 @@ test("３回同じ発言をした人はBANされる", done => {
   arashine.onMessage(msgMock);
   arashine.onMessage(msgMock);
   var lastMsgMock = { ... msgMock }
-  lastMsgMock.member.ban = generateBanMock(true);
+  lastMsgMock.member.ban = generateBanMock(done, true);
   arashine.onMessage(lastMsgMock);
   done()
 });
 
-test("everyoneにメンションしてる人は消される", done => {
+test("everyoneにメンションしてる人は消される", async done => {
   const msgMock = {
     member: { 
       id: "14142",
-      ban: generateBanMock(false),
-      delete: generateDeleteMock(true)
+      ban: generateBanMock(done, false),
     },
+    delete: generateDeleteMock(done, true),
     content: "arashidesuo",
     mentions: {
       everyone: true,
@@ -65,13 +65,13 @@ test("everyoneにメンションしてる人は消される", done => {
   done()
 });
 
-test("rolesにメンションしてる人は消される", done => {
+test("rolesにメンションしてる人は消される", async done => {
   const msgMock = {
     member: { 
       id: "14142",
-      ban: generateBanMock(false),
-      delete: generateDeleteMock(true)
+      ban: generateBanMock(done, false),
     },
+    delete: generateDeleteMock(done, true),
     content: "arashidesuo",
     mentions: {
       everyone: false,
@@ -85,13 +85,13 @@ test("rolesにメンションしてる人は消される", done => {
   done()
 });
 
-test("2回の発言ではBANされず、3回目に繰り返す発言を変更したら、5回目じゃないとBANされない", done => {
+test("2回の発言ではBANされず、3回目に繰り返す発言を変更したら、5回目じゃないとBANされない", async done => {
   const msgMock = {
     member: { 
       id: "14142",
-      ban: generateBanMock(false),
-      delete: generateDeleteMock(false)
+      ban: generateBanMock(done, false),
     },
+    delete: generateDeleteMock(done, false),
     content: "arashidesuo",
     mentions: {
       everyone: false,
@@ -109,7 +109,7 @@ test("2回の発言ではBANされず、3回目に繰り返す発言を変更し
   arashine.onMessage(changeMsgMock);
   arashine.onMessage(changeMsgMock);
   var willBanMsgMock = { ... changeMsgMock }
-  willBanMsgMock.member.ban = generateBanMock(true);
+  willBanMsgMock.member.ban = generateBanMock(done, true);
   arashine.onMessage(willBanMsgMock);
   done()
 })
