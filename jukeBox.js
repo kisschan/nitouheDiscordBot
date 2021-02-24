@@ -116,9 +116,8 @@ class JukeBox {
       msg.reply("キャンセル投票を受け付けました。\nもう一人の投票でキャンセルになります。");
     } else if (this.cancelVoted !== (REPLACE_IDLIST[msg.member.id] || msg.member.id)) {
       this.cancelVoted = null;
-      this.onCanceled(msg);
       msg.reply("キャンセル投票が二人以上あったため、キャンセルします。");
-      return;
+      this.playNext();
     }
   }
 }
