@@ -1,4 +1,4 @@
-import { DiscordAPIError } from "discord.js";
+import { DiscordAPIError} from "discord.js";
 
 class NitouheReplier {
 
@@ -25,13 +25,29 @@ class NitouheReplier {
   deleteHP(msg) {
     if(msg.member.displayName === 'Amateur"キスケ"' || msg.member.roles.cache.size < 2){
     this.HP = this.HP-2;
-    }
-    this.HP--;
+    }else{
+    this.HP--;}
+  }
+
+  addHP(msg){
+  this.status = false;
+  setTimeout(this.resur,1000*60);
+  }
+
+  resur(msg){
+    msg.reply('おう');
+    this.status === true;
+    this.HP = 10;
   }
 
    async onMessage(msg) {
 
-    const emoji = msg.guild.emojis.cache.find(e => e.name === 'anzen_kisuke');
+    if(msg.guild.id === '794882838666543114'){
+      var emoji = `HP(${this.isHP()})${msg.guild.emojis.cache.find(e => e.name === 'nitouhe')}<`;
+    }else if(msg.guild.id === '804641873847255051'){
+      var emoji = `HP(${this.isHP()})${msg.guild.emojis.cache.find(e => e.name === 'anzen_kisuke')}<`;
+    }
+    
 
           if(msg.content === '!on'){
             this.on();
@@ -41,9 +57,17 @@ class NitouheReplier {
           }
           if (!this.isAvailable())
             return;
-          if(this.isHP()<1){
-            msg.reply(`${emoji}ではねます`)
-            this.off();
+          if(this.isHP() <1){
+            const random = Math.floor(Math.random()*3)+1;
+          if(random === 1){
+            msg.reply(`うんこしてくる`)
+           setTimeout(this.resur,1000*60)
+          }else if(random === 2){
+            msg.reply(`飯食うわ`)
+          }else if(random === 3){
+          msg.reply(`ではねます`)
+          }
+            this.addHP();
             return;
           }
 
