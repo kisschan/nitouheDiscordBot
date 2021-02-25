@@ -29,9 +29,9 @@ class NitouheReplier {
     this.HP--;}
   }
 
-  addHP(msg){
+  addHP(recoverTimeSec, callback){
   this.status = false;
-  setTimeout(this.resur,1000*60);
+  setTimeout(callback ,1000*recoverTimeSec);
   }
 
   resur(msg){
@@ -61,14 +61,17 @@ class NitouheReplier {
             const random = Math.floor(Math.random()*3)+1;
           if(random === 1){
             msg.reply(`うんこしてくる`)
-           setTimeout(this.resur,1000*60)
+            this.addHP(60, () => {
+              this.resur(msg);
+            });
           }else if(random === 2){
             msg.reply(`飯食うわ`)
           }else if(random === 3){
           msg.reply(`ではねます`)
           }
-            this.addHP();
-            return;
+            this.addHP(60, () => {
+              this.resur(msg);
+            });
           }
 
           if(/(?!\?)(?:はい|入)る[わよか]?$/?.test(msg.content)){
