@@ -5,7 +5,9 @@ class NitouheReplier {
   constructor() {
     this.status = false;
     this.HP = 10;
-
+    this.count = 1;
+    this.arashiarray =[];
+    this.blocklistarray=[];
   }
   
   on() {
@@ -22,11 +24,20 @@ class NitouheReplier {
   isHP(){
     return this.HP;
   }
+
+  iscount(){
+    return this.count;
+  }
+  
+  isBlocklist(msg){
+    return this.blocklistarray.includes(msg.author.id);
+  }
   deleteHP(msg) {
     if(msg.member.displayName === 'Amateur"キスケ"' || msg.member.roles.cache.size < 2){
     this.HP = this.HP-2;
     }else{
     this.HP--;}
+   this.arashi(msg);
   }
 
   addHP(recoverTimeSec, callback){
@@ -35,19 +46,42 @@ class NitouheReplier {
   }
 
   resur(msg){
-    msg.reply('おう');
-    this.status === true;
+    msg.reply('ﾆﾄｳﾍは戻ってきたようだ');
+    this.status = true;
     this.HP = 10;
+    this.count++;
+  }
+
+  arashi(msg){
+    this.arashiarray.push(msg.author.id);
+    let arashicount = this.arashiarray.filter((x) => {return x===msg.author.id}).length;
+    if(arashicount > 4){
+      this.blocklist(msg);
+    }
+    if(msg.member.roles.cache.size > 1){
+      setTimeout(() => {
+        if(this.arashiarray.length>0){
+        this.arashiarray.shift();
+        }},1000*30)
+    }
+  }
+
+  
+  blocklist(msg){
+    this.blocklistarray.push(msg.author.id);
+    msg.reply(`${msg.member.displayName}をブロックリストに追加`)
   }
 
    async onMessage(msg) {
 
-    if(msg.guild.id === '794882838666543114'){
-      var emoji = `HP(${this.isHP()})${msg.guild.emojis.cache.find(e => e.name === 'nitouhe')}<`;
-    }else if(msg.guild.id === '804641873847255051'){
-      var emoji = `HP(${this.isHP()})${msg.guild.emojis.cache.find(e => e.name === 'anzen_kisuke')}<`;
-    }
+        if(msg.guild.id === '794882838666543114'){
+         var emoji = `HP(${this.isHP()})${msg.guild.emojis.cache.find(e => e.name === 'nitouhe')}<`;
+         }else if(msg.guild.id === '804641873847255051'){
+         var emoji = `HP(${this.isHP()})${msg.guild.emojis.cache.find(e => e.name === 'anzen_kisuke')}<`;
+         }
     
+        if(this.isBlocklist(msg))
+          return;
 
           if(msg.content === '!on'){
             this.on();
@@ -60,18 +94,23 @@ class NitouheReplier {
           if(this.isHP() <1){
             const random = Math.floor(Math.random()*3)+1;
           if(random === 1){
-            msg.reply(`うんこしてくる`)
-            this.addHP(60, () => {
+            msg.reply(`${emoji}うんこしてくる`)
+            this.addHP(60*this.iscount(), () => {
               this.resur(msg);
             });
           }else if(random === 2){
-            msg.reply(`飯食うわ`)
-          }else if(random === 3){
-          msg.reply(`ではねます`)
-          }
-            this.addHP(60, () => {
+            msg.reply(`${emoji}飯食うわ`)
+            this.addHP(60*2*this.iscount(), () => {
               this.resur(msg);
             });
+          }else if(random === 3){
+            msg.reply(`${emoji}ではねます`)
+            this.addHP(60*3*this.iscount(), () => {
+              this.resur(msg);
+            });
+            return;
+          }
+        
           }
 
           if(/(?!\?)(?:はい|入)る[わよか]?$/?.test(msg.content)){
