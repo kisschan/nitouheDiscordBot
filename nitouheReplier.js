@@ -50,6 +50,9 @@ class NitouheReplier {
     this.status = true;
     this.HP = 10;
     this.count++;
+    setTimeout(() => {
+      this.count--;
+    },1000*60*15)
   }
 
   arashi(msg){
