@@ -1,8 +1,6 @@
 import { DiscordAPIError } from "discord.js";
 import { Client } from 'discord.js';
 
-const client = new Client();
-const emoji = client.emojis.find("name","anzen_kisuke")
 
 class NitouheReplier {
 
@@ -34,6 +32,8 @@ class NitouheReplier {
   }
 
    async onMessage(msg) {
+    const client = new Client();
+    const emoji = client.emojis.cache.find(e => e.name === 'anzen_kisuke');
           if(msg.content === '!on'){
             this.on();
             msg.reply(`${emoji}はいおは`)
