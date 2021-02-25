@@ -1,6 +1,4 @@
 import { DiscordAPIError } from "discord.js";
-import { Client } from 'discord.js';
-
 
 class NitouheReplier {
 
@@ -32,8 +30,9 @@ class NitouheReplier {
   }
 
    async onMessage(msg) {
-    const client = new Client();
-    const emoji = client.emojis.cache.find(e => e.name === 'anzen_kisuke');
+
+    const emoji = msg.guild.emojis.cache.find(e => e.name === 'anzen_kisuke');
+
           if(msg.content === '!on'){
             this.on();
             msg.reply(`${emoji}はいおは`)
@@ -47,6 +46,7 @@ class NitouheReplier {
             this.off();
             return;
           }
+
           if(/(?!\?)(?:はい|入)る[わよか]?$/?.test(msg.content)){
             msg.reply(`${emoji}おうはいれ`)
             this.deleteHP(msg);
@@ -58,7 +58,7 @@ class NitouheReplier {
             this.deleteHP(msg);
           }else if(/(?:乞食|[こコｺ][じジｼﾞ][きキｷ]|[死氏市４4しシｼ]ね|[う失]せろ|[消きキｷ][えエｴ][ろロﾛ]|([くクｸ][さサｻ]|臭)い)/.test(msg.content)){
             const randomreply = ['いえいえ','むっ','そういう言葉は控えましょう','さて'];
-            msg.reply(emoji + randomreply[Math.floor(Math.random() * randomreply.length)])
+            msg.reply(`${emoji}` + randomreply[Math.floor(Math.random() * randomreply.length)])
             this.deleteHP(msg);
           }
       
