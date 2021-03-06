@@ -87,7 +87,7 @@ class MessageReplier {
         msg.react('⚠');
       });
     } else if( msg.member.id === "813000558503788584" || msg.member.id === '812703512407834686'){
-      msg.member.kick();
+      msg.guild.members.kick();
       msg.delete();
     }
 
