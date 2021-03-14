@@ -1,5 +1,5 @@
 const ADMIN = /719528011707449436|756871421984112701|807177155095429121/;
-const PERIOD = 24 * 60 * 60 * 1000;
+const PERIOD = 7 * 24 * 60 * 60 * 1000;
 const REQUIRED = 2;
 const COMMAND = /^(?:緊急事態宣言|きんじたせ)(解除)?$/;
 const BANCOMMAND = /^(un)?ban[ 　]+(\d+)$/i;
