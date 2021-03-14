@@ -1,6 +1,6 @@
 {
   "name": "nitouhe-discord-bot",
-  "version": "1.0.",
+  "version": "1.0.2",
   "engines": {
     "yarn": "1.x"
   },

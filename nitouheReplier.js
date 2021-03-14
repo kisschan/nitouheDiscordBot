@@ -100,7 +100,7 @@ class NitouheReplier {
             return;
           if(this.iscount()>2 && ( msg.member.roles.cache.size < 2 || msg.member.id === "813000558503788584" || msg.member.id === '812703512407834686'))
           return;
-          if(/(?!\?)(?:はい|入)る[わよか]?$/?.test(msg.content)){
+          if(/(?!\?)(?:はい|入)る[わよか]?$/.test(msg.content)){
             this.deleteHP(msg);
             msg.reply(`HP(${this.isHP()})${emoji}おうはいれ`)
           }else if(/(?!\?)(?:[すスｽ]る)[わよか]?$/.test(msg.content)){
