@@ -8,6 +8,7 @@ class NitouheReplier {
     this.count = 1;
     this.arashiarray =[];
     this.blocklistarray=[];
+    this.debugstage=0;
   }
   
   on() {
@@ -45,6 +46,14 @@ class NitouheReplier {
   setTimeout(callback ,1000*recoverTimeSec);
   }
 
+  changeHP(msg){
+    this.HP=msg.content;
+  }
+
+  changecount(msg){
+    this.count=msg.content;
+  }
+
   resur(msg){
     msg.reply(`ﾆﾄｳﾍは戻ってきたようだ(疲労度:${this.count})`);
     this.status = true;
@@ -79,6 +88,19 @@ class NitouheReplier {
     msg.reply(`${msg.member.displayName}をブロックリストに追加`)
   }
 
+  adddebug(debugnum){
+   this.debugstage+=debugnum;
+   return this.debugstage;
+  }
+
+  resetdebug(){
+   this.debugstage = 0;
+  }
+
+  isdebug(){
+   return this.debugstage;
+  }
+
    async onMessage(msg) {
 
         if(msg.guild.id === '794882838666543114'){
@@ -90,7 +112,7 @@ class NitouheReplier {
         if(this.isBlocklist(msg))
           return;
 
-          if(msg.content === '!on'){
+          if(msg.content === '!on' && this.isHP()>0){
             this.on();
             msg.reply(`${emoji}はいおは`)
           }else if(msg.content === '!off'){
@@ -100,6 +122,48 @@ class NitouheReplier {
             return;
           if(this.iscount()>2 && ( msg.member.roles.cache.size < 2 || msg.member.id === "813000558503788584" || msg.member.id === '812703512407834686'))
           return;
+          if(msg.content === '!debug' && msg.guild.id === '804641873847255051' && this.isdebug() === 0){
+            msg.channel.send(`何を変更しますか？\n体力:hp\n疲労度:count\nと発言`)
+            this.adddebug(1);}
+          else if (( !/^(?!\?)(?:([HＨ][PＰ]|[CＣ][oＯ][UＵ][NＮ][TＴ]))$/i.test(msg.content) && this.isdebug() === 1 ) || (!/^\d+$/.test(msg.content) && this.isdebug() === 2)){
+            msg.reply('デバッグ中に予期しない文字が入力されました')
+            this.resetdebug();
+            return;
+          }
+          else if (/^(?!\?)(?:([HＨ][PＰ]))$/i.test(msg.content) && this.isdebug() === 1){
+            msg.channel.send(`体力に代入したい数をどうぞ(現在の体力${this.isHP()})`)
+            this.adddebug(1);}
+          else if(/^\d+$/.test(msg.content) && this.isdebug() === 2){
+          this.changeHP(msg);
+          msg.channel.send(`体力は${this.isHP()}になりました`)
+          this.resetdebug();
+          }
+          else if(/^(?!\?)(?:([CＣ][oＯ][UＵ][NＮ][TＴ]))$/i.test(msg.content) && this.isdebug() === 1){
+          msg.channel.send(`疲労度に代入したい数をどうぞ(現在の疲労度${this.iscount()})`)
+          this.adddebug(2);}
+          else if(/^\d+$/.test(msg.content) && this.isdebug() === 3){
+          this.changecount(msg);
+          msg.channel.send(`疲労度は${this.iscount()}になりました`)
+          this.resetdebug();
+            }
+          else if(msg.content === 'debugstage'){
+            msg.reply(`デバッグステージは${this.isdebug()}です`)
+          }
+          
+          if((/(?!\?)(?:はい|入)る[わよか]?$/?.test(msg.content) || 
+          (/(?!\?)(?:[すスｽ]る)[わよか]?$/.test(msg.content) || 
+          /(?:たまちゃん|tama)/.test(msg.content) || 
+          /(?:乞食|[こコｺ][じジｼﾞ][きキｷ]|[死氏市４4しシｼ][ねネﾈ]|[うウｳ失][せセｾ][ろロﾛ]|[消きキｷ][えエｴ][ろロﾛ]|([くクｸ][さサｻ]|臭)い)/.test(msg.content) || 
+          /(?!\?)(?:([あアｱ][らラﾗ]|荒)[ぶブﾌﾞ][りリﾘ][そソｿ][うウｳ][だダﾀﾞ])/.test(msg.content) ||
+          /^(?!\?)(?:([りリﾘ][ゅュｭ][うウｳ]|[竜龍])([すスｽ][けケｹ]|[介助]))$/.test(msg.content)
+           ) && this.iscount()>1)){
+            let random = Math.floor(Math.random()*10)+1;
+            if(random<(this.iscount())){
+              const randomreply_tekitou = ['今いそがしくてｗ','ああねむい！','もう疲れてるんですよｗ','ou','ほほーう','ほう','ho-u','hou','はいはいｗ','ああ体がだるい！']
+            　msg.reply(`HP(${this.isHP()})${emoji}` + randomreply_tekitou[Math.floor(Math.random() * randomreply_tekitou.length)])
+              return;
+            }
+          }
           if(/(?!\?)(?:はい|入)る[わよか]?$/?.test(msg.content)){
             this.deleteHP(msg);
             msg.reply(`HP(${this.isHP()})${emoji}おうはいれ`)
@@ -109,10 +173,18 @@ class NitouheReplier {
           }else if(/(?:たまちゃん|tama)/.test(msg.content)){
             this.deleteHP(msg);
             msg.reply(`HP(${this.isHP()})${emoji}なにがたまちゃんじゃい！`)
-          }else if(/(?:乞食|[こコｺ][じジｼﾞ][きキｷ]|[死氏市４4しシｼ]ね|[う失]せろ|[消きキｷ][えエｴ][ろロﾛ]|([くクｸ][さサｻ]|臭)い)/.test(msg.content)){
-            const randomreply = ['いえいえ','むっ','そういう言葉は控えましょう','さて'];
+          }else if(/(?:乞食|[こコｺ][じジｼﾞ][きキｷ]|[死氏市４4しシｼ][ねネﾈ]|[うウｳ失][せセｾ][ろロﾛ]|[消きキｷ][えエｴ][ろロﾛ]|([くクｸ][さサｻ]|臭)い)/.test(msg.content)){
+            const randomreply = ['いえいえ','むっ','そういう言葉は控えましょう','さて','許せんなー','むっまたぐだついてきたな！'];
             this.deleteHP(msg);
             msg.reply(`HP(${this.isHP()})${emoji}` + randomreply[Math.floor(Math.random() * randomreply.length)])
+          }else if(/(?!\?)(?:([あアｱ][らラﾗ]|荒)[ぶブﾌﾞ][りリﾘ][そソｿ][うウｳ][だダﾀﾞ])/.test(msg.content)){
+            this.deleteHP(msg);
+            const randomreply_araburi = ['いえいえｗ','あらぶらんでくださーいｗ','すぐ荒ぶるｗ','あっまたｗ','もうやめましょうw']
+            msg.reply(`HP(${this.isHP()})${emoji}` + randomreply_araburi[Math.floor(Math.random() * randomreply_araburi.length)])
+          }else if(/^(?!\?)(?:([りリﾘ][ゅュｭ][うウｳ]|[竜龍])([すスｽ][けケｹ]|[介助]))$/.test(msg.content)){
+　　　　　　　this.deleteHP(msg);
+             const randomreply_ryuusuke = ['おう','むっなにかな','はいなんでしょう','うむ','なにかな？','よんだかな'];
+             msg.reply(`HP(${this.isHP()})${emoji}` + randomreply_ryuusuke[Math.floor(Math.random() * randomreply_ryuusuke.length)])
           }
 
           if(this.isHP() <1){
