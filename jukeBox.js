@@ -1,44 +1,26 @@
 import random from 'random';
-import https from 'https';
+import { log } from './Infra/log.js';
 import { getYtdlConnectionDispatcher } from './Infra/youtubeConnection.js';
 
 const JUKEBOXCH_PATTERN = /^動画bgm/i;
 const REPLACE_IDLIST = {'804051889909006427': '768556789636792372'};
 
-const notifyError = function(msg, err) {
-  console.error(err);
-  msg.channel.send((err + '').includes('Status code: 429') ? 'Googleからの妨害を受けている為しばらく使えないかも' : 'エラーで再生できませんでした');
-  const req = https.request(process.env.ERROR_WEBHOOK, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'}
-  });
-  req.on('error', err => {
-    msg.channel.send('WEBHOOKのPOSTが失敗しました。envあってるかみてください');
-  });
-  req.write(JSON.stringify({
-    username: 'エラー',
-    content: err.stack
-  }));
-  req.end();
-};
-
 const playMusic = function(req, jukebox) {
 
+  const onerror = err => {
+    req.msg.channel.send((err + '').includes('Status code: 429') ? 'Googleからの妨害を受けている為しばらく使えないかも' : 'エラーで再生できませんでした');
+    log('エラー', err.stack, req.msg);
+    jukebox.playNext();
+  };
   jukebox.lastRequest = req;
   jukebox.cancelVoted = null;
   req.msg.guild.channels.cache.find(channel => channel.type === 'voice' && JUKEBOXCH_PATTERN.test(channel.name)).join()
   .then(connection => {
     const dispatcher = getYtdlConnectionDispatcher(connection, req.url);
     dispatcher.on("finish", jukebox.playNext.bind(jukebox));
-    dispatcher.on("error", err => {
-      notifyError(req.msg, err);
-      jukebox.playNext();
-    });
+    dispatcher.on("error", onerror);
   })
-  .catch(err => {
-    notifyError(req.msg, err);
-    jukebox.playNext();
-  });
+  .catch(onerror);
   
 };
 
