@@ -1,6 +1,6 @@
 import https from 'https';
 export const log = function(title, text, msg) {
-  const req = https.request(process.env.LOG_WEBHOOK, {
+  const req = https.request(process.env.LOG_WEBHOOK || process.env.ERROR_WEBHOOK, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'}
   });

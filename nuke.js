@@ -59,14 +59,14 @@ class Nuke {
         const unban = RegExp.$1, id = RegExp.$2;
         if (this.banList[id] = !unban) {
           if (this.isAvailable) {
-            msg.guild.members.ban(id, {days: 7}).catch(()=>0);
+            msg.guild.members.ban(id, {days: 7}).catch(err => log('banできねえ', err.stack));
             this.deleteLog(msg.channel, id);
             log(LOG_TITLE, msg.member.id + 'が' + id + 'をBAN');
           } else {
             log(LOG_TITLE, msg.member.id + 'が' + id + 'をBANしようとしたが緊急事態宣言期間中でないため失敗');
           }
         } else {
-          msg.guild.members.unban(id).catch(()=>0);
+          msg.guild.members.unban(id).catch(err => log('unbanできねえ', err.stack));
           log(LOG_TITLE, msg.member.id + 'が' + id + 'をBAN解除');
         }
         msg.delete();
