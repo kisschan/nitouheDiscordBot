@@ -86,7 +86,7 @@ class MessageReplier {
         console.error(err);
         msg.react('⚠');
       });
-    }
+    } 
 
   }
 
