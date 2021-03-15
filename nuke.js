@@ -74,7 +74,7 @@ class Nuke {
         msg.guild.fetchBans().then(bans => {
           let failedList = [], count = 0;
           bans.each(banInfo =>
-            msg.guild.members.unban(banInfo.user).catch(err => failedList.push(err)).finally(() =>
+            msg.guild.members.unban(banInfo.user).catch(err => failedList.push(banInfo.user.id)).finally(() =>
               ++count === bans.size && failedList.length && log(LOG_TITLE, '釈放失敗リスト\n' + failedList.join('\n'))
             )
           );
