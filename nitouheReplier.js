@@ -122,6 +122,7 @@ class NitouheReplier {
             return;
           if(this.iscount()>2 && ( msg.member.roles.cache.size < 2 || msg.member.id === "813000558503788584" || msg.member.id === '812703512407834686'))
           return;
+     
           if(msg.content === '!debug' && msg.guild.id === '804641873847255051' && this.isdebug() === 0){
             msg.channel.send(`何を変更しますか？\n体力:hp\n疲労度:count\nと発言`)
             this.adddebug(1);}
@@ -164,7 +165,8 @@ class NitouheReplier {
               return;
             }
           }
-          if(/(?!\?)(?:はい|入)る[わよか]?$/?.test(msg.content)){
+
+          if(/(?!\?)(?:はい|入)る[わよか]?$/.test(msg.content)){ 
             this.deleteHP(msg);
             msg.reply(`HP(${this.isHP()})${emoji}おうはいれ`)
           }else if(/(?!\?)(?:[すスｽ]る)[わよか]?$/.test(msg.content)){
