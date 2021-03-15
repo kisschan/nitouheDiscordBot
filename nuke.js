@@ -72,7 +72,7 @@ class Nuke {
         msg.delete();
       } else if (msg.content === '釈放') {
         msg.guild.fetchBans().then(bans => {
-          const failedList = [];
+          let failedList = [];
           bans.each(banInfo => msg.guild.members.unban(banInfo.user).catch(()=>failedList.push(banInfo.user.id)));
           log(LOG_TITLE, msg.member.id + 'が' + (bans.size - failedList.length) + '人全員釈放\n' + failedList.length + '人釈放失敗');
           if (failedList.length)
