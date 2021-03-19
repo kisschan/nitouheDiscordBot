@@ -9,6 +9,7 @@ import { SetupMongoose } from './Infra/setupMongoose.js';
 const setupMongoose = new SetupMongoose(mongoose);
 setupMongoose.setup(process.env.MONGO_CONNECTION_STRING, 'app', process.env.NODE_ENV);
 
+import voting from './voting.js';
 import Nuke from './nuke.js';
 import NitouheReplier from './nitouheReplier.js';
 import MessageReplier from './messageReplier.js';
@@ -17,6 +18,7 @@ import Arashine from './arashine.js';
 import { Natsukashiimono } from './Service/natsukashiimono.js';
 import { MongoUserRecordRepository } from './Repository/MongoUserRecordRepository.js';
 
+const voting = new Voting();
 const nuke = new Nuke();
 const nitouheReplier = new NitouheReplier();
 const messageReplier = new MessageReplier();
@@ -33,6 +35,7 @@ client.on('ready', () => {
 client.on('message', async msg => {
   if (msg.author.bot || !msg.member)
     return;
+  voting.onMessage(msg);
   nuke.onMessage(msg);
   nitouheReplier.onMessage(msg);
   if (msg.member.roles.cache.size < 2) {
