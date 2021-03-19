@@ -9,7 +9,7 @@ import { SetupMongoose } from './Infra/setupMongoose.js';
 const setupMongoose = new SetupMongoose(mongoose);
 setupMongoose.setup(process.env.MONGO_CONNECTION_STRING, 'app', process.env.NODE_ENV);
 
-import voting from './voting.js';
+import Voting from './voting.js';
 import Nuke from './nuke.js';
 import NitouheReplier from './nitouheReplier.js';
 import MessageReplier from './messageReplier.js';
@@ -59,6 +59,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 client.on('messageReactionAdd', async (msgReaction, user) => {
   if (user.bot || !msgReaction.message.guild)
     return;
+  voting.onReactionAdded(msgReaction, user);
   messageReplier.onReactionAdded(msgReaction, user);
 });
 
