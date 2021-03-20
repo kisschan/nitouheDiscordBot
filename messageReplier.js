@@ -1,3 +1,5 @@
+import { log } from './Infra/log.js';
+
 const DELETE_COUNT = 3;
 const DELETE_EMOJI = '🗑️';
 
@@ -81,12 +83,8 @@ class MessageReplier {
       const filtered = messages.filter(msg => (msg.member.roles && msg.member.roles.cache.size < 2) || msg.author.bot);
       msg.channel.bulkDelete(filtered);
       msg.delete();
-    } else if (/^解除\s\d+$/.test(msg.content)) {
-      msg.guild.members.unban(msg.content.split(/\s/)[1]).then(() => msg.react('✅')).catch(err => {
-        console.error(err);
-        msg.react('⚠');
-      });
-    } 
+      log('ロールバック実行', msg.member.user.tag);
+    }
 
   }
 
