@@ -97,6 +97,7 @@ class voting{
 
     votefin(msg){
         msg.reply(`投票内容:${this.isvotename()}\n賛成${this.isagree()}賛成したメンバー:${this.isagreemembersname()}\n反対${this.isdisagree()}反対したメンバー${this.isdisagreemembersname()}`);
+        msg.pin({reason:"投票結果"})
         this.votename = "";
         this.voteid = "";
         this.voteMembers = [];
@@ -217,6 +218,7 @@ class voting{
         this.addvoteLv();
         this.voteID(msg);
         }else if(this.isvoteLv() === 1 && this.isvoteID() === msg.member.id){
+          msg.pin({reason:"投票内容"})
           msg.reply(`${msg.content}の投票を開始します 期限は3時間です`)
           this.voteName(msg)
           this.addvoteLv();
