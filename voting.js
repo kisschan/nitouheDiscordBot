@@ -1,5 +1,3 @@
-const AGREE_emoji = '👍'
-const DISAGREE_emoji = '👎'
 
 class voting{
     constructor(){
@@ -87,8 +85,8 @@ class voting{
         return this.disagreeMembersName;}
     }
     
-    voter(msgReaction){
-        this.voteMembers.push(msgReaction.message.member.user.id);
+    voter(msg){
+        this.voteMembers.push(msg.member.id);
     }
 
     votetime(votingtimetec,callback){
@@ -121,42 +119,42 @@ class voting{
     }
 
 
-    addagreemembers(msgReaction){
-        this.agreeMembers.push(msgReaction.message.member.user.id);
-        this.agreeMembersName.push(msgReaction.message.member.displayName);
+    addagreemembers(msg){
+        this.agreeMembers.push(msg.member.id);
+        this.agreeMembersName.push(msg.member.displayName);
     }
 
-    adddisagreemembers(msgReaction){
-        this.disagreeMembers.push(msgReaction.message.member.user.id);
-        this.agreeMembersName.push(msgReaction.message.member.displayName);
+    adddisagreemembers(msg){
+        this.disagreeMembers.push(msg.member.id);
+        this.disagreeMembersName.push(msg.member.displayName);
     }
 
-    deleteagreemembers(msgReaction){
+    deleteagreemembers(msg){
         this.agreeMembers.forEach((item, index) => {
-            if(item === msgReaction.message.member.user.id){
-                return this.agreeMembers.splice(index, msgReaction.message.member.user.id);
+            if(item === msg.member.id){
+                return this.agreeMembers.splice(index, 1);
             }
         
         });
         this.agreeMembersName.forEach((item, index) => {
-            if(item === msgReaction.message.member.displayName){
-                return this.agreeMembersName.splice(index, msgReaction.message.member.displayName);
+            if(item === msg.member.displayName){
+                return this.agreeMembersName.splice(index,1);
             }
         
         });
 
     }
 
-    deleteadisagreemembers(msgReaction){
+    deletedisagreemembers(msg){
         this.disagreeMembers.forEach((item, index) => {
-            if(item === msgReaction.message.member.user.id){
-                return this.disagreeMembers.splice(index, msgReaction.message.member.user.id);
+            if(item === msg.member.id){
+                return this.disagreeMembers.splice(index, 1);
             }
         });
 
         this.disagreeMembersName.forEach((item, index) => {
-            if(item === msgReaction.message.member.displayName){
-                return this.disagreeMembersName.splice(index, msgReaction.message.member.displayName);
+            if(item === msg.member.displayName){
+                return this.disagreeMembersName.splice(index, 1);
             }
         
         });
@@ -233,40 +231,25 @@ class voting{
          });
       }else if(msg.content === '投票解禁' &&( msg.member.id === '719528011707449436'|| msg.member.id === '756871421984112701' || msg.member.id === '807177155095429121')){
          this.unblock(msg);
+      }else if(/^(?:[まマﾏ][るルﾙ]|maru|[◎〇○丸])$/i.test(msg.content) && this.isvoteLv() > 1){
+        if(this.isagreemembers().includes(msg.member.id))
+        return;
+        if(this.isdisagreemembers().includes(msg.member.id)){
+          this.deletedisagree()
+          this.deletedisagreemembers(msg)
+        }
+        this.addagree();
+        this.addagreemembers(msg);
+    }else if(/^(?:[ばバﾊﾞ][つツﾂ]|batu|[×☓✖✕✗✘])$/i.test(msg.content) && this.isvoteLv() >1){
+        if(this.isdisagreemembers().includes(msg.member.id))
+        return;
+        if(this.isagreemembers().includes(msg.member.id)){
+        this.deleteagree()
+        this.deleteagreemembers(msg)
+      }
+        this.adddisagree();
+        this.adddisagreemembers(msg);
+    }
       }
     }
-    async onReactionAdded(msgReaction, user){
-        if((msgReaction.emoji.name === AGREE_emoji || msgReaction.emoji.name === DISAGREE_emoji) &&
-         msgReaction.message.content === this.isvotename() && 
-         msgReaction.users.cache.filter(user => {
-             if (user.bot)
-               return false;
-             const member = msgReaction.message.guild.member(user.id);
-             return member && member.roles.cache.size > 1
-           }).size >= 1
-     ){
-        if(msgReaction.emoji.name === AGREE_emoji){
-            if(this.isagreemembers().includes(msgReaction.message.member.user.id))
-            return;
-            if(this.isdisagreemembers().includes(msgReaction.message.member.user.id)){
-              this.deletedisagree()
-              this.deleteadisagreemembers(msgReaction)
-            }
-            this.addagree();
-            this.addagreemembers(msgReaction);
-        }
-        if(msgReaction.emoji.name === DISAGREE_emoji){ 
-            if(this.isdisagreemembers().includes(msgReaction.message.member.user.id))
-            return;
-            if(this.isagreemembers().includes(msgReaction.message.member.user.id)){
-            this.deleteagree()
-            this.deleteagreemembers(msgReaction)
-          }
-            this.adddisagree();
-            this.adddisagreemembers(msgReaction);
-        }
-        return;
-     }
-       }
-}
 export default voting;

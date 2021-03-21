@@ -59,7 +59,6 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 client.on('messageReactionAdd', async (msgReaction, user) => {
   if (user.bot || !msgReaction.message.guild)
     return;
-  voting.onReactionAdded(msgReaction, user);
   messageReplier.onReactionAdded(msgReaction, user);
 });
 
