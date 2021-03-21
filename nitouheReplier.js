@@ -115,6 +115,7 @@ class NitouheReplier {
           if(msg.content === '!on' && this.isHP()>0){
             this.on();
             msg.reply(`${emoji}はいおは`)
+            this.deleteHP();
           }else if(msg.content === '!off'){
             this.off();
           }

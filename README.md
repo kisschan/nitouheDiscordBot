@@ -4,6 +4,8 @@
 
 うーむｗ
 
+[法律文書はこちら](https://noonemona.github.io/nitouheDiscordBot/)
+
 # getting started
 See `.env.sample` and copy the file to named `.env` ( conform to dotenv package )
 and run 
