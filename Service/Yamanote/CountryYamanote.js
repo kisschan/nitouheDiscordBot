@@ -17,6 +17,7 @@ export class CountryYamanote {
     countryFlagEmoji.data[key].area = area;
   }
 
+  // https://github.com/risan/country-flag-emoji/blob/master/src/data.js
   arrangeForJP() {
     const countries = countryFlagEmoji.data;
     countries.AC.jp = "アセンション島";
@@ -40,8 +41,19 @@ export class CountryYamanote {
     countries.AG.area = "caribbean";
 
     countries.AI.jp = "アンギラ";
-    countries.AG.capital = "バレー";
-    countries.AG.area = "caribbean";
+    countries.AI.capital = "バレー";
+    countries.AI.area = "caribbean";
+
+    this.registerToCountries("AL", "アルバニア", "ティラーナ", "europa");
+    this.registerToCountries("AM", "アルメニア", "エレバン", "asia");
+    this.registerToCountries("AO", "アンゴラ", "ルアンダ", "africa");
+    this.registerToCountries("AQ", "南極", "", "other");
+    this.registerToCountries("AR", "アルゼンチン", "ブエノスアイレス", "southAmerica");
+    this.registerToCountries("AR", "アメリカ領サモア", "パゴパゴ", "oceania");
+    this.registerToCountries("AT", "オーストリア", "ウィーン", "europa");
+    this.registerToCountries("AW", "アルバ", "オラニェスタット", "caribbean");
+    this.registerToCountries("AX", "オーランド諸島", "マリエハムン", "europa"); 
+    this.registerToCountries("AZ", "アゼルバイジャン", "バクー", "asia"); 
   }
 
 }
