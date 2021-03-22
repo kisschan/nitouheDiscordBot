@@ -5,7 +5,9 @@ const ADMIN = /719528011707449436|756871421984112701|807177155095429121/;
 const PERIOD = 7 * 24 * 60 * 60 * 1000;
 const REQUIRED = 2;
 const COMMAND = /^(?:緊急事態宣言|きんじたせ)(解除)?$/;
-const BANCOMMAND = /^(un)?ban[ 　]+(\d+)$/i;
+const BANCOMMAND = /^(un)?ban[ 　]+(\d+)(?:[ 　]+(\d+))?$/i;
+const PARDON = /^(?:釈放|恩赦)(?:[ 　]+(\d+))?$/;
+const ROLLBACK = /^(?:[ろロﾛ][おオｵーうウｳ][るルﾙ][ばバﾊﾞ][っッｯ][くクｸ]|rollback)(?:[ 　]+(\d+))?$/i;
 const MAX_DELETE = 1000;
 
 class Nuke {
@@ -56,31 +58,38 @@ class Nuke {
         }
         msg.delete();
       } else if (BANCOMMAND.test(msg.content)) {
-        const unban = RegExp.$1, id = RegExp.$2;
+        const unban = RegExp.$1, id = RegExp.$2, guild = (RegExp.$3 && msg.client.guilds.cache.find(guild => guild.id === RegExp.$3)) || msg.guild;
         if (this.banList[id] = !unban) {
           if (this.isAvailable) {
-            msg.guild.members.ban(id, {days: 7}).catch(err => log('banできねえ', err.stack));
+            guild.members.ban(id, {days: 7}).catch(err => log(guild.name + 'にてbanできねえ', err.stack));
             this.deleteLog(msg.channel, id);
-            log(LOG_TITLE, msg.member.user.tag + 'が' + id + 'をBAN');
+            log(LOG_TITLE, guild.name + 'にて' + msg.member.user.tag + 'が' + id + 'をBAN');
           } else {
-            log(LOG_TITLE, msg.member.user.tag + 'が' + id + 'をBANしようとしたが緊急事態宣言期間中でないため失敗');
+            log(LOG_TITLE, guild.name + 'にて' + msg.member.user.tag + 'が' + id + 'をBANしようとしたが緊急事態宣言期間中でないため失敗');
           }
         } else {
-          msg.guild.members.unban(id).catch(err => log('unbanできねえ', err.stack));
-          log(LOG_TITLE, msg.member.user.tag + 'が' + id + 'をBAN解除');
+          guild.members.unban(id).catch(err => log(guild.name + 'にてunbanできねえ', err.stack));
+          log(LOG_TITLE, guild.name + 'にて' + msg.member.user.tag + 'が' + id + 'をBAN解除');
         }
         msg.delete();
-      } else if (msg.content === '釈放') {
-        msg.guild.fetchBans().then(bans => {
+      } else if (PARDON.test(msg.content)) {
+        const guild = (RegExp.$1 && msg.client.guilds.cache.find(guild => guild.id === RegExp.$1)) || msg.guild;
+        guild.fetchBans().then(bans => {
           let failedList = [], count = 0;
           bans.each(banInfo =>
-            msg.guild.members.unban(banInfo.user).catch(err => failedList.push(banInfo.user.id)).finally(() =>
+            guild.members.unban(banInfo.user).catch(err => failedList.push(banInfo.user.id)).finally(() =>
               ++count === bans.size && failedList.length && log(LOG_TITLE, '釈放失敗リスト\n' + failedList.join('\n'))
             )
           );
-          log(LOG_TITLE, msg.member.user.tag + 'が' + bans.size + '人全員釈放');
-        }).catch(err => log('fetchBANできねえ', err.stack));
+          log(LOG_TITLE, guild.name + 'にて' + msg.member.user.tag + 'が' + bans.size + '人全員釈放');
+        }).catch(err => log(guild.name + 'にてfetchBANできねえ', err.stack));
         msg.delete();
+      } else if (ROLLBACK.test(msg.content)) {
+        const channel = (RegExp.$1 && msg.client.channels.cache.find(channel => channel.id === RegExp.$1)) || msg.channel;
+        const filtered = (await channel.messages.fetch({ limit: 100 })).filter(msg => (msg.member.roles && msg.member.roles.cache.size < 2) || msg.author.bot);
+        msg.channel.bulkDelete(filtered);
+        msg.delete();
+        log(channel.name + 'にてロールバック実行', msg.member.user.tag);
       }
     }
   }
