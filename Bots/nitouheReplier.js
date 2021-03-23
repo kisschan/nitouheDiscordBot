@@ -1,8 +1,9 @@
-import { DiscordAPIError} from "discord.js";
+import { BaseBot } from '../Infra/bot.js';
 
-class NitouheReplier {
+class NitouheReplier extends BaseBot {
 
-  constructor() {
+  constructor(client) {
+    super(client);
     this.status = false;
     this.HP = 20;
     this.count = 1;
@@ -102,7 +103,7 @@ class NitouheReplier {
   }
 
    async onMessage(msg) {
-
+        super.onMessage(msg);
         if(msg.guild.id === '794882838666543114'){
          var emoji = `${msg.guild.emojis.cache.find(e => e.name === 'nitouhe')}<`;
          }else if(msg.guild.id === '804641873847255051'){
@@ -152,7 +153,7 @@ class NitouheReplier {
             msg.reply(`デバッグステージは${this.isdebug()}です`)
           }
           
-          if((/(?!\?)(?:はい|入)る[わよか]?$/?.test(msg.content) || 
+          if((/(?!\?)(?:はい|入)る[わよか]?$/.test(msg.content) || 
           (/(?!\?)(?:[すスｽ]る)[わよか]?$/.test(msg.content) || 
           /(?:たまちゃん|tama)/.test(msg.content) || 
           /(?:乞食|[こコｺ][じジｼﾞ][きキｷ]|[死氏市４4しシｼ][ねネﾈ]|[うウｳ失][せセｾ][ろロﾛ]|[消きキｷ][えエｴ][ろロﾛ]|([くクｸ][さサｻ]|臭)い)/.test(msg.content) || 
@@ -219,5 +220,7 @@ class NitouheReplier {
 
   
       }
+
+
 
 export default NitouheReplier;
