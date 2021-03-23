@@ -1,5 +1,3 @@
-import { log } from './Infra/log.js';
-
 const DELETE_COUNT = 3;
 const DELETE_EMOJI = '🗑️';
 
@@ -78,12 +76,6 @@ class MessageReplier {
     } else if(msg.content === 'ping'){
       const version = process.env.npm_package_version;
       msg.reply(`バージョンは${version}です`);
-    } else if(/^(?:[ろロﾛ][おオｵーうウｳ][るルﾙ][ばバﾊﾞ][っッｯ][くクｸ]|rollback)/i.test(msg.content)) {
-      const messages = await msg.channel.messages.fetch({ limit: 100 });
-      const filtered = messages.filter(msg => (msg.member.roles && msg.member.roles.cache.size < 2) || msg.author.bot);
-      msg.channel.bulkDelete(filtered);
-      msg.delete();
-      log('ロールバック実行', msg.member.user.tag);
     }
 
   }
