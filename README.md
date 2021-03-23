@@ -5,7 +5,8 @@
 
 うーむｗ
 
-[法律文書はこちら](https://noonemona.github.io/nitouheDiscordBot/)
+[共和国憲法](https://noonemona.github.io/nitouheDiscordBot/)
+([編集する](https://github.com/nooneMona/nitouheDiscordBot/edit/docs/docs/index.html))
 
 # getting started
 See `.env.sample` and copy the file to named `.env` ( conform to dotenv package )
