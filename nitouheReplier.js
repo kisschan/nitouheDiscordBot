@@ -152,7 +152,7 @@ class NitouheReplier {
             msg.reply(`デバッグステージは${this.isdebug()}です`)
           }
           
-          if((/(?!\?)(?:はい|入)る[わよか]?$/?.test(msg.content) || 
+          if((/(?!\?)(?:はい|入)る[わよか]?$/.test(msg.content) || 
           (/(?!\?)(?:[すスｽ]る)[わよか]?$/.test(msg.content) || 
           /(?:たまちゃん|tama)/.test(msg.content) || 
           /(?:乞食|[こコｺ][じジｼﾞ][きキｷ]|[死氏市４4しシｼ][ねネﾈ]|[うウｳ失][せセｾ][ろロﾛ]|[消きキｷ][えエｴ][ろロﾛ]|([くクｸ][さサｻ]|臭)い)/.test(msg.content) || 
