@@ -1,4 +1,5 @@
-import { log } from './Infra/log.js';
+import { log } from '../Infra/log.js';
+import { BaseBot } from '../Infra/bot.js';
 
 const LOG_TITLE = '緊急事態宣言';
 const ADMIN = /719528011707449436|756871421984112701|807177155095429121/;
@@ -8,9 +9,10 @@ const COMMAND = /^(?:緊急事態宣言|きんじたせ)(解除)?$/;
 const BANCOMMAND = /^(un)?ban[ 　]+(\d+)$/i;
 const MAX_DELETE = 1000;
 
-class Nuke {
+class Nuke extends BaseBot {
 
-  constructor() {
+  constructor(client) {
+    super(client);
     this.isAvailable = false;
     this.count = 0;
     this.banList = {};
@@ -37,6 +39,7 @@ class Nuke {
   }
   
   async onMessage(msg) {
+    super.onMessage(msg);
     if (this.isAvailable && this.banList[msg.member.id]) {
       msg.delete();
       return;

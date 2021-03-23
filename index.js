@@ -9,8 +9,8 @@ import { SetupMongoose } from './Infra/setupMongoose.js';
 const setupMongoose = new SetupMongoose(mongoose);
 setupMongoose.setup(process.env.MONGO_CONNECTION_STRING, 'app', process.env.NODE_ENV);
 
-import Voting from './voting.js';
-import Nuke from './nuke.js';
+import Voting from './Bots/voting.js';
+import Nuke from './Bots/nuke.js';
 import NitouheReplier from './Bots/nitouheReplier.js';
 import MessageReplier from './messageReplier.js';
 import JukeBox from './jukeBox.js';
@@ -20,8 +20,6 @@ import { MongoUserRecordRepository } from './Repository/MongoUserRecordRepositor
 
 const client = new Client();
 
-const voting = new Voting();
-const nuke = new Nuke();
 const messageReplier = new MessageReplier();
 const jukeBox = new JukeBox();
 const arashine = new Arashine();
@@ -30,6 +28,8 @@ const natsukashiimono = new Natsukashiimono(new MongoUserRecordRepository());
 const botHub = new BotHub();
 botHub.add(new ExampleBot(client));
 botHub.add(new NitouheReplier(client));
+botHub.add(new Nuke(client));
+botHub.add(new Voting(client));
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -38,10 +38,7 @@ client.on('ready', () => {
 
 client.on('message', async msg => {
   botHub.onMessage(msg);
-  if (msg.author.bot || !msg.member)
-    return;
-  voting.onMessage(msg);
-  nuke.onMessage(msg);
+  if (msg.author.bot || !msg.member) return;
   if (msg.member.roles.cache.size < 2) {
     arashine.onMessage(msg);
     messageReplier.censorMessage(msg);
