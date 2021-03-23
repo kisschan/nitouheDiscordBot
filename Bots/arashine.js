@@ -13,6 +13,7 @@ class Arashine extends BaseBot {
   }
 
   async onMessage(msg) {
+    super.onMessage(msg);
   
     let guestInfo = this.guestInfo[msg.member.id] || (this.guestInfo[msg.member.id] = {sample: []});
     

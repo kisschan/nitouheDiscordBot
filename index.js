@@ -13,25 +13,24 @@ import Voting from './Bots/voting.js';
 import Nuke from './Bots/nuke.js';
 import NitouheReplier from './Bots/nitouheReplier.js';
 import MessageReplier from './messageReplier.js';
-import JukeBox from './jukeBox.js';
+import JukeBox from './Bots/jukeBox.js';
 import Arashine from './Bots/arashine.js';
 import Natsukashiimono from './Bots/natsukashiimono.js';
 import { MongoUserRecordRepository } from './Repository/MongoUserRecordRepository.js';
 
 const client = new Client();
-
-const messageReplier = new MessageReplier();
-const jukeBox = new JukeBox();
-
 const botHub = new BotHub();
 botHub.add(new ExampleBot(client));
 botHub.add(new NitouheReplier(client));
 botHub.add(new Nuke(client));
 botHub.add(new Voting(client));
 botHub.add(new Arashine(client));
+botHub.add(new JukeBox(client));
 if (setupMongoose.isValid()) {
   botHub.add(new Natsukashiimono(client, new MongoUserRecordRepository()));
 }
+
+const messageReplier = new MessageReplier();
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -41,13 +40,9 @@ client.on('ready', () => {
 client.on('message', async msg => {
   botHub.onMessage(msg);
   if (msg.author.bot || !msg.member) return;
-  if (msg.member.roles.cache.size < 2) {
-    messageReplier.censorMessage(msg);
-    return;
-  }
-  messageReplier.onMessage(msg);
-  jukeBox.onMessage(msg);
   messageReplier.censorMessage(msg);
+  if (msg.member.roles.cache.size < 2) return;
+  messageReplier.onMessage(msg);
 });
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {
@@ -56,8 +51,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 
 client.on('messageReactionAdd', async (msgReaction, user) => {
   botHub.onMessageReactionAdd(msgReaction, user);
-  if (user.bot || !msgReaction.message.guild)
-    return;
+  if (user.bot || !msgReaction.message.guild) return;
   messageReplier.onReactionAdded(msgReaction, user);
 });
 
