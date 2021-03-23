@@ -1,8 +1,9 @@
-import { DiscordAPIError} from "discord.js";
+import { BaseBot } from '../Infra/bot.js';
 
-class NitouheReplier {
+class NitouheReplier extends BaseBot {
 
-  constructor() {
+  constructor(client) {
+    super(client);
     this.status = false;
     this.HP = 20;
     this.count = 1;
@@ -102,7 +103,7 @@ class NitouheReplier {
   }
 
    async onMessage(msg) {
-
+        super.onMessage(msg);
         if(msg.guild.id === '794882838666543114'){
          var emoji = `${msg.guild.emojis.cache.find(e => e.name === 'nitouhe')}<`;
          }else if(msg.guild.id === '804641873847255051'){
@@ -219,5 +220,7 @@ class NitouheReplier {
 
   
       }
+
+
 
 export default NitouheReplier;

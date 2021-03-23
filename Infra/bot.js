@@ -2,6 +2,18 @@
 // それぞれのイベントに対応するメソッドを呼ぶかどうかのフィルター
 const Filterable = {
   onMessageFilter(msg) {
+    return true;
+  },
+  onMessageUpdateFilter(oldMsg, newMsg) {
+    return true;
+  },
+  onMessageReactionAddFilter(msgReaction, user) {
+    return true;
+  },
+}
+
+const BasicFilter = {
+  onMessageFilter(msg) {
     return !msg.author.bot && msg.member
   },
   onMessageUpdateFilter(oldMsg, newMsg) {
@@ -36,7 +48,7 @@ export class BaseBot {
 }
 
 // mix-in https://ja.javascript.info/mixins
-Object.assign(BaseBot.prototype, Filterable)
+Object.assign(BaseBot.prototype, BasicFilter)
 
 /*
  * ボットの実装をDiscord.jsに自動的に割り振るハブです。

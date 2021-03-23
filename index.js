@@ -11,7 +11,7 @@ setupMongoose.setup(process.env.MONGO_CONNECTION_STRING, 'app', process.env.NODE
 
 import Voting from './voting.js';
 import Nuke from './nuke.js';
-import NitouheReplier from './nitouheReplier.js';
+import NitouheReplier from './Bots/nitouheReplier.js';
 import MessageReplier from './messageReplier.js';
 import JukeBox from './jukeBox.js';
 import Arashine from './arashine.js';
@@ -22,7 +22,6 @@ const client = new Client();
 
 const voting = new Voting();
 const nuke = new Nuke();
-const nitouheReplier = new NitouheReplier();
 const messageReplier = new MessageReplier();
 const jukeBox = new JukeBox();
 const arashine = new Arashine();
@@ -30,6 +29,7 @@ const natsukashiimono = new Natsukashiimono(new MongoUserRecordRepository());
 
 const botHub = new BotHub();
 botHub.add(new ExampleBot(client));
+botHub.add(new NitouheReplier(client));
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -42,7 +42,6 @@ client.on('message', async msg => {
     return;
   voting.onMessage(msg);
   nuke.onMessage(msg);
-  nitouheReplier.onMessage(msg);
   if (msg.member.roles.cache.size < 2) {
     arashine.onMessage(msg);
     messageReplier.censorMessage(msg);
