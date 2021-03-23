@@ -63,7 +63,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 });
 
 client.on('messageReactionAdd', async (msgReaction, user) => {
-  botHub.onMessageUpdate(msgReaction, user);
+  botHub.onMessageReactionAdd(msgReaction, user);
   if (user.bot || !msgReaction.message.guild)
     return;
   messageReplier.onReactionAdded(msgReaction, user);

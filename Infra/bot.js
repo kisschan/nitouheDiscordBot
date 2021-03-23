@@ -1,4 +1,17 @@
 
+// それぞれのイベントに対応するメソッドを呼ぶかどうかのフィルター
+const Filterable = {
+  onMessageFilter(msg) {
+    return !msg.author.bot && msg.member
+  },
+  onMessageUpdateFilter(oldMsg, newMsg) {
+    return !newMsg.author.bot && newMessage.member?.roles.cache.size >= 2;
+  },
+  onMessageReactionAddFilter(msgReaction, user) {
+    return !user.bot && msgReaction.message.guild;
+  },
+}
+
 /*
  * Discord.jsのクライアントのイベントを持つクラス。
  * NOTE: ボットの実装は各自このクラスを起点に行う。
@@ -11,7 +24,7 @@ export class BaseBot {
 
   async onReady() {
   }
-  
+
   async onMessage(msg) {
   }
 
@@ -21,6 +34,9 @@ export class BaseBot {
   async onMessageReactionAdd(msgReaction, user) {
   }
 }
+
+// mix-in https://ja.javascript.info/mixins
+Object.assign(BaseBot.prototype, Filterable)
 
 /*
  * ボットの実装をDiscord.jsに自動的に割り振るハブです。
@@ -49,21 +65,33 @@ export class BotHub {
   }
 
   async onMessage(msg) {
-    this.bots.forEach(b => b.onMessage(msg));
+    this.bots.forEach(b => {
+      if (b.onMessageFilter(msg))
+        b.onMessage(msg);
+    });
   }
 
   async onMessageUpdate(oldMsg, newMsg) {
-    this.bots.forEach(b => b.onMessageUpdate(oldMsg, newMsg));
+    this.bots.forEach(b => {
+      if (b.onMessageFilter(oldMsg, newMsg))
+        b.onMessageUpdate(oldMsg, newMsg);
+    });
   }
 
   async onMessageReactionAdd(msgReaction, user) {
-    this.bots.forEach(b => b.onMessageReactionAdd(msgReaction, user));
+    this.bots.forEach(b => {
+      if (b.onMessageReactionAddFilter(msgReaction, user))
+        b.onMessageReactionAdd(msgReaction, user);
+    });
   }
 }
-
 
 export class ExampleBot extends BaseBot {
   onMessage(msg) {
     super.onMessage(msg);
+  }
+
+  onMessageReactionAdd(reaction, user) {
+    super.onMessageReactionAdd(reaction, user);
   }
 }
