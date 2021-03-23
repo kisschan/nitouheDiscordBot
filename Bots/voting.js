@@ -1,6 +1,8 @@
+import { BaseBot } from "../Infra/bot.js";
 
-class voting{
-    constructor(){
+class voting extends BaseBot{
+    constructor(client){
+    super(client);
      this.votename = "";
      this.voteid = "";
      this.voteMembers = [];
