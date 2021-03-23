@@ -1,28 +1,4 @@
-
-// それぞれのイベントに対応するメソッドを呼ぶかどうかのフィルター
-const Filterable = {
-  onMessageFilter(msg) {
-    return true;
-  },
-  onMessageUpdateFilter(oldMsg, newMsg) {
-    return true;
-  },
-  onMessageReactionAddFilter(msgReaction, user) {
-    return true;
-  },
-}
-
-const BasicFilter = {
-  onMessageFilter(msg) {
-    return !msg.author.bot && msg.member
-  },
-  onMessageUpdateFilter(oldMsg, newMsg) {
-    return !newMsg.author.bot && newMessage.member?.roles.cache.size >= 2;
-  },
-  onMessageReactionAddFilter(msgReaction, user) {
-    return !user.bot && msgReaction.message.guild;
-  },
-}
+import { BasicFilter } from './botHubFilter.js';
 
 /*
  * Discord.jsのクライアントのイベントを持つクラス。

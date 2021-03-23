@@ -15,7 +15,7 @@ import NitouheReplier from './Bots/nitouheReplier.js';
 import MessageReplier from './messageReplier.js';
 import JukeBox from './jukeBox.js';
 import Arashine from './arashine.js';
-import { Natsukashiimono } from './Service/natsukashiimono.js';
+import Natsukashiimono from './Service/natsukashiimono.js';
 import { MongoUserRecordRepository } from './Repository/MongoUserRecordRepository.js';
 
 const client = new Client();
@@ -23,13 +23,15 @@ const client = new Client();
 const messageReplier = new MessageReplier();
 const jukeBox = new JukeBox();
 const arashine = new Arashine();
-const natsukashiimono = new Natsukashiimono(new MongoUserRecordRepository());
 
 const botHub = new BotHub();
 botHub.add(new ExampleBot(client));
 botHub.add(new NitouheReplier(client));
 botHub.add(new Nuke(client));
 botHub.add(new Voting(client));
+if (setupMongoose.isValid()) {
+  botHub.add(new Natsukashiimono(client, new MongoUserRecordRepository()));
+}
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -46,9 +48,6 @@ client.on('message', async msg => {
   }
   messageReplier.onMessage(msg);
   jukeBox.onMessage(msg);
-  if (setupMongoose.isValid()) {
-    natsukashiimono.onMessage(msg);
-  }
   messageReplier.censorMessage(msg);
 });
 
