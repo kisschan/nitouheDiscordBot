@@ -20,30 +20,13 @@ export class CountryYamanote {
   // https://github.com/risan/country-flag-emoji/blob/master/src/data.js
   arrangeForJP() {
     const countries = countryFlagEmoji.data;
-    countries.AC.jp = "アセンション島";
-    countries.AC.capital = "ジョージタウン";
-    countries.AC.area = "atlantic";
 
-    countries.AD.jp = "アンドラ";
-    countries.AD.capital = "アンドラ・ラ・ベリャ";
-    countries.AD.area = "europa";
-
-    countries.AE.jp = "アラブ首長国連邦";
-    countries.AE.capital = "アブダビ";
-    countries.AE.area = "middleEast";
-
-    countries.AF.jp = "アフガニスタン";
-    countries.AF.capital = "カブール";
-    countries.AF.area = "asia";
-
-    countries.AG.jp = "アンティグア・バーブーダ";
-    countries.AG.capital = "セント・ジョンズ";
-    countries.AG.area = "caribbean";
-
-    countries.AI.jp = "アンギラ";
-    countries.AI.capital = "バレー";
-    countries.AI.area = "caribbean";
-
+    this.registerToCountries("AC", "アセンション島", "ジョージタウン", "atlantic");
+    this.registerToCountries("AD", "アンドラ", "アンドラ・ラ・ベリャ", "europa");
+    this.registerToCountries("AE", "アラブ首長国連邦", "アブダビ", "middleEast");
+    this.registerToCountries("AF", "アフガニスタン", "カブール", "asia");
+    this.registerToCountries("AG", "アンティグア・バーブーダ", "セント・ジョンズ", "caribbean");
+    this.registerToCountries("AI", "アンギラ", "バレー", "caribbean");
     this.registerToCountries("AL", "アルバニア", "ティラーナ", "europa");
     this.registerToCountries("AM", "アルメニア", "エレバン", "asia");
     this.registerToCountries("AO", "アンゴラ", "ルアンダ", "africa");
@@ -54,6 +37,16 @@ export class CountryYamanote {
     this.registerToCountries("AW", "アルバ", "オラニェスタット", "caribbean");
     this.registerToCountries("AX", "オーランド諸島", "マリエハムン", "europa"); 
     this.registerToCountries("AZ", "アゼルバイジャン", "バクー", "asia"); 
+    this.registerToCountries("BA", "ボスニア・ヘルツェゴビナ", "サラエボ", "europa");
+    this.registerToCountries("BB", "バルバドス", "ブリッジタウン", "caribbean");
+    this.registerToCountries("BD", "バングラデシュ", "ダッカ", "asia");
+    this.registerToCountries("BE", "ベルギー", "ブリュッセル", "europa");
+    this.registerToCountries("BF", "ブルキナ・ファソ", "ワガドゥグー", "africa");
+    this.registerToCountries("BG", "ブルガリア", "ソフィア", "europa");
+    this.registerToCountries("BH", "バーレーン", "マナーマ", "middleEast");
+    this.registerToCountries("BI", "ブルンジ", "ギテガ", "africa");
+    this.registerToCountries("BJ", "ベナン", "ポルト・ノボ", "africa");
+    this.registerToCountries("BL", "サン・バルテルミー島", "グスタビア", "caribbean");
   }
 
 }
