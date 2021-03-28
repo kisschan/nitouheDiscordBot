@@ -36,6 +36,10 @@ export class Moneys {
           msg.react('⚠');
           return;
         }
+        if(msg.member.roles.cache.has('825277808925868062')){
+          msg.react('🔍')
+          return;
+        }
         var money = -50;
         }
 
@@ -45,12 +49,28 @@ export class Moneys {
       
         
         if(rolesarray === '支配人'){
+          if(msg.member.roles.cache.has('822064757908439060')){
+            msg.react('🔍')
+            return;
+          }
           var money = -100000;
         }else if(rolesarray === '上級もなちゃと民'){
+          if(msg.member.roles.cache.has('822065804760842260')){
+            msg.react('🔍')
+            return;
+          }
           var money = -10000;
         }else if(rolesarray === '中級もなちゃと民'){
+          if(msg.member.roles.cache.has('822069302860447764')){
+            msg.react('🔍')
+            return;
+          }
           var money = -1000;
         }else if(rolesarray === '下級もなちゃと民'){
+          if(msg.member.roles.cache.has('822114345416785991')){
+            msg.react('🔍')
+            return;
+          }
           var money = -100;
         }
     
