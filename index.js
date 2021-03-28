@@ -33,7 +33,7 @@ botHub.add(new ExampleBot(client));
 botHub.add(new NitouheReplier(client));
 botHub.add(new Nuke(client));
 botHub.add(new Voting(client));
-
+botHub.add(client,bank);
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   botHub.onReady();

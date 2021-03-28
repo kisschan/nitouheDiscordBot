@@ -1,6 +1,9 @@
-export class Bank {
+import { BotHub } from "../Infra/bot.js";
+
+export class Bank extends BotHub {
 
     constructor(userRecordRepository) {
+      super();
       this.userRecordRepository = userRecordRepository;
     }
   
