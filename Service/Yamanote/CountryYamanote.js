@@ -30,7 +30,7 @@ export class CountryYamanote {
     this.registerToCountries("AL", "アルバニア", "ティラーナ", "europa");
     this.registerToCountries("AM", "アルメニア", "エレバン", "asia");
     this.registerToCountries("AO", "アンゴラ", "ルアンダ", "africa");
-    this.registerToCountries("AQ", "南極", "", "other");
+    this.registerToCountries("AQ", "南極", null, "other");
     this.registerToCountries("AR", "アルゼンチン", "ブエノスアイレス", "southAmerica");
     this.registerToCountries("AR", "アメリカ領サモア", "パゴパゴ", "oceania");
     this.registerToCountries("AT", "オーストリア", "ウィーン", "europa");
@@ -47,6 +47,17 @@ export class CountryYamanote {
     this.registerToCountries("BI", "ブルンジ", "ギテガ", "africa");
     this.registerToCountries("BJ", "ベナン", "ポルト・ノボ", "africa");
     this.registerToCountries("BL", "サン・バルテルミー島", "グスタビア", "caribbean");
+    this.registerToCountries("BM", "バミューダ諸島", "ハミルトン", "caribbean");
+    this.registerToCountries("BN", "ブルネイ", "バンダル・スリ・ブガワン", "aisa");
+    this.registerToCountries("BO", "ボリビア", "スクレ", "southAmerica");
+    this.registerToCountries("BQ", "ボネール、シント・ユースタティウスおよびサバ", null, "southAmerica");
+    this.registerToCountries("BR", "ブラジル", "ブラジリア", "southAmerica");
+    this.registerToCountries("BS", "バハマ", "ナッソー", "latinAmerica");
+    this.registerToCountries("BT", "ブータン", "ティンプー", "asia");
+    this.registerToCountries("BV", "ブーベ島", null, "atlantic");
+    this.registerToCountries("BW", "ボツワナ", "ハボローネ", "africa");
+    this.registerToCountries("BY", "ベラルーシ", "ミンスク", "europa");
+    this.registerToCountries("BZ", "ベリーズ", "ベルモパン", "latinAmerica");
   }
 
 }
