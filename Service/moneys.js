@@ -1,16 +1,22 @@
-import { BotHub } from "../Infra/bot.js";
 
-export class Bank extends BotHub {
+import { BaseBot} from "../Infra/bot.js";
+
+export class Bank extends BaseBot {
 
     constructor(userRecordRepository) {
       super();
+
       this.userRecordRepository = userRecordRepository;
     }
   
     onMessage(msg) {
       if(msg.guild.id === '804641873847255051' || msg.guild.id === '822064180219084820'){
       const userId = msg.member.id
-      const money = 1;
+      var money = 1;
+      if(msg.member.id === '719528011707449436' && msg.content === 'debug'){
+        var money = 1000000;
+      }
+
 
         this.userRecordRepository.addMoneyscore(userId, money, err => {
           if (err) {
