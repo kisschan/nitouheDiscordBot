@@ -20,6 +20,7 @@ export class CountryYamanote {
   // https://github.com/risan/country-flag-emoji/blob/master/src/data.js
   arrangeForJP() {
     const countries = countryFlagEmoji.data;
+    // 全部で258
 
     this.registerToCountries("AC", "アセンション島", "ジョージタウン", "atlantic");
     this.registerToCountries("AD", "アンドラ", "アンドラ・ラ・ベリャ", "europa");
@@ -58,6 +59,26 @@ export class CountryYamanote {
     this.registerToCountries("BW", "ボツワナ", "ハボローネ", "africa");
     this.registerToCountries("BY", "ベラルーシ", "ミンスク", "europa");
     this.registerToCountries("BZ", "ベリーズ", "ベルモパン", "latinAmerica");
+    this.registerToCountries("CA", "カナダ", "オタワ", "america");
+    this.registerToCountries("CC", "ココス諸島", "ウェスト島", "oceania");
+    this.registerToCountries("CD", "コンゴ民主共和国", "キンシャサ", "africa");
+    this.registerToCountries("CF", "中央アフリカ共和国", "バンギ", "africa");
+    this.registerToCountries("CG", "コンゴ共和国", "ブラザビル", "africa");
+    this.registerToCountries("CH", "スイス", "ベルン");
+    this.registerToCountries("CI", "コートジボワール", "ヤムスクロ", "africa");
+    this.registerToCountries("CK", "クック諸島", "アバルア", "oceania");
+    this.registerToCountries("CL", "チリ", "サンティアゴ", "southAmerica");
+    this.registerToCountries("CM", "カメルーン", "ヤウンデ", "africa");
+    this.registerToCountries("CN", "中国", "北京", "asia");
+    this.registerToCountries("CO", "コロンビア", "ボゴタ", "southAmerica");
+    this.registerToCountries("CP", "クリッパートン島", null, "other");
+    this.registerToCountries("CR", "コスタリカ", "サン・ホセ", "latinAmerica");
+    this.registerToCountries("CU", "キューバ", "ハバナ", "caribbean");
+    this.registerToCountries("CV", "カーボベルデ", "プライア", "africa");
+    this.registerToCountries("CW", "キュラソー", "ウィレムスタット", "caribbean");
+    this.registerToCountries("CX", "クリスマス島", "フライング・フィッシュ・コーブ", "oceania");
+    this.registerToCountries("CY", "キプロス", "ニコシア", "middleEast");
+    this.registerToCountries("CZ", "チェコ", "プラハ", "europa");
   }
 
 }
