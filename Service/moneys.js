@@ -48,25 +48,25 @@ export class Moneys {
           return;}
       
         
-        if(rolesarray === '支配人'){
+        if(rolename === '支配人'){
           if(msg.member.roles.cache.has('822064757908439060')){
             msg.react('🔍')
             return;
           }
           var money = -100000;
-        }else if(rolesarray === '上級もなちゃと民'){
+        }else if(rolename === '上級もなちゃと民'){
           if(msg.member.roles.cache.has('822065804760842260')){
             msg.react('🔍')
             return;
           }
           var money = -10000;
-        }else if(rolesarray === '中級もなちゃと民'){
+        }else if(rolename === '中級もなちゃと民'){
           if(msg.member.roles.cache.has('822069302860447764')){
             msg.react('🔍')
             return;
           }
           var money = -1000;
-        }else if(rolesarray === '下級もなちゃと民'){
+        }else if(rolename === '下級もなちゃと民'){
           if(msg.member.roles.cache.has('822114345416785991')){
             msg.react('🔍')
             return;
@@ -80,13 +80,13 @@ export class Moneys {
            msg.reply('ロールが買えました')
            if(msg.content.indexOf('うんこ') !== -1){
              msg.member.roles.add('825277808925868062');}
-            else if(rolesarray === '支配人'){
+            else if(rolename === '支配人'){
               msg.member.roles.add('822064757908439060');
-            }else if(rolesarray === '上級もなちゃと民'){
+            }else if(rolename === '上級もなちゃと民'){
               msg.member.roles.add('822065804760842260');
-            }else if(rolesarray === '中級もなちゃと民'){
+            }else if(rolename === '中級もなちゃと民'){
               msg.member.roles.add('822069302860447764');
-            }else if(rolesarray === '下級もなちゃと民'){
+            }else if(rolename === '下級もなちゃと民'){
               msg.member.roles.add('822114345416785991');
             }
            this.userRecordRepository.addMoneyscore(userId, money, err => {
