@@ -1,4 +1,4 @@
-export class Moneys {
+export class Bank {
 
     constructor(userRecordRepository) {
       this.userRecordRepository = userRecordRepository;

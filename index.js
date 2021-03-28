@@ -16,8 +16,9 @@ import MessageReplier from './messageReplier.js';
 import JukeBox from './jukeBox.js';
 import Arashine from './arashine.js';
 import { Natsukashiimono } from './Service/natsukashiimono.js';
-import { Moneys } from './Service/moneys.js'
+import { Bank } from './Service/moneys.js'
 import { MongoUserRecordRepository } from './Repository/MongoUserRecordRepository.js';
+import { MongoMoneyRecordRepository } from './Repository/MongoMoneyRecordRepository.js'
 
 const client = new Client();
 
@@ -25,7 +26,7 @@ const messageReplier = new MessageReplier();
 const jukeBox = new JukeBox();
 const arashine = new Arashine();
 const natsukashiimono = new Natsukashiimono(new MongoUserRecordRepository());
-const moneys = new Moneys(new MongoUserRecordRepository());
+const bank = new Bank(new MongoMoneyRecordRepository());
 
 const botHub = new BotHub();
 botHub.add(new ExampleBot(client));
@@ -50,7 +51,7 @@ client.on('message', async msg => {
   jukeBox.onMessage(msg);
   if (setupMongoose.isValid()) {
     natsukashiimono.onMessage(msg);
-    moneys.onMessage(msg);
+    bank.onMessage(msg);
   }
   messageReplier.censorMessage(msg);
 });
