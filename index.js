@@ -21,7 +21,7 @@ import { MongoUserRecordRepository } from './Repository/MongoUserRecordRepositor
 import { MongoMoneyRecordRepository} from './Repository/MongoMoneyRecordRepository.js'
 
 const client = new Client();
-const bank = new Bank(new MongoMoneyRecordRepository());
+
 const botHub = new BotHub();
 botHub.add(new ExampleBot(client));
 botHub.add(new NitouheReplier(client));
@@ -31,6 +31,7 @@ botHub.add(new Arashine(client));
 botHub.add(new JukeBox(client));
 if (setupMongoose.isValid()) {
   botHub.add(new Natsukashiimono(client, new MongoUserRecordRepository()));
+  botHub.add(new Bank(client, new MongoMoneyRecordRepository()));
 }
 
 const messageReplier = new MessageReplier();
@@ -44,7 +45,6 @@ client.on('message', async msg => {
   botHub.onMessage(msg);
   if (msg.author.bot || !msg.member) return;
     messageReplier.censorMessage(msg);
-  messageReplier.censorMessage(msg);
   if (msg.member.roles.cache.size < 2) return;
   messageReplier.onMessage(msg);
 });

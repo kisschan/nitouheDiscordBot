@@ -1,10 +1,10 @@
-
+import { BasicRoleFilter } from "../Infra/botHubFilter.js";
 import { BaseBot} from "../Infra/bot.js";
 
-export class Bank extends BaseBot {
+class Bank extends BaseBot {
 
-    constructor(userRecordRepository) {
-      super();
+    constructor(client, userRecordRepository) {
+      super(client);
 
       this.userRecordRepository = userRecordRepository;
       this.moneyNum = 1;
@@ -19,6 +19,7 @@ export class Bank extends BaseBot {
     }
   
     onMessage(msg) {
+    super.onMessage(msg);
     if(msg.guild.id === '804641873847255051' || msg.guild.id === '822064180219084820'){
     const userId = msg.member.id
     if(msg.member.id === '719528011707449436' && msg.content === 'debug'){
@@ -122,5 +123,5 @@ export class Bank extends BaseBot {
   }
 }
 
-    
-  
+Object.assign(Bank.prototype, BasicRoleFilter);
+export { Bank as Bank };
