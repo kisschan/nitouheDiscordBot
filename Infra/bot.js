@@ -8,6 +8,7 @@ export class BaseBot {
 
   constructor(client) {
     this.client = client;
+    this.botName = this.constructor.name;
   }
 
   async onReady() {
@@ -39,13 +40,14 @@ export class BotHub {
 
   add(bot) {
     if (!(bot instanceof BaseBot)) {
-      console.error('BotHubに追加できるのはBaseBotの派生クラスのみです。');
+      console.error(`Bothub: BotHubに追加できるのはBaseBotの派生クラスのみです。`);
       return;
     }
     if (!bot.client) {
-      console.warn('BaseBotがclientを持っていません。');
+      console.warn('Bothub: BaseBotがclientを持っていません。');
     }
     this.bots.push(bot);
+    console.log(`Bothub: ${bot.botName}が登録されました`);
   }
 
   async onReady() {
