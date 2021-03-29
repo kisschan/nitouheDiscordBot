@@ -79,6 +79,14 @@ export class CountryYamanote {
     this.registerToCountries("CX", "クリスマス島", "フライング・フィッシュ・コーブ", "oceania");
     this.registerToCountries("CY", "キプロス", "ニコシア", "middleEast");
     this.registerToCountries("CZ", "チェコ", "プラハ", "europa");
+    this.registerToCountries("DE", "ドイツ", "ベルリン", "europa");
+    this.registerToCountries("DG", "ディエゴ・ガルシア島", null, "other");
+    this.registerToCountries("DJ", "ジブチ", "ジブチ市", "africa");
+    this.registerToCountries("DK", "デンマーク", "コペンハーゲン", "europa");
+    this.registerToCountries("DM", "ドミニカ国", "ロゾー", "caribbean");
+    this.registerToCountries("DO", "ドミニカ共和国", "サント・ドミンゴ", "caribbean");
+    this.registerToCountries("DZ", "アルジェリア", "アルジェ", "africa");
+
   }
 
 }
