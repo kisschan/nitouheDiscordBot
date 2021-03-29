@@ -1,6 +1,8 @@
+import { BaseBot } from "../Infra/bot.js";
 
-class voting{
-    constructor(){
+class voting extends BaseBot{
+    constructor(client){
+    super(client);
      this.votename = "";
      this.voteid = "";
      this.voteMembers = [];
@@ -207,6 +209,7 @@ class voting{
  
 
     async onMessage(msg){
+        super.onMessage(msg);
 
       if(msg.member.roles.cache.size < 2 || msg.member.id === "813000558503788584" || msg.member.id === '812703512407834686')
        return;

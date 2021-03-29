@@ -1,6 +1,5 @@
 
 import { NitoheScore } from '../Entity/NitoheScore.js'
-
 export class MongoUserRecordRepository {
   addNitouheScore(discordId, score, callback) {
     const obj = new NitoheScore({
