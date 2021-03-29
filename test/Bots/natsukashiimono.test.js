@@ -1,4 +1,4 @@
-import { Natsukashiimono } from '../../Service/natsukashiimono.js';
+import Natsukashiimono from '../../Bots/natsukashiimono.js';
 
 test('点数の付与', done => {
   const baseRepositoryMock = {
@@ -25,7 +25,7 @@ test('点数の付与', done => {
       done();
     }
   }
-  let natsukashiimono = new Natsukashiimono(repositorySuccessMock);
+  let natsukashiimono = new Natsukashiimono(null, repositorySuccessMock);
   natsukashiimono.onMessage(msgMock);
   msgMock.content = "<@!12345>はい5てん";
   natsukashiimono.onMessage(msgMock);
@@ -42,7 +42,7 @@ test('点数の付与', done => {
       done();
     }
   }
-  natsukashiimono = new Natsukashiimono(repositoryErrorMock);
+  natsukashiimono = new Natsukashiimono(null, repositoryErrorMock);
   natsukashiimono.onMessage(errMsgMock);
 });
 
@@ -95,10 +95,10 @@ test('点数の集計', done => {
     content: "スコア",
     member: { id: "12345" },
   };
-  let natsukashiimono = new Natsukashiimono(repositorySuccessMock);
+  let natsukashiimono = new Natsukashiimono(null, repositorySuccessMock);
   natsukashiimono.onMessage(msgMock);
-  natsukashiimono = new Natsukashiimono(repositorySuccessButEmptyMock);
+  natsukashiimono = new Natsukashiimono(null, repositorySuccessButEmptyMock);
   natsukashiimono.onMessage(msgMock);
-  natsukashiimono = new Natsukashiimono(repositoryErrorMock);
+  natsukashiimono = new Natsukashiimono(null, repositoryErrorMock);
   natsukashiimono.onMessage(errMsgMock);
 })

@@ -1,4 +1,4 @@
-import Arashine from '../arashine.js';
+import Arashine from '../../Bots/arashine.js';
 
 jest.useFakeTimers();
 
