@@ -18,11 +18,11 @@ import Arashine from './Bots/arashine.js';
 import Natsukashiimono from './Bots/natsukashiimono.js';
 import { Bank } from './Service/moneys.js'
 import { MongoUserRecordRepository } from './Repository/MongoUserRecordRepository.js';
-import { Yamanote } from './Service/yamanote.js';
+import { MongoMoneyRecordRepository } from './Repository/MongoMoneyRecordRepository.js';
+import Yamanote from './Bots/yamanote.js';
 
 const client = new Client();
 
-const yamanote = new Yamanote();
 const botHub = new BotHub();
 botHub.add(new ExampleBot(client));
 botHub.add(new NitouheReplier(client));
@@ -30,6 +30,7 @@ botHub.add(new Nuke(client));
 botHub.add(new Voting(client));
 botHub.add(new Arashine(client));
 botHub.add(new JukeBox(client));
+botHub.add(new Yamanote(client));
 if (setupMongoose.isValid()) {
   botHub.add(new Natsukashiimono(client, new MongoUserRecordRepository()));
   botHub.add(new Bank(client, new MongoMoneyRecordRepository()));
@@ -48,7 +49,6 @@ client.on('message', async msg => {
     messageReplier.censorMessage(msg);
   if (msg.member.roles.cache.size < 2) return;
   messageReplier.onMessage(msg);
-  yamanote.onMessage(msg);
 });
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {

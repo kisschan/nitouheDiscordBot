@@ -1,13 +1,17 @@
+import { BaseBot } from "../Infra/bot.js";
+import { BasicRoleFilter } from "../Infra/botHubFilter.js";
 import { CountryYamanote } from "./Yamanote/CountryYamanote.js";
 
-export class Yamanote {
+class Yamanote extends BaseBot {
 
-  constructor() {
+  constructor(client) {
+    super(client);
     this.state = yamanoteStateTypes.stop;
     this.mode = null;
   }
 
   async onMessage(msg) {
+    super.onMessage(msg);
     switch(this.state) {
       case yamanoteStateTypes.stop:
         this.onMessageStopped(msg);
@@ -55,3 +59,6 @@ const yamanoteStateTypes = {
 const yamanoteModeTypes = {
   country: 'country'
 }
+Object.assign(Yamanote.prototype, BasicRoleFilter);
+
+export default Yamanote;
