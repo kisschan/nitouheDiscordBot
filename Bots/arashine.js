@@ -1,14 +1,19 @@
+import { BaseBot } from "../Infra/bot.js";
+import { BasicNoRoleFilter } from "../Infra/botHubFilter.js";
+
 const REPEAT_LIMIT = 2;
 const SAMPLING_LENGTH = 3;
 const SPEED_LIMIT = 3000;
 
-class Arashine {
+class Arashine extends BaseBot {
 
-  constructor() {
+  constructor(client) {
+    super(client);
     this.guestInfo = {};
   }
 
   async onMessage(msg) {
+    super.onMessage(msg);
   
     let guestInfo = this.guestInfo[msg.member.id] || (this.guestInfo[msg.member.id] = {sample: []});
     
@@ -30,6 +35,6 @@ class Arashine {
   }
 
 }
-
+Object.assign(Arashine.prototype, BasicNoRoleFilter);
 
 export default Arashine;

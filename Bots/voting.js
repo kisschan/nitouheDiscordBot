@@ -209,6 +209,7 @@ class voting extends BaseBot{
  
 
     async onMessage(msg){
+        super.onMessage(msg);
 
       if(msg.member.roles.cache.size < 2 || msg.member.id === "813000558503788584" || msg.member.id === '812703512407834686')
        return;

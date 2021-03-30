@@ -1,6 +1,8 @@
 import random from 'random';
-import { log } from './Infra/log.js';
-import { getYtdlConnectionDispatcher } from './Infra/youtubeConnection.js';
+import { BaseBot } from '../Infra/bot.js';
+import { BasicRoleFilter } from '../Infra/botHubFilter.js';
+import { log } from '../Infra/log.js';
+import { getYtdlConnectionDispatcher } from '../Infra/youtubeConnection.js';
 
 const JUKEBOXCH_PATTERN = /^動画bgm/i;
 const REPLACE_IDLIST = {'804051889909006427': '768556789636792372'};
@@ -24,14 +26,16 @@ const playMusic = function(req, jukebox) {
   
 };
 
-class JukeBox {
+class JukeBox extends BaseBot {
 
-  constructor() {
+  constructor(client) {
+    super(client);
     this.lastRequest = this.cancelVoted = null;
     this.requestBox = {};
   }
 
   async onMessage(msg) {
+    super.onMessage(msg);
     if (!JUKEBOXCH_PATTERN.test(msg.channel.name))
       return;
     var matches = msg.content.match(/https?:\/\/(?:www\.youtube\.com|youtu\.be).+/g);
@@ -101,5 +105,6 @@ class JukeBox {
     }
   }
 }
+Object.assign(JukeBox.prototype, BasicRoleFilter);
 
 export default JukeBox;

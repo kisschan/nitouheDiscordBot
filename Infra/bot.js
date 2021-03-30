@@ -1,28 +1,4 @@
-
-// それぞれのイベントに対応するメソッドを呼ぶかどうかのフィルター
-const Filterable = {
-  onMessageFilter(msg) {
-    return true;
-  },
-  onMessageUpdateFilter(oldMsg, newMsg) {
-    return true;
-  },
-  onMessageReactionAddFilter(msgReaction, user) {
-    return true;
-  },
-}
-
-const BasicFilter = {
-  onMessageFilter(msg) {
-    return !msg.author.bot && msg.member
-  },
-  onMessageUpdateFilter(oldMsg, newMsg) {
-    return !newMsg.author.bot && newMessage.member?.roles.cache.size >= 2;
-  },
-  onMessageReactionAddFilter(msgReaction, user) {
-    return !user.bot && msgReaction.message.guild;
-  },
-}
+import { BasicFilter } from './botHubFilter.js';
 
 /*
  * Discord.jsのクライアントのイベントを持つクラス。
@@ -32,6 +8,7 @@ export class BaseBot {
 
   constructor(client) {
     this.client = client;
+    this.botName = this.constructor.name;
   }
 
   async onReady() {
@@ -63,13 +40,14 @@ export class BotHub {
 
   add(bot) {
     if (!(bot instanceof BaseBot)) {
-      console.error('BotHubに追加できるのはBaseBotの派生クラスのみです。');
+      console.error(`Bothub: BotHubに追加できるのはBaseBotの派生クラスのみです。`);
       return;
     }
     if (!bot.client) {
-      console.warn('BaseBotがclientを持っていません。');
+      console.warn('Bothub: BaseBotがclientを持っていません。');
     }
     this.bots.push(bot);
+    console.log(`Bothub: ${bot.botName}が登録されました`);
   }
 
   async onReady() {
