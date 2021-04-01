@@ -95,6 +95,12 @@ export class CountryYamanote {
     this.registerToCountries("ES", "スペイン", "マドリード", "europa");
     this.registerToCountries("ET", "エチオピア", "アジス・アベバ", "africa");
     this.registerToCountries("EU", "ヨーロッパ連合", null, "other");
+    this.registerToCountries("FI", "フィンランド", "ヘルシンキ", "europa");
+    this.registerToCountries("FJ", "フィジー", "スバ", "europa");
+    this.registerToCountries("FK", "フォークランド諸島", "スタンリー", "atlantic");
+    this.registerToCountries("FM", "ミクロネシア連邦", "パリキール", "oceania");
+    this.registerToCountries("FO", "フェロー諸島", "トースハウン", "other");
+    this.registerToCountries("FR", "フランス", "パリ", "europa");
   }
 
 }
