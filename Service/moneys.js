@@ -8,14 +8,29 @@ class Bank extends BaseBot {
 
       this.userRecordRepository = userRecordRepository;
       this.moneyNum = 1;
+      this.Moneymultiple = 1;
     }
 
     ismoney(){
       return this.moneyNum;
     }
 
+    ismoneymultiple(){
+      return this.Moneymultiple;
+    }
+
     addmoney(dealmoney){
      this.moneyNum = dealmoney;
+    }
+    
+    moneymultiple(multiple,boostmin,callback){
+     this.Moneymultiple = multiple;
+     setTimeout(callback,boostmin*1000*60);
+    }
+
+    boostfin(msg){
+     this.Moneymultiple = 1;
+     msg.reply('ブーストは終わりました');
     }
   
     onMessage(msg) {
@@ -25,7 +40,7 @@ class Bank extends BaseBot {
     if(msg.member.id === '719528011707449436' && msg.content === 'debug'){
     this.addmoney(100000);
     }else{
-    this.addmoney(1);
+    this.addmoney(1*this.ismoneymultiple())
     }
     const money = this.ismoney();
 
@@ -48,7 +63,7 @@ class Bank extends BaseBot {
     })
     }
     if(/^[$＄]/.test(msg.content)){
-    const rolesarray = ['うんこ','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民'];
+    const rolesarray = ['うんこ','ブースト','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民'];
     const rolename = msg.content.slice(1);
     const userId = msg.member.id
     if(rolesarray.indexOf(rolename) === -1){
@@ -66,7 +81,7 @@ class Bank extends BaseBot {
     this.addmoney(-50);
     }
 
-   if(rolesarray.indexOf(rolename,1) !== -1 && msg.guild.id === '804641873847255051'){
+   if(rolesarray.indexOf(rolename,2) !== -1 && msg.guild.id === '804641873847255051'){
     msg.reply('指定されたロールはこのギルドにありません');
     return;}
       
@@ -95,6 +110,12 @@ class Bank extends BaseBot {
     return;
     }
     this.addmoney(-100);
+    }else if(rolename === 'ブースト'){
+    if(this.ismoneymultiple() !== 1){
+    msg.react('🔍')
+    return;
+    }
+    this.addmoney(-250);
     }
 
    const money = this.ismoney();
@@ -102,7 +123,7 @@ class Bank extends BaseBot {
     this.userRecordRepository.findMoneyByDiscordId(msg.member.id, (err, result) => {
     if(err) return;
     if(result.reduce((a, c) => a + c.money, 0) + money > 0){
-    msg.reply('ロールが買えました')
+    msg.reply('購入できました')
     if(msg.content.indexOf('うんこ') !== -1){
     msg.member.roles.add('825277808925868062');}
     else if(rolename === '支配人'){
@@ -113,6 +134,11 @@ class Bank extends BaseBot {
     msg.member.roles.add('822069302860447764');
     }else if(rolename === '下級もなちゃと民'){
     msg.member.roles.add('822114345416785991');
+    }else if(rolename === 'ブースト'){
+    this.moneymultiple(2,60,() =>{
+    this.boostfin(msg);
+    });
+    msg.reply('1時間の間、インジャネドルの獲得が二倍になった');
     }
     this.userRecordRepository.addMoneyscore(userId, money, err => {
     msg.react(err?'⚠':'💸');
