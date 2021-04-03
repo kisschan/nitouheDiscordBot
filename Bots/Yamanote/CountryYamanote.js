@@ -101,7 +101,26 @@ export class CountryYamanote {
     this.registerToCountries("FM", "ミクロネシア連邦", "パリキール", "oceania");
     this.registerToCountries("FO", "フェロー諸島", "トースハウン", "other");
     this.registerToCountries("FR", "フランス", "パリ", "europa");
-  }
+    this.registerToCountries("GA", "ガボン", "リーブルビル", "africa");
+    this.registerToCountries("GB", "イギリス", "ロンドン", "europa");
+    this.registerToCountries("GD", "グレナダ", "セント・ジョージス", "caribbean");
+    this.registerToCountries("GE", "ジョージア", "トビリシ", "europa");
+    this.registerToCountries("GF", "フランス領ギアナ", "カイエンヌ", "southAmerica");
+    this.registerToCountries("GG", "ガーンジー島", null, "other");
+    this.registerToCountries("GH", "ガーナ", "アクラ", "africa");
+    this.registerToCountries("GI", "ジブラルタル", "ジブラルタル", "other");
+    this.registerToCountries("GL", "グリーンランド", null, "other");
+    this.registerToCountries("GM", "ガンビア", "バンジュル", "africa");
+    this.registerToCountries("GN", "ギニア", "コナクリ", "africa");
+    this.registerToCountries("GP", "グアドループ", "バセテール", "other");
+    this.registerToCountries("GQ", "赤道ギニア", "マラボ", "africa");
+    this.registerToCountries("GR", "ギリシャ", "アテネ", "europa");
+    this.registerToCountries("GS", "サウスジョージア・サウスサンドウィッチ諸島", "キング・エドワード・ポイント", "other");
+    this.registerToCountries("GT", "グアテマラ", "グアテマラ", "latinAmerica");
+    this.registerToCountries("GU", "グアム", "ハガニア", "oceania");
+    this.registerToCountries("GW", "ギニアビサウ", "ビサウ", "africa");
+    this.registerToCountries("GY", "ガイアナ", "ジョージ・タウン", "africa");
+  },
 
 }
 
