@@ -63,7 +63,7 @@ class Bank extends BaseBot {
     })
     }
     if(/^[$＄]/.test(msg.content)){
-    const rolesarray = ['うんこ','ブースト','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民'];
+    const rolesarray = ['うんこ','ブースト','強ブースト','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民'];
     const rolename = msg.content.slice(1);
     const userId = msg.member.id
     if(rolesarray.indexOf(rolename) === -1){
@@ -81,7 +81,7 @@ class Bank extends BaseBot {
     this.addmoney(-50);
     }
 
-   if(rolesarray.indexOf(rolename,2) !== -1 && msg.guild.id === '804641873847255051'){
+   if(rolesarray.indexOf(rolename,3) !== -1 && msg.guild.id === '804641873847255051'){
     msg.reply('指定されたロールはこのギルドにありません');
     return;}
       
@@ -116,6 +116,12 @@ class Bank extends BaseBot {
     return;
     }
     this.addmoney(-250);
+    }else if(rolename === '強ブースト'){
+    if(this.ismoneymultiple() !== 1){
+    msg.react('🔍')
+    return; 
+    }
+    this.addmoney(-1000);
     }
 
    const money = this.ismoney();
@@ -138,7 +144,12 @@ class Bank extends BaseBot {
     this.moneymultiple(2,60,() =>{
     this.boostfin(msg);
     });
-    msg.reply('1時間の間、インジャネドルの獲得が二倍になった');
+    msg.reply(`1時間の間、インジャネドルの獲得が${this.ismoneymultiple()}倍になった`);
+    }else if(rolename === '強ブースト'){
+    this.moneymultiple(5,80,() =>{
+    this.boostfin(msg);
+    });
+    msg.reply(`1.2時間の間、インジャネドルの獲得が${this.ismoneymultiple()}倍になった`);
     }
     this.userRecordRepository.addMoneyscore(userId, money, err => {
     msg.react(err?'⚠':'💸');

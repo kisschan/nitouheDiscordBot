@@ -109,6 +109,9 @@ class NitouheReplier extends BaseBot {
          }else if(msg.guild.id === '804641873847255051'){
          var emoji = `${msg.guild.emojis.cache.find(e => e.name === 'anzen_kisuke')}<`;
          }
+        if(emoji === void 0){
+        var emoji = `🐱<`
+        }
     
         if(this.isBlocklist(msg))
           return;
@@ -116,7 +119,7 @@ class NitouheReplier extends BaseBot {
           if(msg.content === '!on' && this.isHP()>0){
             this.on();
             msg.reply(`${emoji}はいおは`)
-            this.deleteHP();
+            this.deleteHP(msg);
           }else if(msg.content === '!off'){
             this.off();
           }
