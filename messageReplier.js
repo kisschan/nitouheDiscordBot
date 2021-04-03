@@ -81,6 +81,7 @@ class MessageReplier {
   }
 
    async onReactionAdded(msgReaction, user) {
+    if(!msgReaction.message.author.bot) return;
      if (
        msgReaction.emoji.name === DELETE_EMOJI &&
        msgReaction.users.cache.filter(user => {
@@ -95,7 +96,7 @@ class MessageReplier {
        getContents(msg).forEach(content => this.deletedContents[content] = true);
        return;
      }
-     msgReaction.message.react(msgReaction.emoji);
+    msgReaction.message.react(msgReaction.emoji);
    }
 
    censorMessage(msg) {
