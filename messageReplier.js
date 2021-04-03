@@ -95,7 +95,9 @@ class MessageReplier {
        getContents(msg).forEach(content => this.deletedContents[content] = true);
        return;
      }
-     if(!msgReaction.message.author.bot)msgReaction.message.react(msgReaction.emoji);
+     if(!msgReaction.message.author.bot){
+       msgReaction.message.react(msgReaction.emoji);
+      }
    }
 
    censorMessage(msg) {
