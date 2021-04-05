@@ -9,6 +9,8 @@ class Bank extends BaseBot {
       this.userRecordRepository = userRecordRepository;
       this.moneyNum = 1;
       this.Moneymultiple = 1;
+      this.PreUNIX = 0;
+      this.Autoboost = 0;
     }
 
     ismoney(){
@@ -18,6 +20,19 @@ class Bank extends BaseBot {
     ismoneymultiple(){
       return this.Moneymultiple;
     }
+
+    isDate(){
+      return new Date();
+    }
+
+    ispreUNIX(){
+      return this.PreUNIX;
+    }
+
+    isautoboost(){
+      return this.Autoboost;
+    }
+
 
     addmoney(dealmoney){
      this.moneyNum = dealmoney;
@@ -32,17 +47,46 @@ class Bank extends BaseBot {
      this.Moneymultiple = 1;
      msg.reply('ブーストは終わりました');
     }
+
+    preUNIX(){
+     this.PreUNIX = Math.floor(this.isDate().getTime()/1000);
+    }
+
+    autoboost(notchathour){
+      this.Autoboost = notchathour * 100;
+    }
+
+    resetautoboost(){
+      this.Autoboost = 0;
+    }
+
+  
   
     onMessage(msg) {
     super.onMessage(msg);
     if(msg.guild.id === '804641873847255051' || msg.guild.id === '822064180219084820'){
     const userId = msg.member.id
+    if(this.ispreUNIX() !== 0){
+    const nowUNIX = Math.floor(this.isDate().getTime()/1000);
+    const CalUNIX = Math.floor((nowUNIX - this.ispreUNIX())/3600);
+    if(CalUNIX > 0){
+    this.autoboost(CalUNIX);
+    }
+    }
     if(msg.member.id === '719528011707449436' && msg.content === 'debug'){
     this.addmoney(100000);
     }else{
-    this.addmoney(1*this.ismoneymultiple())
+    this.addmoney(1*this.ismoneymultiple() + this.isautoboost())
     }
+    if(this.isautoboost() > 0){
+    msg.reply(`過疎防止ボーナスとして${this.isautoboost()}インジャネドルを追加でプレゼント！`)
+    this.resetautoboost();
+    }
+
+    
     const money = this.ismoney();
+    this.preUNIX();
+
 
 
 
