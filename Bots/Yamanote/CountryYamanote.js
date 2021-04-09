@@ -120,7 +120,13 @@ export class CountryYamanote {
     this.registerToCountries("GU", "グアム", "ハガニア", "oceania");
     this.registerToCountries("GW", "ギニアビサウ", "ビサウ", "africa");
     this.registerToCountries("GY", "ガイアナ", "ジョージ・タウン", "africa");
-  },
+    this.registerToCountries("HK", "香港", null, "other");
+    this.registerToCountries("HM", "ハード島とマクドナルド諸島", null, "other");
+    this.registerToCountries("HN", "ホンジュラス", "テグシガルパ", "latinAmerica");
+    this.registerToCountries("HR", "クロアチア", "ザグレブ", "europa");
+    this.registerToCountries("HT", "ハイチ", "ポルトープランス", "caribbean");
+    this.registerToCountries("HU", "ハンガリー", "ブダペスト", "europa");
+  }
 
 }
 
