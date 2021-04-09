@@ -33,6 +33,10 @@
     "testMatch": [
       "**/test/**/*.test.js"
     ],
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**"
+    ],
     "testEnvironment": "node"
   }
 }
