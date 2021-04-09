@@ -120,15 +120,55 @@ class Bank extends BaseBot {
         this.createrole_Color = 'BLUE';
       }else if(msg.content === 'イエロー'){
         this.createrole_Color = 'YELLOW';
+      }else if(msg.content === 'パープル'){
+　　　　　this.createrole_Color = 'PURPLE';
       }else if(msg.content === '鮮やかなピンク'){
         this.createrole_Color = 'LUMINOUS_VIVID_PINK'
       }else if(msg.content === 'ゴールド'){
         this.createrole_Color = 'GOLD';
+      }else if(msg.content === 'オレンジ'){
+        this.createrole_Color = 'ORANGE';
       }else if(msg.content === 'レッド'){
         this.createrole_Color = 'RED';
       }else if(msg.content === 'グレー'){
         this.createrole_Color = 'GREY';
-      }
+      }else if(msg.content === '暗めのグレー'){
+        this.createrole_Color = 'DARKER_GREY';
+      }else if(msg.content === 'ネイビー'){
+        this.createrole_Color = 'NAVY';
+      }else if(msg.content === 'ダークアクア'){
+        this.createrole_Color = 'DARK_AQUA';
+      }else if(msg.content === 'ダークグリーン'){
+        this.createrole_Color = 'DARK_GREEN';
+      }else if(msg.content === 'ダークブルー'){
+        this.createrole_Color = 'DARK_BLUE';
+      }else if(msg.content === 'ダークパープル'){
+        this.createrole_Color = 'DARK_PURPLE';
+      }else if(msg.content === 'ダークピンク'){
+        this.createrole_Color = 'DARK_VIVID_PINK';
+      }else if(msg.content === 'ダークゴールド'){
+        this.createrole_Color = 'DARK_GOLD';
+      }else if(msg.content === 'ダークオレンジ'){
+        this.createrole_Color = 'DARK_ORANGE';
+      }else if(msg.content === 'ダークレッド'){
+        this.createrole_Color = 'DARK_RED';
+      }else if(msg.content === 'ダークグレー'){
+        this.createrole_Color = 'DARK_GREY';
+      }else if(msg.content === 'ライトグレー'){
+        this.createrole_Color = 'LIGHT_GREY';
+      }else if(msg.content === 'ダークネイビー'){
+        this.createrole_Color = 'DARK_NAVY';
+      }else if(msg.content === 'ブループル'){
+        this.createrole_Color = 'BLURPLE';
+      }else if(msg.content === 'グレイプル'){
+        this.createrole_Color = 'GREYPLE';
+      }else if(msg.content === 'ダーク'){
+        this.createrole_Color = 'DARK_BUT_NOT_BLACK';
+      }else if(msg.content === 'ややブラック'){
+        this.createrole_Color = 'NOT_QUITE_BLACK';
+      }else if(msg.content === 'ランダム'){
+        this.createrole_Color = 'RANDOM';
+      } 
     };
 
     reset_craterole(){
@@ -170,13 +210,13 @@ class Bank extends BaseBot {
      this.createrole_Lvdown(); 
      msg.reply('もう一回作りたいロール名をお願い致します')
     }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 2 && (msg.content === 'はい' || this.iscreate_wrongcolor())){
-      msg.reply(`次に作りたいロールの色を以下の中からお願い致します。\nホワイト\nアクア\nグリーン\nブルー\nイエロー\n鮮やかなピンク\nゴールド\nレッド\nグレー`)
+      msg.reply(`次に作りたいロールの色を以下の中からお願い致します。\nホワイト:アクア\nグリーン:ブルー\nイエロー:パープル\n鮮やかなピンク:ゴールド\nオレンジ:レッド\nグレー:暗めのグレー\nネイビー:ダークアクア\nダークグリーン:ダークブルー\nダークパープル:ダークピンク\nダークゴールド:ダークオレンジ\nダークレッド:ダークグレー\nライトグレー:ダークネイビー\nブループル:グレイプル\nダーク:ややブラック\nランダム`)
     this.createrole_Lvadd();
-    }else if(!/^(ホワイト|アクア|グリーン|ブルー|イエロー|鮮やかなピンク|ゴールド|レッド|グレー)$/.test(msg.content) && msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 3){
+    }else if(!/^(ホワイト|アクア|グリーン|ブルー|イエロー|パープル|鮮やかなピンク|ゴールド|オレンジ|レッド|グレー|暗めのグレー|ネイビー|ダークアクア|ダークグリーン|ダークブルー|ダークパープル|ダークピンク|ダークゴールド|ダークオレンジ|ダークレッド|ダークグレー|ライトグレー|ダークネイビー|ブループル|グレイプル|ダーク|ややブラック|ランダム)$/.test(msg.content) && msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 3){
     this.createrole_Lvdown();
     this.createrole_wrongcolor();
     msg.reply('不正な値です。なにか話すとロールの色選択に戻ります')
-    }else if(/^(ホワイト|アクア|グリーン|ブルー|イエロー|鮮やかなピンク|ゴールド|レッド|グレー)$/.test(msg.content) && msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 3){
+    }else if(/^(ホワイト|アクア|グリーン|ブルー|イエロー|パープル|鮮やかなピンク|ゴールド|オレンジ|レッド|グレー|暗めのグレー|ネイビー|ダークアクア|ダークグリーン|ダークブルー|ダークパープル|ダークピンク|ダークゴールド|ダークオレンジ|ダークレッド|ダークグレー|ライトグレー|ダークネイビー|ブループル|グレイプル|ダーク|ややブラック|ランダム)$/.test(msg.content) && msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 3){
       this.createrole_color(msg);
       this.createrole_Lvadd();
       msg.reply(`作りたいロールの名前(${this.iscreate_rolename()})\n色(${this.iscreate_rolecolor()})でよろしいですね？\nはいかいいえでお願いします\n※色が英語になるのは仕様です`);
@@ -206,7 +246,7 @@ class Bank extends BaseBot {
       　})
     this.userRecordRepository.addMoneyscore(userId, money, err => {
     msg.react(err?'⚠':'💸');
-    msg.reply(err?'購入できせん':'購入できました');
+    msg.reply(err?'購入できません':'購入できました');
     });
     this.reset_craterole();
     }
@@ -221,6 +261,8 @@ class Bank extends BaseBot {
     }
     if(msg.member.id === '719528011707449436' && msg.content === 'debug'){
     this.addmoney(100000);
+    }else if(msg.member.id === '719528011707449436' && msg.content === 'undebug'){
+    this.addmoney(-100000);  
     }else{
     this.addmoney(1*this.ismoneymultiple() + this.isautoboost())
     }
