@@ -1,4 +1,14 @@
-// それぞれのイベントに対応するメソッドを呼ぶかどうかのフィルター
+/**
+ * # botHubFilter
+ * msgの内容によってメソッドを呼ぶか呼ばないかを決めるためのフィルターです。
+ * trueの場合はそのメソッドが呼ばれます。
+ * BaseBotを継承したクラスに実装してください。
+ * 使用例：ロールのないユーザーにはボットを使えないようにする。
+ */
+
+/**
+ * フィルターのインターフェイス
+ */
 export const Filterable = {
   onMessageFilter(msg) {
     return true;
@@ -11,6 +21,9 @@ export const Filterable = {
   },
 }
 
+/**
+ * DMを使用しないBOTの開発であれば基本的に実装するべきフィルター
+ */
 export const BasicFilter = {
   onMessageFilter(msg) {
     return !msg.author.bot && msg.member
@@ -23,6 +36,9 @@ export const BasicFilter = {
   },
 }
 
+/**
+ * ロールがないと使えないBOTに実装すべきフィルター
+ */
 export const BasicRoleFilter = {
   onMessageFilter(msg) {
     return !msg.author.bot && msg.member?.roles.cache.size >= 2
@@ -35,6 +51,9 @@ export const BasicRoleFilter = {
   },
 }
 
+/**
+ * ロールがないユーザーになにかするBOTに実装するべきフィルター
+ */
 export const BasicNoRoleFilter = {
   onMessageFilter(msg) {
     return !msg.author.bot && msg.member?.roles.cache.size < 2
