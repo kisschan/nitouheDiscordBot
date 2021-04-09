@@ -1,5 +1,5 @@
 import { BaseBot } from "../Infra/bot.js";
-import { BasicRoleFilter } from "../Infra/botHubFilter.js";
+import { BasicRoleFilter } from "../Infra/Bot/botHubFilter.js";
 
 class Natsukashiimono extends BaseBot {
 
