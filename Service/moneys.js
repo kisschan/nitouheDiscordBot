@@ -1,4 +1,4 @@
-import { BasicRoleFilter } from "../Infra/botHubFilter.js";
+import { BasicRoleFilter } from "../Infra/Bot/botHubFilter.js";
 import { BaseBot} from "../Infra/bot.js";
 
 class Bank extends BaseBot {

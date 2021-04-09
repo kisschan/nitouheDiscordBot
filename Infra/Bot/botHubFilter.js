@@ -29,7 +29,7 @@ export const BasicFilter = {
     return !msg.author.bot && msg.member
   },
   onMessageUpdateFilter(oldMsg, newMsg) {
-    return !newMsg.author.bot && newMessage.member;
+    return !newMsg.author.bot && newMsg.member;
   },
   onMessageReactionAddFilter(msgReaction, user) {
     return !user.bot && msgReaction.message.guild;
@@ -44,7 +44,7 @@ export const BasicRoleFilter = {
     return !msg.author.bot && msg.member?.roles.cache.size >= 2
   },
   onMessageUpdateFilter(oldMsg, newMsg) {
-    return !newMsg.author.bot && newMessage.member?.roles.cache.size >= 2;
+    return !newMsg.author.bot && newMsg.member?.roles.cache.size >= 2;
   },
   onMessageReactionAddFilter(msgReaction, user) {
     return !user.bot && msgReaction.message.guild;
@@ -59,7 +59,7 @@ export const BasicNoRoleFilter = {
     return !msg.author.bot && msg.member?.roles.cache.size < 2
   },
   onMessageUpdateFilter(oldMsg, newMsg) {
-    return !newMsg.author.bot && newMessage.member?.roles.cache.size < 2;
+    return !newMsg.author.bot && newMsg.member?.roles.cache.size < 2;
   },
   onMessageReactionAddFilter(msgReaction, user) {
     return !user.bot && msgReaction.message.guild;
