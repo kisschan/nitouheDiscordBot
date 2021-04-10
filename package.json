@@ -1,6 +1,6 @@
 {
   "name": "nitouhe-discord-bot",
-  "version": "1..0",
+  "version": "1.4.0",
   "engines": {
     "yarn": "1.x"
   },
@@ -33,6 +33,10 @@
     "verbose": true,
     "testMatch": [
       "**/test/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**"
     ],
     "testEnvironment": "node"
   }

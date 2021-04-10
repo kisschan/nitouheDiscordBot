@@ -1,4 +1,14 @@
-// それぞれのイベントに対応するメソッドを呼ぶかどうかのフィルター
+/**
+ * # botHubFilter
+ * msgの内容によってメソッドを呼ぶか呼ばないかを決めるためのフィルターです。
+ * trueの場合はそのメソッドが呼ばれます。
+ * BaseBotを継承したクラスに実装してください。
+ * 使用例：ロールのないユーザーにはボットを使えないようにする。
+ */
+
+/**
+ * フィルターのインターフェイス
+ */
 export const Filterable = {
   onMessageFilter(msg) {
     return true;
@@ -11,36 +21,45 @@ export const Filterable = {
   },
 }
 
+/**
+ * DMを使用しないBOTの開発であれば基本的に実装するべきフィルター
+ */
 export const BasicFilter = {
   onMessageFilter(msg) {
     return !msg.author.bot && msg.member
   },
   onMessageUpdateFilter(oldMsg, newMsg) {
-    return !newMsg.author.bot && newMessage.member;
+    return !newMsg.author.bot && newMsg.member;
   },
   onMessageReactionAddFilter(msgReaction, user) {
     return !user.bot && msgReaction.message.guild;
   },
 }
 
+/**
+ * ロールがないと使えないBOTに実装すべきフィルター
+ */
 export const BasicRoleFilter = {
   onMessageFilter(msg) {
     return !msg.author.bot && msg.member?.roles.cache.size >= 2
   },
   onMessageUpdateFilter(oldMsg, newMsg) {
-    return !newMsg.author.bot && newMessage.member?.roles.cache.size >= 2;
+    return !newMsg.author.bot && newMsg.member?.roles.cache.size >= 2;
   },
   onMessageReactionAddFilter(msgReaction, user) {
     return !user.bot && msgReaction.message.guild;
   },
 }
 
+/**
+ * ロールがないユーザーになにかするBOTに実装するべきフィルター
+ */
 export const BasicNoRoleFilter = {
   onMessageFilter(msg) {
     return !msg.author.bot && msg.member?.roles.cache.size < 2
   },
   onMessageUpdateFilter(oldMsg, newMsg) {
-    return !newMsg.author.bot && newMessage.member?.roles.cache.size < 2;
+    return !newMsg.author.bot && newMsg.member?.roles.cache.size < 2;
   },
   onMessageReactionAddFilter(msgReaction, user) {
     return !user.bot && msgReaction.message.guild;

@@ -1,5 +1,5 @@
 import { BaseBot } from "../Infra/bot.js";
-import { BasicNoRoleFilter } from "../Infra/botHubFilter.js";
+import { BasicNoRoleFilter } from "../Infra/Bot/botHubFilter.js";
 
 const REPEAT_LIMIT = 2;
 const SAMPLING_LENGTH = 3;
