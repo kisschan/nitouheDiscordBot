@@ -126,17 +126,21 @@ export class CountryYamanote {
     this.registerToCountries("HR", "クロアチア", "ザグレブ", "europa");
     this.registerToCountries("HT", "ハイチ", "ポルトープランス", "caribbean");
     this.registerToCountries("HU", "ハンガリー", "ブダペスト", "europa");
-    this.registerToCountries("IC", "Canary Islands");
-    this.registerToCountries("ID", "インドネシア");
+    this.registerToCountries("IC", "カナリア諸島", null, "other");
+    this.registerToCountries("ID", "インドネシア", "ジャカルタ", "asia");
     this.registerToCountries("IE", "アイルランド", "ダブリン", "europa");
-    this.registerToCountries("IL", "イスラエル");
-    this.registerToCountries("IM", "Isle of Man");
+    this.registerToCountries("IL", "イスラエル", "エルサレム", "middleEast");
+    this.registerToCountries("IM", "マン島", null, "other");
     this.registerToCountries("IN", "インド", "デリー", "asia");
-    this.registerToCountries("IO", "British Indian Ocean Trritory");
-    this.registerToCountries("IQ", "イラク");
-    this.registerToCountries("IR", "イラン");
-    this.registerToCountries("IS", "アイスランド");
+    this.registerToCountries("IO", "イギリス領インド洋地域", null, "other");
+    this.registerToCountries("IQ", "イラク", "バグダッド", "middleEast");
+    this.registerToCountries("IR", "イラン", "テヘラン", "middleEast");
+    this.registerToCountries("IS", "アイスランド", "レイキャビク", "europa");
     this.registerToCountries("IT", "イタリア", "ローマ", "europa");
+    this.registerToCountries("JE", "ジャージー代官管轄区", "セント・へリア", "other");
+    this.registerToCountries("JM", "ジャマイカ", "キングストン", "caribbean");
+    this.registerToCountries("JO", "ヨルダン", "アンマン", "middleEast");
+    this.registerToCountries("JP", "日本", "東京", "asia");
   }
 
 }
