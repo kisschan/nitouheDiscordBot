@@ -1,4 +1,4 @@
-import { BaseBot } from "../Infra/bot.js";
+import { BaseBot } from "../Infra/Bot/core.js";
 import { BasicNoRoleFilter } from "../Infra/Bot/botHubFilter.js";
 
 const REPEAT_LIMIT = 2;

@@ -1,4 +1,4 @@
-import { BasicFilter } from './Bot/botHubFilter.js';
+import { BasicFilter } from './botHubFilter.js';
 
 /*
  * Discord.jsのクライアントのイベントを持つクラス。

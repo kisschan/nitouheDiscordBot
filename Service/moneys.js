@@ -1,5 +1,5 @@
 import { BasicRoleFilter } from "../Infra/Bot/botHubFilter.js";
-import { BaseBot} from "../Infra/bot.js";
+import { BaseBot} from "../Infra/Bot/core.js";
 
 class Bank extends BaseBot {
 

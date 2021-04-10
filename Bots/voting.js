@@ -1,4 +1,4 @@
-import { BaseBot } from "../Infra/bot.js";
+import { BaseBot } from "../Infra/Bot/core.js";
 
 class voting extends BaseBot{
     constructor(client){
