@@ -132,7 +132,7 @@ class Bank extends BaseBot {
   
     async onMessage(msg) {
       super.onMessage(msg);
-      if(/^[$＄]オリジナル$/.test(msg.content) && this.iscreate_roleLv() === 0){
+      if(/^[$＄]オリジナル$/.test(msg.content) && this.iscreate_roleLv() === 0 && (msg.guild.id === '804641873847255051' || msg.guild.id === '822064180219084820')){
         this.cost('オリジナル');
         const money = this.iscost();
         this.userRecordRepository.findMoneyByDiscordId(msg.member.id, (err, result) => {
@@ -150,7 +150,7 @@ class Bank extends BaseBot {
       　})
         
     
-      }else if(/^(?:[きキｷ][ゃャｬ][んンﾝ][せセｾ][るルﾙ])$/.test(msg.content) && this.iscreate_roleLv() > 0 && (msg.guild.id === '804641873847255051' || msg.guild.id === '822064180219084820')){
+      }else if(/^(?:[きキｷ][ゃャｬ][んンﾝ][せセｾ][るルﾙ])$/.test(msg.content) && this.iscreate_roleLv() > 0 ){
         msg.reply('キャンセルされました');
         this.reset_craterole();
       }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 1){
@@ -205,7 +205,7 @@ class Bank extends BaseBot {
         const userId = msg.member.id
       if(this.ispreUNIX() !== 0){
         const nowUNIX = Math.floor(this.isDate().getTime()/1000);
-        const CalUNIX = Math.floor((nowUNIX - this.ispreUNIX())/100);//3600で一時間
+        const CalUNIX = Math.floor((nowUNIX - this.ispreUNIX())/3600);//3600で一時間
       if(CalUNIX > 0){
         this.autoboost(CalUNIX);
       }
