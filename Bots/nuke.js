@@ -1,5 +1,5 @@
 import { log } from '../Infra/log.js';
-import { BaseBot } from '../Infra/bot.js';
+import { BaseBot } from '../Infra/Bot/core.js';
 
 const LOG_TITLE = '緊急事態宣言';
 const ADMIN = /719528011707449436|756871421984112701|807177155095429121/;

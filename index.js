@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { Client } from 'discord.js';
-import { ExampleBot, BotHub } from './Infra/bot.js';
+import { ExampleBot, BotHub } from './Infra/Bot/core.js';
 
 import mongoose from 'mongoose';
 import { SetupMongoose } from './Infra/setupMongoose.js';

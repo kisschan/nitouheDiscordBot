@@ -1,4 +1,4 @@
-import { BaseBot } from "../Infra/bot.js";
+import { BaseBot } from "../Infra/Bot/core.js";
 
 class voting extends BaseBot{
     constructor(client){
@@ -215,44 +215,46 @@ class voting extends BaseBot{
        return;
 
       if(msg.content === '投票' && this.isvoteLv() === 0){
-        msg.reply('投票内容を言ってください')
-        this.addvoteLv();
-        this.voteID(msg);
+            msg.reply('投票内容を言ってください')
+            this.addvoteLv();
+            this.voteID(msg);
         }else if(this.isvoteLv() === 1 && this.isvoteID() === msg.member.id){
-          msg.pin({reason:"投票内容"})
-          msg.reply(`${msg.content}の投票を開始します 期限は3時間です`)
-          this.voteName(msg)
-          this.addvoteLv();
-          this.votetime(60*60*3,() => {
-              this.votefin(msg);
+            msg.pin({reason:"投票内容"})
+            msg.reply(`${msg.content}の投票を開始します 期限は3時間です`)
+            this.voteName(msg)
+            this.addvoteLv();
+            this.votetime(60*60*3,() => {
+            this.votefin(msg);
             })
-      }else if(/^(?:[しシｼ][ゅュｭ][うウｳ][けケｹ][いイｲ]|集計|[けケｹ][っッｯ][かカｶ]|結果)/.test(msg.content) && this.isvoteLv() === 2){
-　　　　　msg.reply(`投票内容:${this.isvotename()}\n賛成${this.isagree()}\n賛成したメンバー:${this.isagreemembersname()}\n反対${this.isdisagree()}\n反対したメンバー${this.isdisagreemembersname()}`)
-         this.arashi(msg);
-         this.votecooltime(60,() => {
-             this.deletevoteLv();
+        }else if(/^(?:[しシｼ][ゅュｭ][うウｳ][けケｹ][いイｲ]|集計|[けケｹ][っッｯ][かカｶ]|結果)/.test(msg.content) && this.isvoteLv() === 2){
+　　　　　  msg.reply(`投票内容:${this.isvotename()}\n賛成${this.isagree()}\n賛成したメンバー:${this.isagreemembersname()}\n反対${this.isdisagree()}\n反対したメンバー${this.isdisagreemembersname()}`)
+            this.arashi(msg);
+            this.votecooltime(60,() => {
+            this.deletevoteLv();
          });
-      }else if(msg.content === '投票解禁' &&( msg.member.id === '719528011707449436'|| msg.member.id === '756871421984112701' || msg.member.id === '807177155095429121')){
-         this.unblock(msg);
-      }else if(/^(?:[まマﾏ][るルﾙ]|maru|[◎〇○丸])$/i.test(msg.content) && this.isvoteLv() > 1){
-        if(this.isagreemembers().includes(msg.member.id))
-        return;
-        if(this.isdisagreemembers().includes(msg.member.id)){
-          this.deletedisagree()
-          this.deletedisagreemembers(msg)
-        }
-        this.addagree();
-        this.addagreemembers(msg);
-    }else if(/^(?:[ばバﾊﾞ][つツﾂ]|batu|[×☓✖✕✗✘])$/i.test(msg.content) && this.isvoteLv() >1){
-        if(this.isdisagreemembers().includes(msg.member.id))
-        return;
-        if(this.isagreemembers().includes(msg.member.id)){
-        this.deleteagree()
-        this.deleteagreemembers(msg)
-      }
-        this.adddisagree();
-        this.adddisagreemembers(msg);
-    }
+        }else if(msg.content === '投票解禁' &&( msg.member.id === '719528011707449436'|| msg.member.id === '756871421984112701' || msg.member.id === '807177155095429121')){
+            this.unblock(msg);
+        }else if(/^(?:[まマﾏ][るルﾙ]|maru|[◎〇○丸])$/i.test(msg.content) && this.isvoteLv() > 1){
+            if(this.isagreemembers().includes(msg.member.id))
+                return;
+            if(this.isdisagreemembers().includes(msg.member.id)){
+                this.deletedisagree()
+                this.deletedisagreemembers(msg)
+            }
+            this.addagree();
+            this.addagreemembers(msg);
+            msg.react('👍');
+        }else if(/^(?:[ばバﾊﾞ][つツﾂ]|batu|[×☓✖✕✗✘])$/i.test(msg.content) && this.isvoteLv() >1){
+            if(this.isdisagreemembers().includes(msg.member.id))
+                return;
+            if(this.isagreemembers().includes(msg.member.id)){
+                this.deleteagree()
+                this.deleteagreemembers(msg)
+            }
+            this.adddisagree();
+            this.adddisagreemembers(msg);
+            msg.react('👎');
+         }
       }
     }
 export default voting;

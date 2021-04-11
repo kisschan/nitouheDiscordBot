@@ -1,5 +1,5 @@
 import random from 'random';
-import { BaseBot } from '../Infra/bot.js';
+import { BaseBot } from '../Infra/Bot/core.js';
 import { BasicRoleFilter } from '../Infra/Bot/botHubFilter.js';
 import { log } from '../Infra/log.js';
 import { getYtdlConnectionDispatcher } from '../Infra/youtubeConnection.js';
