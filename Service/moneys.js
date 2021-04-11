@@ -3,11 +3,12 @@ import { BaseBot} from "../Infra/Bot/core.js";
 
 class Bank extends BaseBot {
 
-    constructor(client, userRecordRepository) {
+  constructor(client, userRecordRepository) {
       super(client);
 
       this.userRecordRepository = userRecordRepository;
-      this.moneyNum = 1;
+      this.role_cost = 1;
+      this.role_costarray = {'うんこ':-1000,'ブースト':-150,'強ブースト':-800,'オリジナル':-1000,'支配人':-100000,'上級もなちゃと民':-10000,'中級もなちゃと民':-1000,'下級もなちゃと民':-100,'debug':100000,'undebug':-100000}
       this.Moneymultiple = 1;
       this.PreUNIX = 0;
       this.Autoboost = 0;
@@ -16,6 +17,12 @@ class Bank extends BaseBot {
       this.createrole_Name = '';
       this.createrole_Wrongcolor = false;
       this.createrole_Color = '';
+      this.createrole_ColorName = {'ホワイト':'WHITE','アクア':'AQUA','グリーン':'GREEN','ブルー':'BLUE','イエロー':'YELLOW','パープル':'PURPLE',
+      '鮮やかなピンク':'LUMINOUS_VIVID_PINK','ゴールド':'GOLD','オレンジ':'ORANGE','レッド':'RED','グレー':'GREY','暗めのグレー':'DARKER_GREY',
+      'ネイビー':'NAVY','ダークアクア':'DARK_AQUA','ダークグリーン':'DARK_GREEN','ダークブルー':'DARK_BLUE','ダークパープル':'DARK_PURPLE',
+      'ダークピンク':'DARK_VIVID_PINK','ダークゴールド':'DARK_GOLD','ダークオレンジ':'DARK_ORANGE','ダークレッド':'DARK_RED','ダークグレー':'DARK_GREY',
+      'ライトグレー':'LIGHT_GREY','ダークネイビー':'DARK_NAVY','ブループル':'BLURPLE','グレイプル':'GREYPLE','ダーク':'DARK_BUT_NOT_BLACK',
+      'ややブラック':'NOT_QUITE_BLACK','ランダム':'RANDOM'};
     }
 
     ismoney(){
@@ -58,23 +65,31 @@ class Bank extends BaseBot {
       return this.createrole_Color;
     }
 
-
-    addmoney(dealmoney){
-     this.moneyNum = dealmoney;
+    iscost(){
+      return this.role_cost;
     }
-    
+
+    cost(rolename){
+      if(this.role_costarray.hasOwnProperty(rolename) && typeof rolename == "string"){
+        this.role_cost = this.role_costarray[rolename];
+      }else if(typeof rolename == "number"){
+        this.role_cost = rolename;
+      }
+
+    }
+
     moneymultiple(multiple,boostmin,callback){
-     this.Moneymultiple = multiple;
-     setTimeout(callback,boostmin*1000*60);
+      this.Moneymultiple = multiple;
+      setTimeout(callback,boostmin*1000*60);
     }
 
     boostfin(msg){
-     this.Moneymultiple = 1;
-     msg.reply('ブーストは終わりました');
+      this.Moneymultiple = 1;
+      msg.reply('ブーストは終わりました');
     }
 
     preUNIX(){
-     this.PreUNIX = Math.floor(this.isDate().getTime()/1000);
+      this.PreUNIX = Math.floor(this.isDate().getTime()/1000);
     }
 
     autoboost(notchathour){
@@ -83,14 +98,6 @@ class Bank extends BaseBot {
 
     resetautoboost(){
       this.Autoboost = 0;
-    }
-
-    createrole_Lvadd(){
-      this.createrole_Lv++;
-    }
-
-    createrole_Lvdown(){
-      this.createrole_Lv--;
     }
 
     createrole_Lvset(Lv){
@@ -110,283 +117,225 @@ class Bank extends BaseBot {
     }
 
     createrole_color(msg){
-      if(msg.content === 'ホワイト'){
-      this.createrole_Color = 'WHITE';
-      }else if(msg.content === 'アクア'){
-       this.createrole_Color = 'AQUA' ;
-      }else if(msg.content === 'グリーン'){
-       this.createrole_Color = 'GREEN';
-      }else if(msg.content === 'ブルー'){
-        this.createrole_Color = 'BLUE';
-      }else if(msg.content === 'イエロー'){
-        this.createrole_Color = 'YELLOW';
-      }else if(msg.content === 'パープル'){
-　　　　　this.createrole_Color = 'PURPLE';
-      }else if(msg.content === '鮮やかなピンク'){
-        this.createrole_Color = 'LUMINOUS_VIVID_PINK'
-      }else if(msg.content === 'ゴールド'){
-        this.createrole_Color = 'GOLD';
-      }else if(msg.content === 'オレンジ'){
-        this.createrole_Color = 'ORANGE';
-      }else if(msg.content === 'レッド'){
-        this.createrole_Color = 'RED';
-      }else if(msg.content === 'グレー'){
-        this.createrole_Color = 'GREY';
-      }else if(msg.content === '暗めのグレー'){
-        this.createrole_Color = 'DARKER_GREY';
-      }else if(msg.content === 'ネイビー'){
-        this.createrole_Color = 'NAVY';
-      }else if(msg.content === 'ダークアクア'){
-        this.createrole_Color = 'DARK_AQUA';
-      }else if(msg.content === 'ダークグリーン'){
-        this.createrole_Color = 'DARK_GREEN';
-      }else if(msg.content === 'ダークブルー'){
-        this.createrole_Color = 'DARK_BLUE';
-      }else if(msg.content === 'ダークパープル'){
-        this.createrole_Color = 'DARK_PURPLE';
-      }else if(msg.content === 'ダークピンク'){
-        this.createrole_Color = 'DARK_VIVID_PINK';
-      }else if(msg.content === 'ダークゴールド'){
-        this.createrole_Color = 'DARK_GOLD';
-      }else if(msg.content === 'ダークオレンジ'){
-        this.createrole_Color = 'DARK_ORANGE';
-      }else if(msg.content === 'ダークレッド'){
-        this.createrole_Color = 'DARK_RED';
-      }else if(msg.content === 'ダークグレー'){
-        this.createrole_Color = 'DARK_GREY';
-      }else if(msg.content === 'ライトグレー'){
-        this.createrole_Color = 'LIGHT_GREY';
-      }else if(msg.content === 'ダークネイビー'){
-        this.createrole_Color = 'DARK_NAVY';
-      }else if(msg.content === 'ブループル'){
-        this.createrole_Color = 'BLURPLE';
-      }else if(msg.content === 'グレイプル'){
-        this.createrole_Color = 'GREYPLE';
-      }else if(msg.content === 'ダーク'){
-        this.createrole_Color = 'DARK_BUT_NOT_BLACK';
-      }else if(msg.content === 'ややブラック'){
-        this.createrole_Color = 'NOT_QUITE_BLACK';
-      }else if(msg.content === 'ランダム'){
-        this.createrole_Color = 'RANDOM';
-      } 
+      this.createrole_Color = this.createrole_ColorName[msg.content];
     };
 
     reset_craterole(){
-    this.createrole_Lv = 0;
-    this.createrole_userId = '';
-    this.createrole_Name = '';
-    this.createrole_Wrongcolor = false;
-    this.createrole_Color = '';
+      this.createrole_Lv = 0;
+      this.createrole_userId = '';
+      this.createrole_Name = '';
+      this.createrole_Wrongcolor = false;
+      this.createrole_Color = '';
     }
 
   
   
     async onMessage(msg) {
-    super.onMessage(msg);
-    if(/^[$＄]オリジナル$/.test(msg.content) && this.iscreate_roleLv() === 0){
-      this.addmoney(-3000);
-      const money = this.ismoney();
-    this.userRecordRepository.findMoneyByDiscordId(msg.member.id, (err, result) => {
-      if(err) return;
-      if(result.reduce((a, c) => a + c.money, 0) + money < 0){
-       msg.react('⚠');
-       return;
-      }
+      super.onMessage(msg);
+      if(/^[$＄]オリジナル$/.test(msg.content) && this.iscreate_roleLv() === 0 && (msg.guild.id === '804641873847255051' || msg.guild.id === '822064180219084820')){
+        this.cost('オリジナル');
+        const money = this.iscost();
+        this.userRecordRepository.findMoneyByDiscordId(msg.member.id, (err, result) => {
+          if(err) return;
+          if(result.reduce((a, c) => a + c.money, 0) + money > 0){
+            msg.react('👌');
+            this.createrole_userid(msg);
+            this.createrole_Lvset(1);
+            msg.reply('作りたいロールの名前を言ってください');
+            return;
+          }else{
+            msg.react('⚠');
+            return;
+          }
       　})
-    this.createrole_userid(msg);
-    this.createrole_Lvadd();
-    msg.reply('作りたいロールの名前を言ってください');
+        
     
-    }else if(/^(?:[きキｷ][ゃャｬ][んンﾝ][せセｾ][るルﾙ])$/.test(msg.content) && this.iscreate_roleLv() > 0){
-     msg.reply('キャンセルされました');
-     this.reset_craterole();
-    }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 1){
-    this.createrole_name(msg);
-    msg.reply(`作りたいロールは${this.iscreate_rolename()}でよろしいですか❓\nはいかいいえでお願いします。`)
-    this.createrole_Lvadd();
-    }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 2 && msg.content !== 'いいえ' && msg.content !== 'はい'){
-      msg.reply('はいかいいえで答えないと進みません');
-    }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 2 && msg.content === 'いいえ'){
-     this.createrole_Lvdown(); 
-     msg.reply('もう一回作りたいロール名をお願い致します')
-    }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 2 && (msg.content === 'はい' || this.iscreate_wrongcolor())){
-      msg.reply(`次に作りたいロールの色を以下の中からお願い致します。\nホワイト:アクア\nグリーン:ブルー\nイエロー:パープル\n鮮やかなピンク:ゴールド\nオレンジ:レッド\nグレー:暗めのグレー\nネイビー:ダークアクア\nダークグリーン:ダークブルー\nダークパープル:ダークピンク\nダークゴールド:ダークオレンジ\nダークレッド:ダークグレー\nライトグレー:ダークネイビー\nブループル:グレイプル\nダーク:ややブラック\nランダム`)
-    this.createrole_Lvadd();
-    }else if(!/^(ホワイト|アクア|グリーン|ブルー|イエロー|パープル|鮮やかなピンク|ゴールド|オレンジ|レッド|グレー|暗めのグレー|ネイビー|ダークアクア|ダークグリーン|ダークブルー|ダークパープル|ダークピンク|ダークゴールド|ダークオレンジ|ダークレッド|ダークグレー|ライトグレー|ダークネイビー|ブループル|グレイプル|ダーク|ややブラック|ランダム)$/.test(msg.content) && msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 3){
-    this.createrole_Lvdown();
-    this.createrole_wrongcolor();
-    msg.reply('不正な値です。なにか話すとロールの色選択に戻ります')
-    }else if(/^(ホワイト|アクア|グリーン|ブルー|イエロー|パープル|鮮やかなピンク|ゴールド|オレンジ|レッド|グレー|暗めのグレー|ネイビー|ダークアクア|ダークグリーン|ダークブルー|ダークパープル|ダークピンク|ダークゴールド|ダークオレンジ|ダークレッド|ダークグレー|ライトグレー|ダークネイビー|ブループル|グレイプル|ダーク|ややブラック|ランダム)$/.test(msg.content) && msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 3){
-      this.createrole_color(msg);
-      this.createrole_Lvadd();
-      msg.reply(`作りたいロールの名前(${this.iscreate_rolename()})\n色(${this.iscreate_rolecolor()})でよろしいですね？\nはいかいいえでお願いします\n※色が英語になるのは仕様です`);
-    }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 4 && msg.content !== 'いいえ' && msg.content !== 'はい'){
-      msg.reply('はいかいいえで答えないと進みません');
-    }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 4 && msg.content === 'いいえ'){
-      this.createrole_Lvset(1);
-      msg.reply('ロールの名前からもう一度お伺いします');
-    }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 4 && msg.content === 'はい'){
-    const Role = await msg.guild.roles.create({
-    data:{
-    name: this.iscreate_rolename(),
-    color: this.iscreate_rolecolor(),
-     },
-    reason:'要請があったため',
-    })
-    msg.member.roles.add(Role);
-    this.addmoney(-3000);
-    const userId = this.iscreate_userid();
-    const money = this.ismoney(); 
-    this.userRecordRepository.findMoneyByDiscordId(msg.member.id, (err, result) => {
-    if(err) return;
-    if(result.reduce((a, c) => a + c.money, 0) + money < 0){
-    msg.react('⚠');
-    return;
-    }
+      }else if(/^(?:[きキｷ][ゃャｬ][んンﾝ][せセｾ][るルﾙ])$/.test(msg.content) && this.iscreate_roleLv() > 0 ){
+        msg.reply('キャンセルされました');
+        this.reset_craterole();
+      }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 1){
+        this.createrole_name(msg);
+        msg.reply(`作りたいロールは${this.iscreate_rolename()}でよろしいですか❓\nはいかいいえでお願いします。`)
+        this.createrole_Lvset(2);
+      }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 2 && msg.content !== 'いいえ' && msg.content !== 'はい' && !this.iscreate_wrongcolor()){
+        msg.reply('はいかいいえで答えないと進みません');
+      }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 2 && msg.content === 'いいえ'){
+        this.createrole_Lvset(1);
+        msg.reply('もう一回作りたいロール名をお願い致します')
+      }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 2 && (msg.content === 'はい' || this.iscreate_wrongcolor())){
+        msg.reply(`次に作りたいロールの色を以下の中からお願い致します。\nホワイト:アクア\nグリーン:ブルー\nイエロー:パープル\n鮮やかなピンク:ゴールド\nオレンジ:レッド\nグレー:暗めのグレー\nネイビー:ダークアクア\nダークグリーン:ダークブルー\nダークパープル:ダークピンク\nダークゴールド:ダークオレンジ\nダークレッド:ダークグレー\nライトグレー:ダークネイビー\nブループル:グレイプル\nダーク:ややブラック\nランダム`)
+        this.createrole_Lvset(3);
+      }else if(!/^(ホワイト|アクア|グリーン|ブルー|イエロー|パープル|鮮やかなピンク|ゴールド|オレンジ|レッド|グレー|暗めのグレー|ネイビー|ダークアクア|ダークグリーン|ダークブルー|ダークパープル|ダークピンク|ダークゴールド|ダークオレンジ|ダークレッド|ダークグレー|ライトグレー|ダークネイビー|ブループル|グレイプル|ダーク|ややブラック|ランダム)$/.test(msg.content) && msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 3){
+        this.createrole_Lvset(2);
+        this.createrole_wrongcolor();
+        msg.reply('不正な値です。なにか話すとロールの色選択に戻ります')
+      }else if(/^(ホワイト|アクア|グリーン|ブルー|イエロー|パープル|鮮やかなピンク|ゴールド|オレンジ|レッド|グレー|暗めのグレー|ネイビー|ダークアクア|ダークグリーン|ダークブルー|ダークパープル|ダークピンク|ダークゴールド|ダークオレンジ|ダークレッド|ダークグレー|ライトグレー|ダークネイビー|ブループル|グレイプル|ダーク|ややブラック|ランダム)$/.test(msg.content) && msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 3){
+        this.createrole_color(msg);
+        this.createrole_Lvset(4);
+        msg.reply(`作りたいロールの名前(${this.iscreate_rolename()})\n色(${this.iscreate_rolecolor()})でよろしいですね？\nはいかいいえでお願いします\n※色が英語になるのは仕様です`);
+      }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 4 && msg.content !== 'いいえ' && msg.content !== 'はい'){
+        msg.reply('はいかいいえで答えないと進みません');
+      }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 4 && msg.content === 'いいえ'){
+        this.createrole_Lvset(1);
+        msg.reply('ロールの名前からもう一度お伺いします');
+      }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 4 && msg.content === 'はい'){
+        const userId = this.iscreate_userid();
+        const money = -3000;
+        this.userRecordRepository.findMoneyByDiscordId(msg.member.id, async (err, result) => {
+        if(err) return;
+        if(result.reduce((a, c) => a + c.money, 0) + money > 0){
+          const Role = await msg.guild.roles.create({
+            data:{
+              name: this.iscreate_rolename(),
+              color: this.iscreate_rolecolor(),
+         },
+          reason:'要請があったため',
+        })
+          msg.member.roles.add(Role);
+          this.userRecordRepository.addMoneyscore(userId, money, err => {
+          msg.react(err?'⚠':'💸');
+          msg.reply(err?'購入できません':'購入できました');
+          });
+        }
+        this.reset_craterole();
+        return;
       　})
-    this.userRecordRepository.addMoneyscore(userId, money, err => {
-    msg.react(err?'⚠':'💸');
-    msg.reply(err?'購入できません':'購入できました');
-    });
-    this.reset_craterole();
-    }
-    if(msg.guild.id === '804641873847255051' || msg.guild.id === '822064180219084820'){
-    const userId = msg.member.id
-    if(this.ispreUNIX() !== 0){
-    const nowUNIX = Math.floor(this.isDate().getTime()/1000);
-    const CalUNIX = Math.floor((nowUNIX - this.ispreUNIX())/3600);
-    if(CalUNIX > 0){
-    this.autoboost(CalUNIX);
-    }
-    }
-    if(msg.member.id === '719528011707449436' && msg.content === 'debug'){
-    this.addmoney(100000);
-    }else if(msg.member.id === '719528011707449436' && msg.content === 'undebug'){
-    this.addmoney(-100000);  
-    }else{
-    this.addmoney(1*this.ismoneymultiple() + this.isautoboost())
-    }
-    if(this.isautoboost() > 0){
-    msg.reply(`過疎防止ボーナスとして${this.isautoboost()}インジャネドルを追加でプレゼント！`)
-    this.resetautoboost();
-    }
+      }
+      if(msg.guild.id === '804641873847255051' || msg.guild.id === '822064180219084820'){
+        const userId = msg.member.id
+      if(this.ispreUNIX() !== 0){
+        const nowUNIX = Math.floor(this.isDate().getTime()/1000);
+        const CalUNIX = Math.floor((nowUNIX - this.ispreUNIX())/3600);//3600で一時間
+      if(CalUNIX > 0){
+        this.autoboost(CalUNIX);
+      }
+      }
+      if(msg.member.id === '719528011707449436' && msg.content === 'debug'){
+        this.cost('debug');
+      }else if(msg.member.id === '719528011707449436' && msg.content === 'undebug'){
+        this.cost('undebug');  
+      }else{
+        this.cost(1*this.ismoneymultiple() + this.isautoboost());
+      }
+     if(this.isautoboost() > 0){
+        msg.reply(`過疎防止ボーナスとして${this.isautoboost()}インジャネドルを追加でプレゼント！`)
+        this.resetautoboost();
+      }
 
     
-    const money = this.ismoney();
+    const money = this.iscost();
     this.preUNIX();
 
 
 
 
     this.userRecordRepository.addMoneyscore(userId, money, err => {
-    if (err) {
-    msg.react('⚠');
-    } 
-   if(!err && msg.guild.id === "804641873847255051"){
-   msg.react('✅');
-    }
+      if (err) {
+        msg.react('⚠');
+      } 
+      if(!err && msg.guild.id === "804641873847255051"){
+        msg.react('✅');
+      }
     });
   }
-   if (msg.content === '金') {
-    this.userRecordRepository.findMoneyByDiscordId(msg.member.id, (err, result) => {
-    if (err) return;
-    msg.reply(`所持金は${result.reduce((a, c) => a + c.money, 0)}インジャネドルです。`)
-    return;
-    })
+    if (msg.content === '金') {
+      this.userRecordRepository.findMoneyByDiscordId(msg.member.id, (err, result) => {
+        if (err) return;
+        msg.reply(`所持金は${result.reduce((a, c) => a + c.money, 0)}インジャネドルです。`)
+        return;
+      })
     }
     if(/^[$＄]/.test(msg.content)){
-    const rolesarray = ['うんこ','ブースト','強ブースト','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民'];
-    const rolename = msg.content.slice(1);
-    const userId = msg.member.id
+      const rolesarray = ['うんこ','ブースト','強ブースト','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民'];
+      const rolename = msg.content.slice(1);
+      const userId = msg.member.id
     if(rolesarray.indexOf(rolename) === -1){
-    msg.react('🤔')
-    return;}
+      msg.react('🤔')
+      return;
+    }
     if(msg.content.indexOf('うんこ') !== -1){
-    if(msg.guild.id !== '804641873847255051'){
-    msg.react('⚠');
-    return;
+      if(msg.guild.id !== '804641873847255051'){
+        msg.react('⚠');
+        return;
     }
-    if(msg.member.roles.cache.has('825277808925868062')){
-     msg.react('🔍')
-    return;
+    if(msg.member.roles.cache.has('830428707104751645')){
+      msg.react('🔍')
+      return;
     }
-    this.addmoney(-50);
     }
 
    if(rolesarray.indexOf(rolename,3) !== -1 && msg.guild.id === '804641873847255051'){
-    msg.reply('指定されたロールはこのギルドにありません');
-    return;}
+     msg.reply('指定されたロールはこのギルドにありません');
+      return;
+    }
       
         
     if(rolename === '支配人'){
-    if(msg.member.roles.cache.has('822064757908439060')){
-    msg.react('🔍')
-    return;
-    }
-    this.addmoney(-100000);
+      if(msg.member.roles.cache.has('822064757908439060')){
+        msg.react('🔍')
+        return;
+      }
     }else if(rolename === '上級もなちゃと民'){
-    if(msg.member.roles.cache.has('822065804760842260')){
-    msg.react('🔍')
-    return;
-    }
-    this.addmoney(-10000);
+      if(msg.member.roles.cache.has('822065804760842260')){
+        msg.react('🔍')
+        return;
+      }
     }else if(rolename === '中級もなちゃと民'){
-    if(msg.member.roles.cache.has('822069302860447764')){
-    msg.react('🔍')
-    return;
-    }
-    this.addmoney(-1000);
+      if(msg.member.roles.cache.has('822069302860447764')){
+        msg.react('🔍')
+        return;
+      }
     }else if(rolename === '下級もなちゃと民'){
-    if(msg.member.roles.cache.has('822114345416785991')){
-    msg.react('🔍')
-    return;
-    }
-    this.addmoney(-100);
+      if(msg.member.roles.cache.has('822114345416785991')){
+        msg.react('🔍')
+        return;
+      }
     }else if(rolename === 'ブースト'){
-    if(this.ismoneymultiple() !== 1){
-    msg.react('🔍')
-    return;
-    }
-    this.addmoney(-250);
+      if(this.ismoneymultiple() !== 1){
+      msg.react('🔍')
+      return;
+      }
     }else if(rolename === '強ブースト'){
-    if(this.ismoneymultiple() !== 1){
-    msg.react('🔍')
-    return; 
+      if(this.ismoneymultiple() !== 1){
+        msg.react('🔍')
+        return; 
+      }
     }
-    this.addmoney(-1000);
-    }
-
-   const money = this.ismoney();
+    this.cost(rolename);
+    const money = this.iscost();
     
     this.userRecordRepository.findMoneyByDiscordId(msg.member.id, (err, result) => {
-    if(err) return;
-    if(result.reduce((a, c) => a + c.money, 0) + money > 0){
-    msg.reply('購入できました')
-    if(msg.content.indexOf('うんこ') !== -1){
-    msg.member.roles.add('825277808925868062');}
-    else if(rolename === '支配人'){
-    msg.member.roles.add('822064757908439060');
-    }else if(rolename === '上級もなちゃと民'){
-    msg.member.roles.add('822065804760842260');
-    }else if(rolename === '中級もなちゃと民'){
-    msg.member.roles.add('822069302860447764');
-    }else if(rolename === '下級もなちゃと民'){
-    msg.member.roles.add('822114345416785991');
-    }else if(rolename === 'ブースト'){
-    this.moneymultiple(2,60,() =>{
-    this.boostfin(msg);
-    });
-    msg.reply(`1時間の間、インジャネドルの獲得が${this.ismoneymultiple()}倍になった`);
-    }else if(rolename === '強ブースト'){
-    this.moneymultiple(5,80,() =>{
-    this.boostfin(msg);
-    });
-    msg.reply(`1.2時間の間、インジャネドルの獲得が${this.ismoneymultiple()}倍になった`);
+      if(err) return;
+      if(result.reduce((a, c) => a + c.money, 0) + money > 0){
+        msg.reply('購入できました')
+      if(msg.content.indexOf('うんこ') !== -1){
+        msg.member.roles.add('830428707104751645');}
+      else if(rolename === '支配人'){
+        msg.member.roles.add('822064757908439060');
+      }else if(rolename === '上級もなちゃと民'){
+        msg.member.roles.add('822065804760842260');
+      }else if(rolename === '中級もなちゃと民'){
+        msg.member.roles.add('822069302860447764');
+      }else if(rolename === '下級もなちゃと民'){
+        msg.member.roles.add('822114345416785991');
+      }else if(rolename === 'ブースト'){
+        this.moneymultiple(2,60,() =>{
+        this.boostfin(msg);
+      });
+        msg.reply(`1時間の間、インジャネドルの獲得が${this.ismoneymultiple()}倍になった`);
+      }else if(rolename === '強ブースト'){
+        this.moneymultiple(5,80,() =>{
+        this.boostfin(msg);
+      });
+        msg.reply(`1.2時間の間、インジャネドルの獲得が${this.ismoneymultiple()}倍になった`);
+      }
+      this.userRecordRepository.addMoneyscore(userId, money, err => {
+        msg.react(err?'⚠':'💸');
+      });
+    }else{
+      msg.react('⚠');
+      return;
     }
-    this.userRecordRepository.addMoneyscore(userId, money, err => {
-    msg.react(err?'⚠':'💸');
-    });
-  }
   })
   }
   }
