@@ -15,6 +15,10 @@ and run
 yarn start
 ```
 
+# links
+- https://github.com/nooneMona/nitouheDiscordBotAPI
+  - APIサーバー
+
 # members
 - @nooneMona: Repository Owner, DevOps Engineer
 - @iwamizawa-software: Developer, Lead Engineer
