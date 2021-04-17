@@ -93,7 +93,11 @@ class Bank extends BaseBot {
     }
 
     autoboost(notchathour){
+      if(msg.member.roles.cache.has('832935326758600725')){
+        this.Autoboost = notchathour * 75 * 2;
+      }else{
       this.Autoboost = notchathour * 75;
+      }
     }
 
     resetautoboost(){
@@ -141,7 +145,7 @@ class Bank extends BaseBot {
             msg.react('👌');
             this.createrole_userid(msg);
             this.createrole_Lvset(1);
-            msg.reply('作りたいロールの名前を言ってください');
+            msg.reply(`作りたいロールの名前を言ってください\nキャンセルの場合はキャンセルといってください`);
             return;
           }else{
             msg.react('⚠');
@@ -214,8 +218,6 @@ class Bank extends BaseBot {
         this.cost('debug');
       }else if((msg.member.id === '719528011707449436' || msg.guild.id === '804641873847255051' ) && msg.content === 'undebug'){
         this.cost('undebug');  
-      }else if(msg.member.roles.cache.has('832935326758600725')){
-        this.cost(1*this.ismoneymultiple() + (this.isautoboost()*2));
       }else{
         this.cost(1*this.ismoneymultiple() + this.isautoboost());
       }
@@ -250,7 +252,7 @@ class Bank extends BaseBot {
     if(/^[$＄]/.test(msg.content)){
       const rolesarray = ['うんこ','ブースト','強ブースト','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民','ナースコール'];
       const rolename = msg.content.slice(1);
-      const userId = msg.member.id
+      const userId = msg.member.id;
     if(rolesarray.indexOf(rolename) === -1){
       msg.react('🤔')
       return;
