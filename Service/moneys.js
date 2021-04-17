@@ -8,7 +8,7 @@ class Bank extends BaseBot {
 
       this.userRecordRepository = userRecordRepository;
       this.role_cost = 1;
-      this.role_costarray = {'うんこ':-1000,'ブースト':-150,'強ブースト':-800,'オリジナル':-1000,'支配人':-100000,'上級もなちゃと民':-10000,'中級もなちゃと民':-1000,'下級もなちゃと民':-100,'debug':100000,'undebug':-100000}
+      this.role_costarray = {'うんこ':-1000,'ブースト':-100,'強ブースト':-500,'オリジナル':-1000,'支配人':-100000,'上級もなちゃと民':-10000,'中級もなちゃと民':-1000,'下級もなちゃと民':-100,'debug':100000,'undebug':-100000,'ナースコール':-2000}
       this.Moneymultiple = 1;
       this.PreUNIX = 0;
       this.Autoboost = 0;
@@ -93,7 +93,7 @@ class Bank extends BaseBot {
     }
 
     autoboost(notchathour){
-      this.Autoboost = notchathour * 100;
+      this.Autoboost = notchathour * 75;
     }
 
     resetautoboost(){
@@ -180,7 +180,7 @@ class Bank extends BaseBot {
         msg.reply('ロールの名前からもう一度お伺いします');
       }else if(msg.member.id === this.iscreate_userid() && this.iscreate_roleLv() === 4 && msg.content === 'はい'){
         const userId = this.iscreate_userid();
-        const money = -3000;
+        const money = -1000;
         this.userRecordRepository.findMoneyByDiscordId(msg.member.id, async (err, result) => {
         if(err) return;
         if(result.reduce((a, c) => a + c.money, 0) + money > 0){
@@ -205,15 +205,17 @@ class Bank extends BaseBot {
         const userId = msg.member.id
       if(this.ispreUNIX() !== 0){
         const nowUNIX = Math.floor(this.isDate().getTime()/1000);
-        const CalUNIX = Math.floor((nowUNIX - this.ispreUNIX())/3600);//3600で一時間
+        const CalUNIX = Math.floor((nowUNIX - this.ispreUNIX())/1800);//3600で一時間
       if(CalUNIX > 0){
         this.autoboost(CalUNIX);
       }
       }
-      if(msg.member.id === '719528011707449436' && msg.content === 'debug'){
+      if((msg.member.id === '719528011707449436' || msg.guild.id === '804641873847255051' ) && msg.content === 'debug'){
         this.cost('debug');
-      }else if(msg.member.id === '719528011707449436' && msg.content === 'undebug'){
+      }else if((msg.member.id === '719528011707449436' || msg.guild.id === '804641873847255051' ) && msg.content === 'undebug'){
         this.cost('undebug');  
+      }else if(msg.member.roles.cache.has('832935326758600725')){
+        this.cost(1*this.ismoneymultiple() + (this.isautoboost()*2));
       }else{
         this.cost(1*this.ismoneymultiple() + this.isautoboost());
       }
@@ -246,7 +248,7 @@ class Bank extends BaseBot {
       })
     }
     if(/^[$＄]/.test(msg.content)){
-      const rolesarray = ['うんこ','ブースト','強ブースト','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民'];
+      const rolesarray = ['うんこ','ブースト','強ブースト','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民','ナースコール'];
       const rolename = msg.content.slice(1);
       const userId = msg.member.id
     if(rolesarray.indexOf(rolename) === -1){
@@ -300,6 +302,11 @@ class Bank extends BaseBot {
         msg.react('🔍')
         return; 
       }
+    }else if(rolename === 'ナースコール'){
+      if(msg.member.roles.cache.has('832935326758600725')){
+        msg.react('🔍')
+        return; 
+      }
     }
     this.cost(rolename);
     const money = this.iscost();
@@ -328,6 +335,8 @@ class Bank extends BaseBot {
         this.boostfin(msg);
       });
         msg.reply(`1.2時間の間、インジャネドルの獲得が${this.ismoneymultiple()}倍になった`);
+      }else if(rolename === 'ナースコール'){
+        msg.member.roles.add('832935326758600725');
       }
       this.userRecordRepository.addMoneyscore(userId, money, err => {
         msg.react(err?'⚠':'💸');
