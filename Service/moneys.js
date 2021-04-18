@@ -92,7 +92,7 @@ class Bank extends BaseBot {
       this.PreUNIX = Math.floor(this.isDate().getTime()/1000);
     }
 
-    autoboost(notchathour){
+    autoboost(notchathour,msg){
       if(msg.member.roles.cache.has('832935326758600725')){
         this.Autoboost = notchathour * 75 * 2;
       }else{
@@ -211,7 +211,7 @@ class Bank extends BaseBot {
         const nowUNIX = Math.floor(this.isDate().getTime()/1000);
         const CalUNIX = Math.floor((nowUNIX - this.ispreUNIX())/1800);//3600で一時間
       if(CalUNIX > 0){
-        this.autoboost(CalUNIX);
+        this.autoboost(CalUNIX,msg);
       }
       }
       if((msg.member.id === '719528011707449436' || msg.guild.id === '804641873847255051' ) && msg.content === 'debug'){
