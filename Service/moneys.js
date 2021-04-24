@@ -8,7 +8,7 @@ class Bank extends BaseBot {
 
       this.userRecordRepository = userRecordRepository;
       this.role_cost = 1;
-      this.role_costarray = {'うんこ':-1000,'ブースト':-100,'強ブースト':-500,'オリジナル':-1000,'支配人':-100000,'上級もなちゃと民':-10000,'中級もなちゃと民':-1000,'下級もなちゃと民':-100,'debug':100000,'undebug':-100000,'ナースコール':-2000,'バーベキュー':-4000}
+      this.role_costarray = {'うんこ':-1000,'ブースト':-100,'強ブースト':-500,'オリジナル':-1000,'支配人':-100000,'上級もなちゃと民':-10000,'中級もなちゃと民':-1000,'下級もなちゃと民':-100,'debug':100000,'undebug':-100000,'ナースコール':-2000,'バーベキュー':-4000,'デスバインド':-2000}
       this.Moneymultiple = 1;
       this.PreUNIX = 0;
       this.Autoboost = 0;
@@ -23,6 +23,7 @@ class Bank extends BaseBot {
       'ダークピンク':'DARK_VIVID_PINK','ダークゴールド':'DARK_GOLD','ダークオレンジ':'DARK_ORANGE','ダークレッド':'DARK_RED','ダークグレー':'DARK_GREY',
       'ライトグレー':'LIGHT_GREY','ダークネイビー':'DARK_NAVY','ブループル':'BLURPLE','グレイプル':'GREYPLE','ダーク':'DARK_BUT_NOT_BLACK',
       'ややブラック':'NOT_QUITE_BLACK','ランダム':'RANDOM'};
+      this.Deathbind_msg_count = 0;
     }
 
     ismoney(){
@@ -75,6 +76,20 @@ class Bank extends BaseBot {
     }else{
       return 1;
     }
+    }
+
+    israndom(random_number){
+     return Math.floor(Math.random() * random_number) + 1;
+    }
+
+    isDeathbind_kuji(msg){
+      if(this.Deathbind_msg_count !== 0 && this.Deathbind_msg_count%25 === 0 && msg.member.roles.cache.has('835437532568092693')){
+        const kuji = this.israndom(8)*25;
+        msg.guild.channels.cache.get('835443857482842152').send(`デスバインドの効果でクジを引く!\n${msg.member.displayName}に${kuji}ポイントがデスバインドの効果で追加された！`);
+        return kuji;
+      }else{
+        return 0;
+      }
     }
 
     cost(rolename){
@@ -138,6 +153,10 @@ class Bank extends BaseBot {
       this.createrole_Name = '';
       this.createrole_Wrongcolor = false;
       this.createrole_Color = '';
+    }
+
+    deathbind_msg_count_add(){
+     this.Deathbind_msg_count++;
     }
 
   
@@ -227,11 +246,14 @@ class Bank extends BaseBot {
       }else if((msg.member.id === '719528011707449436' || msg.guild.id === '804641873847255051' ) && msg.content === 'undebug'){
         this.cost('undebug');  
       }else{
-        this.cost(1*this.ismoneymultiple()*this.isBBQ(msg) + this.isautoboost());
+        this.cost(1*this.ismoneymultiple()*this.isBBQ(msg) + this.isautoboost() + this.isDeathbind_kuji(msg));
       }
      if(this.isautoboost() > 0){
         msg.reply(`過疎防止ボーナスとして${this.isautoboost()}インジャネドルを追加でプレゼント！`)
         this.resetautoboost();
+      }
+      if(msg.member.roles.cache.has('835437532568092693')){
+      this.deathbind_msg_count_add();
       }
 
     
@@ -258,7 +280,7 @@ class Bank extends BaseBot {
       })
     }
     if(/^[$＄]/.test(msg.content)){
-      const rolesarray = ['うんこ','ブースト','強ブースト','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民','ナースコール','バーベキュー'];
+      const rolesarray = ['うんこ','ブースト','強ブースト','支配人','上級もなちゃと民','中級もなちゃと民','下級もなちゃと民','ナースコール','バーベキュー','デスバインド'];
       const rolename = msg.content.slice(1);
       const userId = msg.member.id;
     if(rolesarray.indexOf(rolename) === -1){
@@ -287,7 +309,8 @@ class Bank extends BaseBot {
     (rolename === '下級もなちゃと民' && msg.member.roles.cache.has('822114345416785991')) || 
     ((rolename === 'ブースト' || rolename === '強ブースト') && this.ismoneymultiple() !== 1) ||
     (rolename === 'ナースコール' && msg.member.roles.cache.has('832935326758600725')) ||
-    (rolename === 'バーベキュー' && msg.member.roles.cache.has('833386640096755713'))
+    (rolename === 'バーベキュー' && msg.member.roles.cache.has('833386640096755713')) ||
+    (rolename === 'デスバインド' && msg.member.roles.cache.has('835437532568092693'))
     ){
       msg.react('🔍')
       return;
@@ -323,6 +346,8 @@ class Bank extends BaseBot {
         msg.member.roles.add('832935326758600725');
       }else if(rolename === 'バーベキュー'){
         msg.member.roles.add('833386640096755713');
+      }else if(rolename === 'デスバインド'){
+        msg.member.roles.add('835437532568092693');
       }
       this.userRecordRepository.addMoneyscore(userId, money, err => {
         msg.react(err?'⚠':'💸');
