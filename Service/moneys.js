@@ -72,6 +72,7 @@ class Bank extends BaseBot {
 
     isBBQ(msg){
     if(msg.member.roles.cache.has('833386640096755713') && this.ismoneymultiple() !== 1){
+      msg.react('🍖');
       return 3;
     }else{
       return 1;
@@ -86,6 +87,7 @@ class Bank extends BaseBot {
       if(this.Deathbind_msg_count !== 0 && this.Deathbind_msg_count%25 === 0 && msg.member.roles.cache.has('835437532568092693')){
         const kuji = this.israndom(8)*25;
         msg.guild.channels.cache.get('835443857482842152').send(`デスバインドの効果でクジを引く!\n${msg.member.displayName}に${kuji}ポイントがデスバインドの効果で追加された！`);
+        msg.react('💀');
         return kuji;
       }else{
         return 0;
@@ -118,6 +120,7 @@ class Bank extends BaseBot {
     autoboost(notchathour,msg){
       if(msg.member.roles.cache.has('832935326758600725')){
         this.Autoboost = notchathour * 75 * 2;
+        msg.react('👩‍⚕️');
       }else{
       this.Autoboost = notchathour * 75;
       }
